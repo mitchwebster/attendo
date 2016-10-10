@@ -3,6 +3,7 @@ var request = require('request');
 var bodyParser = require('body-parser');
 var async = require('async');
 var time = require('time');
+var http = require('http');
 var MongoClient = require('mongodb').MongoClient;
 var dbConfig = require('./dbConfig');
 var util = require('./util');
@@ -12,11 +13,6 @@ var app = express();
 app.use(bodyParser.json())
 
 console.log('Listening on port ', portNumber);
-
-
-function validateInput(value) {
-	return value != null && value != "";
-}
 
 MongoClient.connect(dbConfig.url, function(err, db) {
 	if (err) {
@@ -34,71 +30,6 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			res.send({err : false, msg: "API is online"});
 		});
 
-		//first time setup
-		app.post('/api/userSetup', function(req, res) {
-			if (!req.body || !util.validate(req.body.username) || !req.body.courses || !req.body.courses.length || req.body.courses.length <= 0) {
-				res.send({err : true, msg: "Invalid request"})
-			} else {
-				var courses = [];
-				var invalid = false;
-				var crns = [];
-				for (var i = 0; i < req.body.courses.length && !invalid; i++) {
-					var incomingObject = {
-						"courseNumber" : req.body.courses[i].courseNumber,
-						"school" : req.body.courses[i].school,
-						"crn" : req.body.courses[i].crn,
-						"instructor" : req.body.courses[i].instructor,
-						"location" : req.body.courses[i].location,
-						"time" : req.body.courses[i].time,
-						"days" : req.body.courses[i].days
-					}
-					var course = util.createCourse(incomingObject);
-					if (course === null) {
-						invalid = true;
-					} else {
-						courses.push(course);
-						crns.push(course.crn);
-					}
-				}
-				if (invalid) {
-					res.send({err : true, msg: "Invalid request"})
-				} else {
-					var term = util.findTerm();
-					var user = {
-						"username" : req.body.username,
-						"term" : term,
-						"crns" : crns
-					}
-
-					var asyncCalls = [];
-					asyncCalls.push(function (callback) {
-						db.collection('Courses').insert(courses, {ordered: false}, function(err, result) {
-							if (err) {
-								callback(null, "CoursesFailure");
-							} else {
-								callback(null, "Success");
-							}
-						});
-					});
-					asyncCalls.push(function (callback) {
-						db.collection('Users').insert(user, {w:1}, function(err, result) {
-							if (err) {
-								callback(null, "UsersFailure");
-							} else {
-								callback(null, "Success");
-							}
-						});
-					});
-					async.parallel(asyncCalls, function(err, results) {
-						if (results[1] !== "Success") {
-							res.send({err : true, msg: "Invalid Request"});
-						} else {
-							res.send({err : false, msg: "Properly Setup User"})
-						}
-					});
-				}
-			}
-		});
 
 		//Post request to find their courses
 		app.post('/api/myCourses', function(req, res) {
@@ -109,21 +40,128 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 					if (err) {
 						res.send({err : true, msg: "Invalid Request"});
 					} else {
-						crns = result.crns
-						db.collection('Courses').find({crn : {$in : crns}}, {"_id": false, "crn" : true, "courseNumber": true, "school": true, "instructor": true, "location": true}).toArray(function(err, data) {
-							var i = 0;
-							while (i < data.length) {
-								data[i].course = data[i].school + " " + data[i].courseNumber;
-								delete data[i]["school"]
-								delete data[i]["courseNumber"]
-								i++;
-							}
-							if (err) {
-								res.send({err : true, msg: "Invalid Request"});
-							} else {
-								res.send({err : false, courses: data});
-							}
+						if (result == null) {
+							res.send({err : false, userExists: false, courses: []});
+						} else {
+							crns = result.crns
+							db.collection('Courses').find({crn : {$in : crns}}, {"_id": false, "crn" : true, "courseNumber": true, "school": true, "instructor": true, "location": true}).toArray(function(err, data) {
+								var i = 0;
+								while (i < data.length) {
+									data[i].course = data[i].school + " " + data[i].courseNumber;
+									delete data[i]["school"]
+									delete data[i]["courseNumber"]
+									i++;
+								}
+								if (err) {
+									res.send({err : true, msg: "Invalid Request"});
+								} else {
+									res.send({err : false,  userExists: true, courses: data});
+								}
+							});
+						}
+					}
+				});
+			}
+		});
+
+		app.post('/api/coursePrompt', function(req, res) {
+			if (!req.body || !req.body.courses || !req.body.courses.length || req.body.courses.length <= 0) {
+				res.send({err : true, msg: "Invalid request"})
+			}
+			var courseTitles = req.body.courses;
+			var asyncCalls = [];
+			var term = util.findTerm();
+
+			courseTitles.forEach(function (element, index, titles) {
+				asyncCalls.push(function (callback) {
+					var school = "";
+					var courseNumber = "";
+					if (element.indexOf("-") >= 0) {
+						var fdash = element.indexOf("-");
+						school = element.substring(0, fdash);
+						var remaining = element.substring(fdash + 1, element.length);
+						if (remaining.indexOf("-") >= 0) {
+							var ndash = remaining.indexOf("-");
+							courseNumber = remaining.substring(0, ndash);
+						} else {
+							console.log("Not sure how to parse this, second dash");
+							callback(null, "Failed Parsing");
+						}
+						var searchString = 'http://coursesat.tech/' + term + '/' + school + '/' + courseNumber;
+						http.get(searchString, (res) => {
+								var body = [];
+								res.on('data', function (data) {
+									body.push(data);
+								}).on('end', function () {
+									response = JSON.parse(Buffer.concat(body).toString());
+									var potentialCourses = [];
+									var potentialCourseSections = [];
+									response.sections.forEach(function (section, index, sections) {
+										var incomingObject = {
+											"courseNumber" : response.number,
+											"school" : response.school,
+											"crn" : section.crn,
+											"instructor" : section.meetings[0].instructor[0], //TODO: may need to serialize this info
+											"location" : section.meetings[0].location, //TODO: may need to consider case where there are multiple meetings
+											"time" : section.meetings[0].time,
+											"days" : section.meetings[0].days
+										}
+										potentialCourseSections.push({
+											"courseName" : response.identifier,
+											"section" : section.section_id,
+											"crn" : section.crn
+										})
+										var course = util.createCourse(incomingObject);
+										potentialCourses.push(course);
+									});
+									db.collection('Courses').insert(potentialCourses, {ordered: false}, function(err, result) {
+										callback(null, potentialCourseSections);
+									});
+								})
+							}).on('error', (e) => {
+							 	callback(null, "Failed HTTP Request");
 						});
+					} else {
+						console.log("Not sure how to parse this:", element);
+						callback(null, "Failed Parsing");
+					}
+				});
+			});
+			async.parallel(asyncCalls, function(err, results) {
+				var output = [];
+				for (var i = 0; i < results.length; i++) {
+					if (results[i] !== "Failed HTTP Request" && results[i] !== "Failed Parsing") {
+						for (var j = 0; j < results[i].length; j++) {
+							output.push(results[i][j]);
+						}
+					}
+				}
+				res.send({err : false, courses: output})
+			});
+		});
+
+		//first time setup
+		app.post('/api/userSetup', function(req, res) {
+			if (!req.body || !util.validate(req.body.username) || !req.body.courses || !req.body.courses.length || req.body.courses.length <= 0) {
+				res.send({err : true, msg: "Invalid request"})
+			} else {
+				var validatedCRNS = []
+				for (var i = 0; i < req.body.courses.length; i++) {
+					var x = util.validate(req.body.courses[i], "int");
+					if (x) {
+						validatedCRNS.push(x);
+					}
+				}
+				var user = {
+					"username" : req.body.username,
+					"term" : util.findTerm(),
+					"crns" : validatedCRNS
+				};
+				db.collection('Users').insert(user, {w:1}, function(err, result) {
+					if (err) {
+						res.send({err : true, msg: "Invalid Request"});
+					} else {
+						res.send({err : false, msg: "Created User"});
 					}
 				});
 			}

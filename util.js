@@ -65,7 +65,20 @@ function validate(someValue, potentialCondtion) {
 	if (potentialCondtion === "int") {
 		return isNaN(someValue) ? null : parseInt(someValue)
 	} else if (potentialCondtion === "customTimeStartStop") {
-		//TODO: need to do parsing here
+		var start = someValue.indexOf("-");
+		if (start < 0) {
+			return {
+				"start" : "Unknown",
+				"end" : "Unknown"
+			}
+		} else {
+			var startTime = someValue.substring(0, start);
+			var endTime = someValue.substring(start + 2, someValue.length);
+			return {
+				"start" : startTime.trim(),
+				"end" : endTime.trim()
+			}
+		}
 		return {
 			"start" : "2:05 pm",
 			"end" : "2:55 pm"
