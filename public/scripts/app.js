@@ -12,11 +12,16 @@
         })
         .state('courses', {
             url: "/courses",
-            templateUrl: "views/courseview.html"
+            controller: 'coursesCtrl',
+            templateUrl: "views/coursesview.html"
         })
-        .state('view3', {
-            url: "/view3",
-            templateUrl: "partials/view3.html"
+        .state('course', {
+            url: "/course",
+            controller: 'singleCourseCtrl',
+            templateUrl: "views/courseview.html",
+            params: {
+                course: null
+            }
         })
         ;
     })
@@ -27,6 +32,44 @@
                 //need to switch views too
                 $state.go('courses');
             };
-        });
+        })
+    .controller('coursesCtrl', function($scope, $http, $mdDialog, $state) {
+            // $scope.submitLogin = function() {
+                //need to submit the user to CAS
+                // alert(JSON.stringify($scope.user));
+                //need to switch views too
+                // $state.go('courses');
+                var temp = {username: "mwebster7"};
+                $http.post('/api/myCourses', temp).then(function successCallback(response) {
+                    response = response.data;
+                    if (response.err) {
+                        console.log(response);
+                    } else {
+                        console.log(response);
+                        if (response.userExists) {
+                            $scope.courses = response.courses;
+                        } else {
+                            $scope.userExists = false;
+                        }
+                    }
+                }), function failedCallback(response) {
+                    console.log(response);
+                };
+
+                $scope.selectClass = function(course) {
+                    console.log(course);
+                    $state.go('course', {course: course});
+                }
+            // };
+        })
+    .controller('singleCourseCtrl', function($scope, $http, $mdDialog, $state, $stateParams) {
+                // $scope.submitLogin = function() {
+                    //need to submit the user to CAS
+                    // alert(JSON.stringify($scope.user));
+                    //need to switch views too
+                    // $state.go('courses');
+                    $scope.course = $stateParams;
+                // };
+            });
 
 })(angular);
