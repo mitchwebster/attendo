@@ -1,0 +1,16 @@
+<md-dialog aria-label="Success" flex="75">
+    <div class="md-toolbar-tools">
+        <h2><span class="md-warn">Key in in Use</span></h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+      <h4 class="md-headline"><a class="md-warn" target='_blank' href="{{keyUrl}}">{{keyUrl}}</a> currently forwards to <a class="md-warn" target='_blank' href="{{destUrl}}">{{destUrl}}</a></h4>
+    </section>
+    <section layout="row" layout-sm="column" layout-align="space-around center" layout-wrap>
+      <h4 class="md-subhead">Override to <a class="md-primary" target='_blank' href="{{desiredUrl}}">{{desiredUrl}}</a>?</h4>
+      <md-button class="md-button md-primary" ng-click="override()">Override</md-button>
+    </section>
+</md-dialog>

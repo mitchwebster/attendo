@@ -1,0 +1,17 @@
+<md-dialog aria-label="Success" flex="75">
+    <div class="md-toolbar-tools">
+        <h2>Success!</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    <section layout="row" layout-sm="column" layout-align="start center" layout-wrap>
+      <md-input-container flex-order="0" flex-offset="10" flex="70" class="md-block" flex-gt-xs style="padding-top:1.5em;">
+        <input id="keyUrl" value="{{ keyUrl }}" readonly style="cursor:text;">
+      </md-input-container>
+      <md-button class="md-icon-button" ngclipboard flex flex-order="1" data-clipboard-target="#keyUrl">
+          <md-icon md-svg-src="icons/ic_content_copy_24px.svg" alt="Copy to clipboard"></md-icon>
+      </md-button>
+    </section>
+</md-dialog>

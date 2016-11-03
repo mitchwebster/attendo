@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var async = require('async');
 var time = require('time');
 var http = require('http');
+var path = require('path');
 var MongoClient = require('mongodb').MongoClient;
 var dbConfig = require('./dbConfig');
 var util = require('./util');
@@ -22,6 +23,12 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 		//setup indicies for DB
 		db.collection('Courses').createIndex({"crn": 1, "term": -1}, {unique: true, unique: true});
 		db.collection('Users').createIndex({"username": 1, "term": -1}, {unique: true, unique: true});
+
+		app.use("/", express.static("public"));
+
+		app.get("/", function (req, res) {
+			res.sendFile(path.resolve('./public/views/index.html'));
+		});
 
 		//routes
 		app.post('/api/test', function(req, res) {
