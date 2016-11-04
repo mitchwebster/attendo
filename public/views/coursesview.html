@@ -1,3 +1,20 @@
+<div ng-if="userExists == false">
+<h1> Welcome {{user.username}}</h1>
+<h3> You need to register the courses you are in </h3>
+	<form name="courseForm" ng-submit="submitUser()">
+		<div ng-repeat="(key, value) in coursePromptCourses">
+			<div layout="row" layout-align="space-between center">
+		        <span>{{key}}</span>
+		        <md-select ng-model="selected[key]" placeholder="Section" required="" class="md-no-underline">
+		          <md-option ng-repeat="course in value" value="{{course.crn}}">{{course.section}}</md-option>
+		        </md-select>
+		      </div>
+		</div>
+		<md-button class="md-raised md-primary" type="submit">Submit</md-button>
+	</form>
+</div>
+
+
 <div ng-repeat="course in courses" ng-click="selectClass(course)">
 	<md-card>
 	  	<md-card-title>
