@@ -11,3 +11,28 @@
 	</md-card>
 </div> -->
 {{course}}
+<!-- 
+<mwl-calendar
+    view="calendarView"
+    view-date="viewDate"
+    events="events"
+    view-title="calendarTitle"
+    on-event-click="eventClicked(calendarEvent)"
+    on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
+    cell-is-open="true">
+</mwl-calendar> -->
+
+<md-card>
+  	<md-card-title>
+  		<md-card-title-text>
+	      <span class="md-headline">Attendance Data for {{course.course}}</span>
+	    </md-card-title-text>
+	</md-card-title>
+    <md-card-content>
+	      <mwl-calendar
+		    view="calendarView"
+		    view-date="viewDate"
+		    events="events"
+		</mwl-calendar>
+    </md-card-content>
+</md-card>
