@@ -160,7 +160,6 @@
                         } else {
                             for (var i = 0; i < response.attendance.length; i++) {
                                 var curDate = new Date(response.attendance[i].time);
-                                console.log(curDate);
                                 $scope.events.push({
                                     title: 'No Title', // The title of the event
                                     startsAt: curDate, // A javascript date object for when the event starts
@@ -187,10 +186,18 @@
                         }
                     });
 
-
-
-
-
+                    $scope.checkin = function(){
+                        // console.log("Trying to check in");
+                        var params = {"username" : $scope.user, "crn" : ($scope.course.crn + ""), "routerLocation" : $scope.course.location};
+                        $http.post('/api/checkin', params).then(function successCallback(response) {
+                            response = response.data;
+                            if (response.err) {
+                                console.log("Not checked in");
+                            } else {
+                                console.log("Checked in");
+                            }
+                        });
+                    }
 
                     // $scope.events = [
                     //   {
