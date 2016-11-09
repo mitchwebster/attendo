@@ -29,6 +29,40 @@
         })
         ;
     })
+    .factory('userService', function () {
+
+            var service = {
+
+                model: {
+                    username: '',
+                    courses: [],
+                    currentCourse: ''
+                },
+
+                saveUsername: function (username) {
+                    sessionStorage.userService = angular.toJson(username);
+                },
+                getUsername: function () {
+                    service.model.username = angular.fromJson(sessionStorage.username);
+                    return service.model.username;
+                },
+                saveCourses: function (courses) {
+                    sessionStorage.userService = angular.toJson(courses);
+                },
+                getCourses: function () {
+                    service.model.courses = angular.fromJson(sessionStorage.courses);
+                    return service.model.courses;
+                },
+                saveCurrentCourse: function (curCourse) {
+                    sessionStorage.currentCourse = angular.toJson(curCourse);
+                },
+                getCurrentCourse: function () {
+                    service.model.currentCourse = angular.fromJson(sessionStorage.currentCourse);
+                    return service.model.currentCourse;
+                }
+            }
+            return service;
+        })
     .controller('loginCtrl', function($scope, $http, $mdDialog, $state) {
             $scope.submitLogin = function() {
                 //need to submit the user to CAS

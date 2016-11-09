@@ -162,7 +162,8 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 				var user = {
 					"username" : req.body.username,
 					"term" : util.findTerm(),
-					"crns" : validatedCRNS
+					"crns" : validatedCRNS,
+					"instructor" : false
 				};
 				db.collection('Users').insert(user, {w:1}, function(err, result) {
 					if (err) {
@@ -174,17 +175,74 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			}
 		});
 
+		app.post('/api/instructorSetup', function(req, res) {
+			if (!req.body || !util.validate(req.body.username) || !req.body.courses || !req.body.courses.length || req.body.courses.length <= 0) {
+				res.send({err : true, msg: "Invalid request"})
+			} else {
+				var validatedCRNS = []
+				for (var i = 0; i < req.body.courses.length; i++) {
+					var x = util.validate(req.body.courses[i], "int");
+					if (x) {
+						validatedCRNS.push(x);
+					}
+				}
+				var user = {
+					"username" : req.body.username,
+					"term" : util.findTerm(),
+					"crns" : validatedCRNS,
+					"instructor" : true
+				};
+				db.collection('Users').insert(user, {w:1}, function(err, result) {
+					if (err) {
+						res.send({err : true, msg: "Invalid Request"});
+					} else {
+						res.send({err : false, msg: "Created User"});
+					}
+				});
+			}
+		});
+
+
+		app.post('/api/course/roster', function(req, res) {
+				if (!req.body) {
+					res.send({err : true, msg: "Invalid request"});
+				} else {
+					var username = util.validate(req.body.username);
+					var crn = util.validate(req.body.crn, "int");
+					if (!username || !crn) {
+						res.send({err : true, msg: "Invalid request"});
+					} else {
+						//TODO: need to check if this user is a teacher, and if so then go get all of the students that are in this course
+						var curTerm = util.findTerm();
+						db.collection('Users').findOne({"username": username, "term": curTerm, "instructor": true}, {crns : 1, "_id": false}, function(err, result) {
+							if (err) {
+								res.send({err : true, msg: "Invalid request"});
+							} else {
+								console.log(result);
+								db.collection('Users').find({"term" : curTerm, "crn": crn}, {"username": true, "_id": false}).toArray(function(err, data) {
+									if (err) {
+										res.send({err : true, msg: "Database issue"});
+									} else {
+										res.send({err : false, roster: data});
+									}
+								});
+							}
+						});
+					}
+				}
+		});
+		
 		//Post to checkin
 		app.post('/api/checkin', function(req, res) {
 			if (!req.body) {
-				res.send({err : true, msg: "Invalid request"})
+				res.send({err : true, msg: "Invalid request"});
 			} else {
 				var username = util.validate(req.body.username);
-				var crn = util.validate(req.body.crn, "int")
+				var crn = util.validate(req.body.crn, "int");
 				var rLoc = util.validate(req.body.routerLocation);
 				var term = util.findTerm();
 				if (!username || !crn || !rLoc) {
-					res.send({err : true, msg: "Invalid request"})
+					res.send({err : true, msg: "Invalid request"});
 				} else {
 					db.collection('Courses').findOne({crn : crn, term: term}, {"_id": false, "crn" : true, "location": true, "startTime": true, "days": true}, function(err, result) {
 						if (err || result === null) {
