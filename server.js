@@ -218,8 +218,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 							if (err) {
 								res.send({err : true, msg: "Invalid request"});
 							} else {
-								console.log(result);
-								db.collection('Users').find({"term" : curTerm, "crn": crn}, {"username": true, "_id": false}).toArray(function(err, data) {
+								db.collection('Users').find({"term" : curTerm, "crns": crn, "instructor": false}, {"username": true, "_id": false}).toArray(function(err, data) {
 									if (err) {
 										res.send({err : true, msg: "Database issue"});
 									} else {

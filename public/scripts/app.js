@@ -40,14 +40,14 @@
                 },
 
                 saveUsername: function (username) {
-                    sessionStorage.userService = angular.toJson(username);
+                    sessionStorage.username = angular.toJson(username);
                 },
                 getUsername: function () {
                     service.model.username = angular.fromJson(sessionStorage.username);
                     return service.model.username;
                 },
                 saveCourses: function (courses) {
-                    sessionStorage.userService = angular.toJson(courses);
+                    sessionStorage.courses = angular.toJson(courses);
                 },
                 getCourses: function () {
                     service.model.courses = angular.fromJson(sessionStorage.courses);
@@ -63,20 +63,21 @@
             }
             return service;
         })
-    .controller('loginCtrl', function($scope, $http, $mdDialog, $state) {
+    .controller('loginCtrl', function($scope, $http, $mdDialog, $state, userService) {
             $scope.submitLogin = function() {
                 //need to submit the user to CAS
                 console.log($scope.user);
+                userService.saveUsername($scope.user.username);
                 $state.go('courses', {user: $scope.user});
             };
         })
-    .controller('coursesCtrl', function($scope, $http, $mdDialog, $state, $stateParams) {
+    .controller('coursesCtrl', function($scope, $http, $mdDialog, $state, $stateParams, userService) {
             // $scope.submitLogin = function() {
                 //need to submit the user to CAS
                 // alert(JSON.stringify($scope.user));
                 //need to switch views too
                 // $state.go('courses');
-                $scope.user = $stateParams.user;
+                $scope.user = $stateParams.user ? $stateParams.user : {username: userService.getUsername()};
                 $scope.selected = {};
                 $http.post('/api/myCourses', {username: $scope.user.username}).then(function successCallback(response) {
                     response = response.data;
@@ -121,7 +122,7 @@
                 }
 
                 $scope.selectClass = function(course) {
-                    console.log(course);
+                    userService.saveCurrentCourse(course);
                     $state.go('course', {course: course, user: $scope.user.username});
                 }
 
@@ -163,14 +164,14 @@
             }
             // };
         })
-    .controller('singleCourseCtrl', function($scope, $http, $mdDialog, $state, $stateParams) {
+    .controller('singleCourseCtrl', function($scope, $http, $mdDialog, $state, $stateParams, userService) {
                 // $scope.submitLogin = function() {
                     //need to submit the user to CAS
                     // alert(JSON.stringify($scope.user));
                     //need to switch views too
                     // $state.go('courses');
-                    $scope.course = $stateParams.course;
-                    $scope.user = $stateParams.user;
+                    $scope.course = $stateParams.course ? $stateParams.course : userService.getCurrentCourse();
+                    $scope.user = $stateParams.user ? $stateParams.user : userService.getUsername();
 
                     //calendar attributes
                     $scope.calendarView = "month";
