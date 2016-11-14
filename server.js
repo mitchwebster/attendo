@@ -83,6 +83,8 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 				asyncCalls.push(function (callback) {
 					var school = "";
 					var courseNumber = "";
+
+					//TODO: this parsing is not good: need a better way to do this
 					if (element.indexOf("-") >= 0) {
 						var fdash = element.indexOf("-");
 						school = element.substring(0, fdash);
@@ -135,15 +137,24 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 				});
 			});
 			async.parallel(asyncCalls, function(err, results) {
-				var output = [];
+				var output = {};
 				for (var i = 0; i < results.length; i++) {
 					if (results[i] !== "Failed HTTP Request" && results[i] !== "Failed Parsing") {
 						for (var j = 0; j < results[i].length; j++) {
-							output.push(results[i][j]);
+							if (results[i][j].courseName in output) {
+								output[results[i][j].courseName].push({section: results[i][j].section, crn: results[i][j].crn});
+							} else {
+								output[results[i][j].courseName] = [{section: results[i][j].section, crn: results[i][j].crn}];
+							}
 						}
 					}
 				}
-				res.send({err : false, courses: output})
+				courseObjects = [];
+				keys = Object.keys(output);
+				for (var i = 0; i < keys.length; i++) {
+					courseObjects.push({courseName: keys[i], sections: output[keys[i]]});
+				}
+				res.send({err : false, courses: courseObjects})
 			});
 		});
 
