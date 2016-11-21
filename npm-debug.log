@@ -1,0 +1,1551 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install' ]
+2 info using npm@2.15.8
+3 info using node@v4.4.7
+4 verbose readDependencies loading dependencies from C:\Users\mitch\Documents\Development\attendo\package.json
+5 warn package.json nodemongostarter@1.0.0 No description
+6 verbose install where, deps [ 'C:\\Users\\mitch\\Documents\\Development\\attendo',
+6 verbose install   [ 'async',
+6 verbose install     'body-parser',
+6 verbose install     'express',
+6 verbose install     'mongodb',
+6 verbose install     'request',
+6 verbose install     'time',
+6 verbose install     'promise' ] ]
+7 verbose install where, peers [ 'C:\\Users\\mitch\\Documents\\Development\\attendo', [] ]
+8 verbose installManyTop reading for lifecycle C:\Users\mitch\Documents\Development\attendo\package.json
+9 info preinstall nodemongostarter@1.0.0
+10 verbose installManyTop reading scoped package data from C:\Users\mitch\Documents\Development\attendo\node_modules\async\package.json
+11 verbose installManyTop reading scoped package data from C:\Users\mitch\Documents\Development\attendo\node_modules\body-parser\package.json
+12 verbose installManyTop reading scoped package data from C:\Users\mitch\Documents\Development\attendo\node_modules\express\package.json
+13 verbose installManyTop reading scoped package data from C:\Users\mitch\Documents\Development\attendo\node_modules\mongodb\package.json
+14 verbose installManyTop reading scoped package data from C:\Users\mitch\Documents\Development\attendo\node_modules\request\package.json
+15 verbose readDependencies loading dependencies from C:\Users\mitch\Documents\Development\attendo\package.json
+16 verbose targetResolver reading package data from C:\Users\mitch\Documents\Development\attendo\node_modules\async\package.json
+17 verbose targetResolver reading package data from C:\Users\mitch\Documents\Development\attendo\node_modules\body-parser\package.json
+18 verbose targetResolver reading package data from C:\Users\mitch\Documents\Development\attendo\node_modules\express\package.json
+19 verbose targetResolver reading package data from C:\Users\mitch\Documents\Development\attendo\node_modules\mongodb\package.json
+20 verbose targetResolver reading package data from C:\Users\mitch\Documents\Development\attendo\node_modules\request\package.json
+21 verbose already installed skipping express@^4.14.0 C:\Users\mitch\Documents\Development\attendo
+22 verbose already installed skipping mongodb@^2.2.10 C:\Users\mitch\Documents\Development\attendo
+23 verbose already installed skipping request@^2.75.0 C:\Users\mitch\Documents\Development\attendo
+24 silly cache add args [ 'time@^0.11.4', null ]
+25 verbose cache add spec time@^0.11.4
+26 silly cache add parsed spec Result {
+26 silly cache add   raw: 'time@^0.11.4',
+26 silly cache add   scope: null,
+26 silly cache add   name: 'time',
+26 silly cache add   rawSpec: '^0.11.4',
+26 silly cache add   spec: '>=0.11.4 <0.12.0',
+26 silly cache add   type: 'range' }
+27 silly addNamed time@>=0.11.4 <0.12.0
+28 verbose addNamed ">=0.11.4 <0.12.0" is a valid semver range for time
+29 silly addNameRange { name: 'time', range: '>=0.11.4 <0.12.0', hasData: false }
+30 silly mapToRegistry name time
+31 silly mapToRegistry using default registry
+32 silly mapToRegistry registry https://registry.npmjs.org/
+33 silly mapToRegistry data Result {
+33 silly mapToRegistry   raw: 'time',
+33 silly mapToRegistry   scope: null,
+33 silly mapToRegistry   name: 'time',
+33 silly mapToRegistry   rawSpec: '',
+33 silly mapToRegistry   spec: 'latest',
+33 silly mapToRegistry   type: 'tag' }
+34 silly mapToRegistry uri https://registry.npmjs.org/time
+35 verbose addNameRange registry:https://registry.npmjs.org/time not in flight; fetching
+36 silly cache add args [ 'promise@^7.1.1', null ]
+37 verbose cache add spec promise@^7.1.1
+38 silly cache add parsed spec Result {
+38 silly cache add   raw: 'promise@^7.1.1',
+38 silly cache add   scope: null,
+38 silly cache add   name: 'promise',
+38 silly cache add   rawSpec: '^7.1.1',
+38 silly cache add   spec: '>=7.1.1 <8.0.0',
+38 silly cache add   type: 'range' }
+39 silly addNamed promise@>=7.1.1 <8.0.0
+40 verbose addNamed ">=7.1.1 <8.0.0" is a valid semver range for promise
+41 silly addNameRange { name: 'promise', range: '>=7.1.1 <8.0.0', hasData: false }
+42 silly mapToRegistry name promise
+43 silly mapToRegistry using default registry
+44 silly mapToRegistry registry https://registry.npmjs.org/
+45 silly mapToRegistry data Result {
+45 silly mapToRegistry   raw: 'promise',
+45 silly mapToRegistry   scope: null,
+45 silly mapToRegistry   name: 'promise',
+45 silly mapToRegistry   rawSpec: '',
+45 silly mapToRegistry   spec: 'latest',
+45 silly mapToRegistry   type: 'tag' }
+46 silly mapToRegistry uri https://registry.npmjs.org/promise
+47 verbose addNameRange registry:https://registry.npmjs.org/promise not in flight; fetching
+48 verbose already installed skipping async@^2.0.1 C:\Users\mitch\Documents\Development\attendo
+49 verbose already installed skipping body-parser@^1.15.2 C:\Users\mitch\Documents\Development\attendo
+50 verbose request uri https://registry.npmjs.org/promise
+51 verbose request no auth needed
+52 info attempt registry request try #1 at 3:41:39 PM
+53 verbose request id 3608e6d97b0bb4aa
+54 verbose etag "9ZB0SCSU488KRAHG26APCXDB5"
+55 http request GET https://registry.npmjs.org/promise
+56 verbose request uri https://registry.npmjs.org/time
+57 verbose request no auth needed
+58 info attempt registry request try #1 at 3:41:39 PM
+59 verbose etag "C5TNG1UX4BE1J1JK6T7RSEAAP"
+60 http request GET https://registry.npmjs.org/time
+61 http 200 https://registry.npmjs.org/promise
+62 verbose headers { server: 'nginx/1.10.1',
+62 verbose headers   'content-type': 'application/json',
+62 verbose headers   'last-modified': 'Tue, 15 Nov 2016 05:13:25 GMT',
+62 verbose headers   etag: 'W/"582a9975-8955"',
+62 verbose headers   'content-encoding': 'gzip',
+62 verbose headers   'cache-control': 'max-age=300',
+62 verbose headers   'content-length': '6772',
+62 verbose headers   'accept-ranges': 'bytes',
+62 verbose headers   date: 'Mon, 21 Nov 2016 20:41:41 GMT',
+62 verbose headers   via: '1.1 varnish',
+62 verbose headers   age: '285',
+62 verbose headers   connection: 'keep-alive',
+62 verbose headers   'x-served-by': 'cache-atl6220-ATL',
+62 verbose headers   'x-cache': 'HIT',
+62 verbose headers   'x-cache-hits': '1',
+62 verbose headers   'x-timer': 'S1479760901.373691,VS0,VE0',
+62 verbose headers   vary: 'Accept-Encoding' }
+63 silly get cb [ 200,
+63 silly get   { server: 'nginx/1.10.1',
+63 silly get     'content-type': 'application/json',
+63 silly get     'last-modified': 'Tue, 15 Nov 2016 05:13:25 GMT',
+63 silly get     etag: 'W/"582a9975-8955"',
+63 silly get     'content-encoding': 'gzip',
+63 silly get     'cache-control': 'max-age=300',
+63 silly get     'content-length': '6772',
+63 silly get     'accept-ranges': 'bytes',
+63 silly get     date: 'Mon, 21 Nov 2016 20:41:41 GMT',
+63 silly get     via: '1.1 varnish',
+63 silly get     age: '285',
+63 silly get     connection: 'keep-alive',
+63 silly get     'x-served-by': 'cache-atl6220-ATL',
+63 silly get     'x-cache': 'HIT',
+63 silly get     'x-cache-hits': '1',
+63 silly get     'x-timer': 'S1479760901.373691,VS0,VE0',
+63 silly get     vary: 'Accept-Encoding' } ]
+64 verbose get saving promise to C:\Users\mitch\AppData\Roaming\npm-cache\registry.npmjs.org\promise\.cache.json
+65 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+66 silly addNameRange number 2 { name: 'promise', range: '>=7.1.1 <8.0.0', hasData: true }
+67 silly addNameRange versions [ 'promise',
+67 silly addNameRange   [ '1.2.1',
+67 silly addNameRange     '1.2.2',
+67 silly addNameRange     '1.3.0',
+67 silly addNameRange     '2.0.0',
+67 silly addNameRange     '3.0.0',
+67 silly addNameRange     '3.0.1',
+67 silly addNameRange     '3.1.0',
+67 silly addNameRange     '3.2.0',
+67 silly addNameRange     '4.0.0',
+67 silly addNameRange     '5.0.0',
+67 silly addNameRange     '6.0.0',
+67 silly addNameRange     '6.0.1',
+67 silly addNameRange     '6.1.0',
+67 silly addNameRange     '7.0.0',
+67 silly addNameRange     '7.0.1',
+67 silly addNameRange     '7.0.2',
+67 silly addNameRange     '7.0.3',
+67 silly addNameRange     '7.0.4',
+67 silly addNameRange     '7.1.0',
+67 silly addNameRange     '7.1.1' ] ]
+68 silly addNamed promise@7.1.1
+69 verbose addNamed "7.1.1" is a plain semver version for promise
+70 http 200 https://registry.npmjs.org/time
+71 verbose headers { server: 'nginx/1.10.1',
+71 verbose headers   'content-type': 'application/json',
+71 verbose headers   'last-modified': 'Fri, 28 Aug 2015 17:25:04 GMT',
+71 verbose headers   etag: 'W/"55e09970-a534"',
+71 verbose headers   'content-encoding': 'gzip',
+71 verbose headers   'cache-control': 'max-age=300',
+71 verbose headers   'content-length': '6265',
+71 verbose headers   'accept-ranges': 'bytes',
+71 verbose headers   date: 'Mon, 21 Nov 2016 20:41:41 GMT',
+71 verbose headers   via: '1.1 varnish',
+71 verbose headers   age: '0',
+71 verbose headers   connection: 'keep-alive',
+71 verbose headers   'x-served-by': 'cache-atl6227-ATL',
+71 verbose headers   'x-cache': 'MISS',
+71 verbose headers   'x-cache-hits': '0',
+71 verbose headers   'x-timer': 'S1479760901.375650,VS0,VE42',
+71 verbose headers   vary: 'Accept-Encoding' }
+72 silly get cb [ 200,
+72 silly get   { server: 'nginx/1.10.1',
+72 silly get     'content-type': 'application/json',
+72 silly get     'last-modified': 'Fri, 28 Aug 2015 17:25:04 GMT',
+72 silly get     etag: 'W/"55e09970-a534"',
+72 silly get     'content-encoding': 'gzip',
+72 silly get     'cache-control': 'max-age=300',
+72 silly get     'content-length': '6265',
+72 silly get     'accept-ranges': 'bytes',
+72 silly get     date: 'Mon, 21 Nov 2016 20:41:41 GMT',
+72 silly get     via: '1.1 varnish',
+72 silly get     age: '0',
+72 silly get     connection: 'keep-alive',
+72 silly get     'x-served-by': 'cache-atl6227-ATL',
+72 silly get     'x-cache': 'MISS',
+72 silly get     'x-cache-hits': '0',
+72 silly get     'x-timer': 'S1479760901.375650,VS0,VE42',
+72 silly get     vary: 'Accept-Encoding' } ]
+73 verbose get saving time to C:\Users\mitch\AppData\Roaming\npm-cache\registry.npmjs.org\time\.cache.json
+74 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+75 silly cache afterAdd promise@7.1.1
+76 verbose afterAdd C:\Users\mitch\AppData\Roaming\npm-cache\promise\7.1.1\package\package.json not in flight; writing
+77 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+78 verbose afterAdd C:\Users\mitch\AppData\Roaming\npm-cache\promise\7.1.1\package\package.json written
+79 silly addNameRange number 2 { name: 'time', range: '>=0.11.4 <0.12.0', hasData: true }
+80 silly addNameRange versions [ 'time',
+80 silly addNameRange   [ '0.0.1',
+80 silly addNameRange     '0.0.2',
+80 silly addNameRange     '0.0.3',
+80 silly addNameRange     '0.1.0',
+80 silly addNameRange     '0.1.1',
+80 silly addNameRange     '0.1.2',
+80 silly addNameRange     '0.1.3',
+80 silly addNameRange     '0.1.4',
+80 silly addNameRange     '0.2.0',
+80 silly addNameRange     '0.2.1',
+80 silly addNameRange     '0.2.2',
+80 silly addNameRange     '0.2.3',
+80 silly addNameRange     '0.3.0',
+80 silly addNameRange     '0.3.1',
+80 silly addNameRange     '0.3.2',
+80 silly addNameRange     '0.4.0',
+80 silly addNameRange     '0.5.0',
+80 silly addNameRange     '0.6.0',
+80 silly addNameRange     '0.6.2',
+80 silly addNameRange     '0.6.3',
+80 silly addNameRange     '0.6.4',
+80 silly addNameRange     '0.6.5',
+80 silly addNameRange     '0.7.0',
+80 silly addNameRange     '0.8.0',
+80 silly addNameRange     '0.8.1',
+80 silly addNameRange     '0.8.2',
+80 silly addNameRange     '0.8.3',
+80 silly addNameRange     '0.8.4',
+80 silly addNameRange     '0.9.0',
+80 silly addNameRange     '0.9.1',
+80 silly addNameRange     '0.9.2',
+80 silly addNameRange     '0.10.0',
+80 silly addNameRange     '0.11.0',
+80 silly addNameRange     '0.11.1',
+80 silly addNameRange     '0.11.2',
+80 silly addNameRange     '0.11.3',
+80 silly addNameRange     '0.11.4' ] ]
+81 silly addNamed time@0.11.4
+82 verbose addNamed "0.11.4" is a plain semver version for time
+83 silly cache afterAdd time@0.11.4
+84 verbose afterAdd C:\Users\mitch\AppData\Roaming\npm-cache\time\0.11.4\package\package.json not in flight; writing
+85 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+86 verbose afterAdd C:\Users\mitch\AppData\Roaming\npm-cache\time\0.11.4\package\package.json written
+87 silly install resolved [ { name: 'promise',
+87 silly install resolved     version: '7.1.1',
+87 silly install resolved     description: 'Bare bones Promises/A+ implementation',
+87 silly install resolved     main: 'index.js',
+87 silly install resolved     scripts:
+87 silly install resolved      { prepublish: 'node build',
+87 silly install resolved        pretest: 'node build',
+87 silly install resolved        'pretest-resolve': 'node build',
+87 silly install resolved        'pretest-extensions': 'node build',
+87 silly install resolved        'pretest-memory-leak': 'node build',
+87 silly install resolved        test: 'mocha --bail --timeout 200 --slow 99999 -R dot && npm run test-memory-leak',
+87 silly install resolved        'test-resolve': 'mocha test/resolver-tests.js --timeout 200 --slow 999999',
+87 silly install resolved        'test-extensions': 'mocha test/extensions-tests.js --timeout 200 --slow 999999',
+87 silly install resolved        'test-memory-leak': 'node --expose-gc test/memory-leak.js',
+87 silly install resolved        coverage: 'istanbul cover node_modules/mocha/bin/_mocha -- --bail --timeout 200 --slow 99999 -R dot' },
+87 silly install resolved     repository: { type: 'git', url: 'git+https://github.com/then/promise.git' },
+87 silly install resolved     author: { name: 'ForbesLindesay' },
+87 silly install resolved     license: 'MIT',
+87 silly install resolved     devDependencies:
+87 silly install resolved      { acorn: '^1.0.1',
+87 silly install resolved        'better-assert': '*',
+87 silly install resolved        istanbul: '^0.3.13',
+87 silly install resolved        mocha: '*',
+87 silly install resolved        'promises-aplus-tests': '*',
+87 silly install resolved        rimraf: '^2.3.2' },
+87 silly install resolved     dependencies: { asap: '~2.0.3' },
+87 silly install resolved     gitHead: '90757a38c86975f36893012581b72315b352d482',
+87 silly install resolved     bugs: { url: 'https://github.com/then/promise/issues' },
+87 silly install resolved     homepage: 'https://github.com/then/promise',
+87 silly install resolved     _id: 'promise@7.1.1',
+87 silly install resolved     _shasum: '489654c692616b8aa55b0724fa809bb7db49c5bf',
+87 silly install resolved     _from: 'promise@>=7.1.1 <8.0.0',
+87 silly install resolved     _npmVersion: '2.7.1',
+87 silly install resolved     _nodeVersion: '1.6.2',
+87 silly install resolved     _npmUser: { name: 'forbeslindesay', email: 'forbes@lindesay.co.uk' },
+87 silly install resolved     dist:
+87 silly install resolved      { shasum: '489654c692616b8aa55b0724fa809bb7db49c5bf',
+87 silly install resolved        tarball: 'https://registry.npmjs.org/promise/-/promise-7.1.1.tgz' },
+87 silly install resolved     maintainers: [ [Object], [Object] ],
+87 silly install resolved     directories: {},
+87 silly install resolved     _resolved: 'https://registry.npmjs.org/promise/-/promise-7.1.1.tgz',
+87 silly install resolved     readme: 'ERROR: No README data found!' },
+87 silly install resolved   { name: 'time',
+87 silly install resolved     description: '"time.h" bindings for Node.js',
+87 silly install resolved     keywords:
+87 silly install resolved      [ 'date',
+87 silly install resolved        'time',
+87 silly install resolved        'time.h',
+87 silly install resolved        'timezone',
+87 silly install resolved        'setTimezone',
+87 silly install resolved        'getTimezone' ],
+87 silly install resolved     version: '0.11.4',
+87 silly install resolved     repository:
+87 silly install resolved      { type: 'git',
+87 silly install resolved        url: 'git://github.com/TooTallNate/node-time.git' },
+87 silly install resolved     author:
+87 silly install resolved      { name: 'Nathan Rajlich',
+87 silly install resolved        email: 'nathan@tootallnate.net',
+87 silly install resolved        url: 'http://tootallnate.net' },
+87 silly install resolved     license: 'MIT',
+87 silly install resolved     contributors: [ [Object] ],
+87 silly install resolved     main: './index.js',
+87 silly install resolved     scripts: { test: 'mocha --reporter spec', install: 'node-gyp rebuild' },
+87 silly install resolved     dependencies: { bindings: '~1.2.0', debug: '2', nan: '2' },
+87 silly install resolved     devDependencies: { mocha: '*' },
+87 silly install resolved     gypfile: true,
+87 silly install resolved     gitHead: '3faced83e4933ffa45f8aacb19bee74b1811022c',
+87 silly install resolved     bugs: { url: 'https://github.com/TooTallNate/node-time/issues' },
+87 silly install resolved     homepage: 'https://github.com/TooTallNate/node-time#readme',
+87 silly install resolved     _id: 'time@0.11.4',
+87 silly install resolved     _shasum: 'ec3c8947d7fa488f3b1978b8110a68186f5d340f',
+87 silly install resolved     _from: 'time@>=0.11.4 <0.12.0',
+87 silly install resolved     _npmVersion: '2.11.2',
+87 silly install resolved     _nodeVersion: '0.12.6',
+87 silly install resolved     _npmUser: { name: 'tootallnate', email: 'nathan@tootallnate.net' },
+87 silly install resolved     maintainers: [ [Object], [Object] ],
+87 silly install resolved     dist:
+87 silly install resolved      { shasum: 'ec3c8947d7fa488f3b1978b8110a68186f5d340f',
+87 silly install resolved        tarball: 'https://registry.npmjs.org/time/-/time-0.11.4.tgz' },
+87 silly install resolved     directories: {},
+87 silly install resolved     _resolved: 'https://registry.npmjs.org/time/-/time-0.11.4.tgz',
+87 silly install resolved     readme: 'ERROR: No README data found!' } ]
+88 info install promise@7.1.1 into C:\Users\mitch\Documents\Development\attendo
+89 info install time@0.11.4 into C:\Users\mitch\Documents\Development\attendo
+90 info installOne promise@7.1.1
+91 verbose installOne of promise to C:\Users\mitch\Documents\Development\attendo not in flight; installing
+92 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache\_locks correctMkdir not in flight; initializing
+93 info installOne time@0.11.4
+94 verbose installOne of time to C:\Users\mitch\Documents\Development\attendo not in flight; installing
+95 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache\_locks correctMkdir already in flight; waiting
+96 verbose lock using C:\Users\mitch\AppData\Roaming\npm-cache\_locks\promise-d0f47b7e5538c300.lock for C:\Users\mitch\Documents\Development\attendo\node_modules\promise
+97 verbose lock using C:\Users\mitch\AppData\Roaming\npm-cache\_locks\time-20a2debf949211e5.lock for C:\Users\mitch\Documents\Development\attendo\node_modules\time
+98 silly install write writing promise 7.1.1 to C:\Users\mitch\Documents\Development\attendo\node_modules\promise
+99 silly install write writing time 0.11.4 to C:\Users\mitch\Documents\Development\attendo\node_modules\time
+100 verbose unbuild node_modules\promise
+101 verbose unbuild node_modules\time
+102 silly gentlyRm C:\Users\mitch\Documents\Development\attendo\node_modules\promise is being purged from base C:\Users\mitch\Documents\Development\attendo
+103 verbose gentlyRm don't care about contents; nuking C:\Users\mitch\Documents\Development\attendo\node_modules\promise
+104 silly gentlyRm C:\Users\mitch\Documents\Development\attendo\node_modules\time is being purged from base C:\Users\mitch\Documents\Development\attendo
+105 verbose gentlyRm don't care about contents; nuking C:\Users\mitch\Documents\Development\attendo\node_modules\time
+106 verbose tar unpack C:\Users\mitch\AppData\Roaming\npm-cache\promise\7.1.1\package.tgz
+107 verbose tar unpacking to C:\Users\mitch\Documents\Development\attendo\node_modules\promise
+108 silly gentlyRm C:\Users\mitch\Documents\Development\attendo\node_modules\promise is being purged
+109 verbose gentlyRm don't care about contents; nuking C:\Users\mitch\Documents\Development\attendo\node_modules\promise
+110 verbose tar unpack C:\Users\mitch\AppData\Roaming\npm-cache\time\0.11.4\package.tgz
+111 verbose tar unpacking to C:\Users\mitch\Documents\Development\attendo\node_modules\time
+112 silly gentlyRm C:\Users\mitch\Documents\Development\attendo\node_modules\time is being purged
+113 verbose gentlyRm don't care about contents; nuking C:\Users\mitch\Documents\Development\attendo\node_modules\time
+114 silly gunzTarPerm modes [ '777', '666' ]
+115 silly gunzTarPerm modes [ '777', '666' ]
+116 silly gunzTarPerm extractEntry package.json
+117 silly gunzTarPerm modified mode [ 'package.json', 420, 438 ]
+118 silly gunzTarPerm extractEntry package.json
+119 silly gunzTarPerm modified mode [ 'package.json', 420, 438 ]
+120 silly gunzTarPerm extractEntry .npmignore
+121 silly gunzTarPerm modified mode [ '.npmignore', 420, 438 ]
+122 silly gunzTarPerm extractEntry LICENSE
+123 silly gunzTarPerm modified mode [ 'LICENSE', 420, 438 ]
+124 silly gunzTarPerm extractEntry .npmignore
+125 silly gunzTarPerm modified mode [ '.npmignore', 420, 438 ]
+126 silly gunzTarPerm extractEntry README.md
+127 silly gunzTarPerm modified mode [ 'README.md', 420, 438 ]
+128 silly gunzTarPerm extractEntry LICENSE
+129 silly gunzTarPerm modified mode [ 'LICENSE', 420, 438 ]
+130 silly gunzTarPerm extractEntry index.js
+131 silly gunzTarPerm modified mode [ 'index.js', 420, 438 ]
+132 silly gunzTarPerm extractEntry build.js
+133 silly gunzTarPerm modified mode [ 'build.js', 420, 438 ]
+134 silly gunzTarPerm extractEntry core.js
+135 silly gunzTarPerm modified mode [ 'core.js', 420, 438 ]
+136 silly gunzTarPerm extractEntry index.js
+137 silly gunzTarPerm modified mode [ 'index.js', 420, 438 ]
+138 silly gunzTarPerm extractEntry polyfill-done.js
+139 silly gunzTarPerm modified mode [ 'polyfill-done.js', 420, 438 ]
+140 silly gunzTarPerm extractEntry polyfill.js
+141 silly gunzTarPerm modified mode [ 'polyfill.js', 420, 438 ]
+142 silly gunzTarPerm extractEntry domains/core.js
+143 silly gunzTarPerm modified mode [ 'domains/core.js', 420, 438 ]
+144 silly gunzTarPerm extractEntry domains/done.js
+145 silly gunzTarPerm modified mode [ 'domains/done.js', 420, 438 ]
+146 silly gunzTarPerm extractEntry domains/es6-extensions.js
+147 silly gunzTarPerm modified mode [ 'domains/es6-extensions.js', 420, 438 ]
+148 silly gunzTarPerm extractEntry domains/finally.js
+149 silly gunzTarPerm modified mode [ 'domains/finally.js', 420, 438 ]
+150 silly gunzTarPerm extractEntry domains/index.js
+151 silly gunzTarPerm modified mode [ 'domains/index.js', 420, 438 ]
+152 silly gunzTarPerm extractEntry domains/node-extensions.js
+153 silly gunzTarPerm modified mode [ 'domains/node-extensions.js', 420, 438 ]
+154 silly gunzTarPerm extractEntry domains/rejection-tracking.js
+155 silly gunzTarPerm modified mode [ 'domains/rejection-tracking.js', 420, 438 ]
+156 silly gunzTarPerm extractEntry domains/synchronous.js
+157 silly gunzTarPerm modified mode [ 'domains/synchronous.js', 420, 438 ]
+158 silly gunzTarPerm extractEntry .jshintrc
+159 silly gunzTarPerm modified mode [ '.jshintrc', 420, 438 ]
+160 silly gunzTarPerm extractEntry lib/core.js
+161 silly gunzTarPerm modified mode [ 'lib/core.js', 420, 438 ]
+162 silly gunzTarPerm extractEntry lib/done.js
+163 silly gunzTarPerm modified mode [ 'lib/done.js', 420, 438 ]
+164 silly gunzTarPerm extractEntry lib/es6-extensions.js
+165 silly gunzTarPerm modified mode [ 'lib/es6-extensions.js', 420, 438 ]
+166 silly gunzTarPerm extractEntry lib/finally.js
+167 silly gunzTarPerm modified mode [ 'lib/finally.js', 420, 438 ]
+168 silly gunzTarPerm extractEntry lib/index.js
+169 silly gunzTarPerm modified mode [ 'lib/index.js', 420, 438 ]
+170 silly gunzTarPerm extractEntry lib/node-extensions.js
+171 silly gunzTarPerm modified mode [ 'lib/node-extensions.js', 420, 438 ]
+172 silly gunzTarPerm extractEntry lib/rejection-tracking.js
+173 silly gunzTarPerm modified mode [ 'lib/rejection-tracking.js', 420, 438 ]
+174 silly gunzTarPerm extractEntry lib/synchronous.js
+175 silly gunzTarPerm modified mode [ 'lib/synchronous.js', 420, 438 ]
+176 silly gunzTarPerm extractEntry src/core.js
+177 silly gunzTarPerm modified mode [ 'src/core.js', 420, 438 ]
+178 silly gunzTarPerm extractEntry src/done.js
+179 silly gunzTarPerm modified mode [ 'src/done.js', 420, 438 ]
+180 silly gunzTarPerm extractEntry src/es6-extensions.js
+181 silly gunzTarPerm modified mode [ 'src/es6-extensions.js', 420, 438 ]
+182 silly gunzTarPerm extractEntry src/finally.js
+183 silly gunzTarPerm modified mode [ 'src/finally.js', 420, 438 ]
+184 silly gunzTarPerm extractEntry src/index.js
+185 silly gunzTarPerm modified mode [ 'src/index.js', 420, 438 ]
+186 silly gunzTarPerm extractEntry src/node-extensions.js
+187 silly gunzTarPerm modified mode [ 'src/node-extensions.js', 420, 438 ]
+188 silly gunzTarPerm extractEntry src/rejection-tracking.js
+189 silly gunzTarPerm modified mode [ 'src/rejection-tracking.js', 420, 438 ]
+190 silly gunzTarPerm extractEntry src/synchronous.js
+191 silly gunzTarPerm modified mode [ 'src/synchronous.js', 420, 438 ]
+192 silly gunzTarPerm extractEntry Readme.md
+193 silly gunzTarPerm modified mode [ 'Readme.md', 420, 438 ]
+194 silly gunzTarPerm extractEntry setimmediate/core.js
+195 silly gunzTarPerm modified mode [ 'setimmediate/core.js', 420, 438 ]
+196 silly gunzTarPerm extractEntry setimmediate/done.js
+197 silly gunzTarPerm modified mode [ 'setimmediate/done.js', 420, 438 ]
+198 silly gunzTarPerm extractEntry setimmediate/es6-extensions.js
+199 silly gunzTarPerm modified mode [ 'setimmediate/es6-extensions.js', 420, 438 ]
+200 silly gunzTarPerm extractEntry setimmediate/finally.js
+201 silly gunzTarPerm modified mode [ 'setimmediate/finally.js', 420, 438 ]
+202 silly gunzTarPerm extractEntry setimmediate/index.js
+203 silly gunzTarPerm modified mode [ 'setimmediate/index.js', 420, 438 ]
+204 silly gunzTarPerm extractEntry setimmediate/node-extensions.js
+205 silly gunzTarPerm modified mode [ 'setimmediate/node-extensions.js', 420, 438 ]
+206 silly gunzTarPerm extractEntry setimmediate/rejection-tracking.js
+207 silly gunzTarPerm modified mode [ 'setimmediate/rejection-tracking.js', 420, 438 ]
+208 silly gunzTarPerm extractEntry setimmediate/synchronous.js
+209 silly gunzTarPerm modified mode [ 'setimmediate/synchronous.js', 420, 438 ]
+210 silly gunzTarPerm extractEntry binding.gyp
+211 silly gunzTarPerm modified mode [ 'binding.gyp', 420, 438 ]
+212 silly gunzTarPerm extractEntry .jshintrc
+213 silly gunzTarPerm modified mode [ '.jshintrc', 420, 438 ]
+214 silly gunzTarPerm extractEntry .travis.yml
+215 silly gunzTarPerm modified mode [ '.travis.yml', 420, 438 ]
+216 silly gunzTarPerm extractEntry History.md
+217 silly gunzTarPerm modified mode [ 'History.md', 420, 438 ]
+218 silly gunzTarPerm extractEntry src/time.cc
+219 silly gunzTarPerm modified mode [ 'src/time.cc', 420, 438 ]
+220 silly gunzTarPerm extractEntry test/date.js
+221 silly gunzTarPerm modified mode [ 'test/date.js', 420, 438 ]
+222 silly gunzTarPerm extractEntry test/exports.js
+223 silly gunzTarPerm modified mode [ 'test/exports.js', 420, 438 ]
+224 silly gunzTarPerm extractEntry test/tzset.js
+225 silly gunzTarPerm modified mode [ 'test/tzset.js', 420, 438 ]
+226 verbose write writing to C:\Users\mitch\Documents\Development\attendo\node_modules\time\package.json
+227 info preinstall time@0.11.4
+228 verbose readDependencies loading dependencies from C:\Users\mitch\Documents\Development\attendo\node_modules\time\package.json
+229 silly prepareForInstallMany adding bindings@~1.2.0 from time dependencies
+230 silly prepareForInstallMany adding debug@2 from time dependencies
+231 silly prepareForInstallMany adding nan@2 from time dependencies
+232 verbose readDependencies loading dependencies from C:\Users\mitch\Documents\Development\attendo\node_modules\time\package.json
+233 silly cache add args [ 'bindings@~1.2.0', null ]
+234 verbose cache add spec bindings@~1.2.0
+235 silly cache add args [ 'debug@2', null ]
+236 verbose cache add spec debug@2
+237 silly cache add parsed spec Result {
+237 silly cache add   raw: 'bindings@~1.2.0',
+237 silly cache add   scope: null,
+237 silly cache add   name: 'bindings',
+237 silly cache add   rawSpec: '~1.2.0',
+237 silly cache add   spec: '>=1.2.0 <1.3.0',
+237 silly cache add   type: 'range' }
+238 silly addNamed bindings@>=1.2.0 <1.3.0
+239 verbose addNamed ">=1.2.0 <1.3.0" is a valid semver range for bindings
+240 silly addNameRange { name: 'bindings', range: '>=1.2.0 <1.3.0', hasData: false }
+241 silly mapToRegistry name bindings
+242 silly mapToRegistry using default registry
+243 silly mapToRegistry registry https://registry.npmjs.org/
+244 silly mapToRegistry data Result {
+244 silly mapToRegistry   raw: 'bindings',
+244 silly mapToRegistry   scope: null,
+244 silly mapToRegistry   name: 'bindings',
+244 silly mapToRegistry   rawSpec: '',
+244 silly mapToRegistry   spec: 'latest',
+244 silly mapToRegistry   type: 'tag' }
+245 silly mapToRegistry uri https://registry.npmjs.org/bindings
+246 verbose addNameRange registry:https://registry.npmjs.org/bindings not in flight; fetching
+247 silly cache add parsed spec Result {
+247 silly cache add   raw: 'debug@2',
+247 silly cache add   scope: null,
+247 silly cache add   name: 'debug',
+247 silly cache add   rawSpec: '2',
+247 silly cache add   spec: '>=2.0.0 <3.0.0',
+247 silly cache add   type: 'range' }
+248 silly addNamed debug@>=2.0.0 <3.0.0
+249 verbose addNamed ">=2.0.0 <3.0.0" is a valid semver range for debug
+250 silly addNameRange { name: 'debug', range: '>=2.0.0 <3.0.0', hasData: false }
+251 silly mapToRegistry name debug
+252 silly mapToRegistry using default registry
+253 silly mapToRegistry registry https://registry.npmjs.org/
+254 silly mapToRegistry data Result {
+254 silly mapToRegistry   raw: 'debug',
+254 silly mapToRegistry   scope: null,
+254 silly mapToRegistry   name: 'debug',
+254 silly mapToRegistry   rawSpec: '',
+254 silly mapToRegistry   spec: 'latest',
+254 silly mapToRegistry   type: 'tag' }
+255 silly mapToRegistry uri https://registry.npmjs.org/debug
+256 verbose addNameRange registry:https://registry.npmjs.org/debug not in flight; fetching
+257 silly cache add args [ 'nan@2', null ]
+258 verbose cache add spec nan@2
+259 silly cache add parsed spec Result {
+259 silly cache add   raw: 'nan@2',
+259 silly cache add   scope: null,
+259 silly cache add   name: 'nan',
+259 silly cache add   rawSpec: '2',
+259 silly cache add   spec: '>=2.0.0 <3.0.0',
+259 silly cache add   type: 'range' }
+260 silly addNamed nan@>=2.0.0 <3.0.0
+261 verbose addNamed ">=2.0.0 <3.0.0" is a valid semver range for nan
+262 silly addNameRange { name: 'nan', range: '>=2.0.0 <3.0.0', hasData: false }
+263 silly mapToRegistry name nan
+264 silly mapToRegistry using default registry
+265 silly mapToRegistry registry https://registry.npmjs.org/
+266 silly mapToRegistry data Result {
+266 silly mapToRegistry   raw: 'nan',
+266 silly mapToRegistry   scope: null,
+266 silly mapToRegistry   name: 'nan',
+266 silly mapToRegistry   rawSpec: '',
+266 silly mapToRegistry   spec: 'latest',
+266 silly mapToRegistry   type: 'tag' }
+267 silly mapToRegistry uri https://registry.npmjs.org/nan
+268 verbose addNameRange registry:https://registry.npmjs.org/nan not in flight; fetching
+269 verbose request uri https://registry.npmjs.org/debug
+270 verbose request no auth needed
+271 info attempt registry request try #1 at 3:41:39 PM
+272 verbose etag "859PZH2DA9YI7ERHL98106JM7"
+273 http request GET https://registry.npmjs.org/debug
+274 verbose request uri https://registry.npmjs.org/bindings
+275 verbose request no auth needed
+276 info attempt registry request try #1 at 3:41:39 PM
+277 verbose etag "8QW29MHCPCE6VJCVI3QVXRJAQ"
+278 http request GET https://registry.npmjs.org/bindings
+279 verbose request uri https://registry.npmjs.org/nan
+280 verbose request no auth needed
+281 info attempt registry request try #1 at 3:41:39 PM
+282 verbose etag "64LN9YQI6X4XTPFBYZLET8KF2"
+283 http request GET https://registry.npmjs.org/nan
+284 http 200 https://registry.npmjs.org/bindings
+285 verbose headers { server: 'nginx/1.10.1',
+285 verbose headers   'content-type': 'application/json',
+285 verbose headers   'last-modified': 'Tue, 18 Oct 2016 15:54:59 GMT',
+285 verbose headers   etag: 'W/"580645d3-46f7"',
+285 verbose headers   'content-encoding': 'gzip',
+285 verbose headers   'cache-control': 'max-age=300',
+285 verbose headers   'content-length': '3493',
+285 verbose headers   'accept-ranges': 'bytes',
+285 verbose headers   date: 'Mon, 21 Nov 2016 20:41:41 GMT',
+285 verbose headers   via: '1.1 varnish',
+285 verbose headers   age: '168',
+285 verbose headers   connection: 'keep-alive',
+285 verbose headers   'x-served-by': 'cache-atl6227-ATL',
+285 verbose headers   'x-cache': 'HIT',
+285 verbose headers   'x-cache-hits': '1',
+285 verbose headers   'x-timer': 'S1479760901.735757,VS0,VE0',
+285 verbose headers   vary: 'Accept-Encoding' }
+286 silly get cb [ 200,
+286 silly get   { server: 'nginx/1.10.1',
+286 silly get     'content-type': 'application/json',
+286 silly get     'last-modified': 'Tue, 18 Oct 2016 15:54:59 GMT',
+286 silly get     etag: 'W/"580645d3-46f7"',
+286 silly get     'content-encoding': 'gzip',
+286 silly get     'cache-control': 'max-age=300',
+286 silly get     'content-length': '3493',
+286 silly get     'accept-ranges': 'bytes',
+286 silly get     date: 'Mon, 21 Nov 2016 20:41:41 GMT',
+286 silly get     via: '1.1 varnish',
+286 silly get     age: '168',
+286 silly get     connection: 'keep-alive',
+286 silly get     'x-served-by': 'cache-atl6227-ATL',
+286 silly get     'x-cache': 'HIT',
+286 silly get     'x-cache-hits': '1',
+286 silly get     'x-timer': 'S1479760901.735757,VS0,VE0',
+286 silly get     vary: 'Accept-Encoding' } ]
+287 verbose get saving bindings to C:\Users\mitch\AppData\Roaming\npm-cache\registry.npmjs.org\bindings\.cache.json
+288 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+289 http 200 https://registry.npmjs.org/debug
+290 verbose headers { server: 'nginx/1.10.1',
+290 verbose headers   'content-type': 'application/json',
+290 verbose headers   'last-modified': 'Mon, 21 Nov 2016 20:20:54 GMT',
+290 verbose headers   etag: 'W/"58335726-b367"',
+290 verbose headers   'content-encoding': 'gzip',
+290 verbose headers   'cache-control': 'max-age=300',
+290 verbose headers   'content-length': '9711',
+290 verbose headers   'accept-ranges': 'bytes',
+290 verbose headers   date: 'Mon, 21 Nov 2016 20:41:41 GMT',
+290 verbose headers   via: '1.1 varnish',
+290 verbose headers   age: '43',
+290 verbose headers   connection: 'keep-alive',
+290 verbose headers   'x-served-by': 'cache-atl6220-ATL',
+290 verbose headers   'x-cache': 'HIT',
+290 verbose headers   'x-cache-hits': '5',
+290 verbose headers   'x-timer': 'S1479760901.733796,VS0,VE0',
+290 verbose headers   vary: 'Accept-Encoding' }
+291 silly get cb [ 200,
+291 silly get   { server: 'nginx/1.10.1',
+291 silly get     'content-type': 'application/json',
+291 silly get     'last-modified': 'Mon, 21 Nov 2016 20:20:54 GMT',
+291 silly get     etag: 'W/"58335726-b367"',
+291 silly get     'content-encoding': 'gzip',
+291 silly get     'cache-control': 'max-age=300',
+291 silly get     'content-length': '9711',
+291 silly get     'accept-ranges': 'bytes',
+291 silly get     date: 'Mon, 21 Nov 2016 20:41:41 GMT',
+291 silly get     via: '1.1 varnish',
+291 silly get     age: '43',
+291 silly get     connection: 'keep-alive',
+291 silly get     'x-served-by': 'cache-atl6220-ATL',
+291 silly get     'x-cache': 'HIT',
+291 silly get     'x-cache-hits': '5',
+291 silly get     'x-timer': 'S1479760901.733796,VS0,VE0',
+291 silly get     vary: 'Accept-Encoding' } ]
+292 verbose get saving debug to C:\Users\mitch\AppData\Roaming\npm-cache\registry.npmjs.org\debug\.cache.json
+293 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+294 silly addNameRange number 2 { name: 'debug', range: '>=2.0.0 <3.0.0', hasData: true }
+295 silly addNameRange versions [ 'debug',
+295 silly addNameRange   [ '0.0.1',
+295 silly addNameRange     '0.1.0',
+295 silly addNameRange     '0.2.0',
+295 silly addNameRange     '0.3.0',
+295 silly addNameRange     '0.4.0',
+295 silly addNameRange     '0.4.1',
+295 silly addNameRange     '0.5.0',
+295 silly addNameRange     '0.6.0',
+295 silly addNameRange     '0.7.0',
+295 silly addNameRange     '0.7.1',
+295 silly addNameRange     '0.7.2',
+295 silly addNameRange     '0.7.3',
+295 silly addNameRange     '0.7.4',
+295 silly addNameRange     '0.8.0',
+295 silly addNameRange     '0.8.1',
+295 silly addNameRange     '1.0.0',
+295 silly addNameRange     '1.0.1',
+295 silly addNameRange     '1.0.2',
+295 silly addNameRange     '1.0.3',
+295 silly addNameRange     '1.0.4',
+295 silly addNameRange     '2.0.0',
+295 silly addNameRange     '2.1.0',
+295 silly addNameRange     '2.1.1',
+295 silly addNameRange     '2.1.2',
+295 silly addNameRange     '2.1.3',
+295 silly addNameRange     '2.2.0',
+295 silly addNameRange     '2.3.0',
+295 silly addNameRange     '2.3.1',
+295 silly addNameRange     '2.3.2',
+295 silly addNameRange     '2.3.3' ] ]
+296 silly addNamed debug@2.3.3
+297 verbose addNamed "2.3.3" is a plain semver version for debug
+298 silly mapToRegistry name debug
+299 silly mapToRegistry using default registry
+300 silly mapToRegistry registry https://registry.npmjs.org/
+301 silly mapToRegistry data Result {
+301 silly mapToRegistry   raw: 'debug',
+301 silly mapToRegistry   scope: null,
+301 silly mapToRegistry   name: 'debug',
+301 silly mapToRegistry   rawSpec: '',
+301 silly mapToRegistry   spec: 'latest',
+301 silly mapToRegistry   type: 'tag' }
+302 silly mapToRegistry uri https://registry.npmjs.org/debug
+303 verbose addRemoteTarball https://registry.npmjs.org/debug/-/debug-2.3.3.tgz not in flight; adding
+304 verbose addRemoteTarball [ 'https://registry.npmjs.org/debug/-/debug-2.3.3.tgz',
+304 verbose addRemoteTarball   '40c453e67e6e13c901ddec317af8986cda9eff8c' ]
+305 silly addNameRange number 2 { name: 'bindings', range: '>=1.2.0 <1.3.0', hasData: true }
+306 silly addNameRange versions [ 'bindings',
+306 silly addNameRange   [ '0.0.1',
+306 silly addNameRange     '0.1.0',
+306 silly addNameRange     '0.1.1',
+306 silly addNameRange     '0.2.0',
+306 silly addNameRange     '0.2.1',
+306 silly addNameRange     '0.2.2',
+306 silly addNameRange     '0.2.3',
+306 silly addNameRange     '0.2.4',
+306 silly addNameRange     '0.3.0',
+306 silly addNameRange     '0.4.0',
+306 silly addNameRange     '1.0.0',
+306 silly addNameRange     '1.1.0',
+306 silly addNameRange     '1.1.1',
+306 silly addNameRange     '1.2.0',
+306 silly addNameRange     '1.2.1' ] ]
+307 silly addNamed bindings@1.2.1
+308 verbose addNamed "1.2.1" is a plain semver version for bindings
+309 info retry fetch attempt 1 at 3:41:39 PM
+310 info attempt registry request try #1 at 3:41:39 PM
+311 http fetch GET https://registry.npmjs.org/debug/-/debug-2.3.3.tgz
+312 silly cache afterAdd bindings@1.2.1
+313 verbose afterAdd C:\Users\mitch\AppData\Roaming\npm-cache\bindings\1.2.1\package\package.json not in flight; writing
+314 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+315 verbose afterAdd C:\Users\mitch\AppData\Roaming\npm-cache\bindings\1.2.1\package\package.json written
+316 http fetch 200 https://registry.npmjs.org/debug/-/debug-2.3.3.tgz
+317 silly fetchAndShaCheck shasum 40c453e67e6e13c901ddec317af8986cda9eff8c
+318 verbose addTmpTarball C:\Users\mitch\AppData\Local\Temp\npm-10444-410e5d9e\registry.npmjs.org\debug\-\debug-2.3.3.tgz not in flight; adding
+319 verbose addTmpTarball already have metadata; skipping unpack for debug@2.3.3
+320 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+321 http 200 https://registry.npmjs.org/nan
+322 verbose headers { server: 'nginx/1.10.1',
+322 verbose headers   'content-type': 'application/json',
+322 verbose headers   'last-modified': 'Tue, 01 Nov 2016 17:56:25 GMT',
+322 verbose headers   etag: 'W/"5818d749-1ce1e"',
+322 verbose headers   'content-encoding': 'gzip',
+322 verbose headers   'cache-control': 'max-age=300',
+322 verbose headers   'content-length': '14063',
+322 verbose headers   'accept-ranges': 'bytes',
+322 verbose headers   date: 'Mon, 21 Nov 2016 20:41:41 GMT',
+322 verbose headers   via: '1.1 varnish',
+322 verbose headers   age: '116',
+322 verbose headers   connection: 'keep-alive',
+322 verbose headers   'x-served-by': 'cache-atl6230-ATL',
+322 verbose headers   'x-cache': 'HIT',
+322 verbose headers   'x-cache-hits': '358',
+322 verbose headers   'x-timer': 'S1479760901.776145,VS0,VE0',
+322 verbose headers   vary: 'Accept-Encoding' }
+323 silly get cb [ 200,
+323 silly get   { server: 'nginx/1.10.1',
+323 silly get     'content-type': 'application/json',
+323 silly get     'last-modified': 'Tue, 01 Nov 2016 17:56:25 GMT',
+323 silly get     etag: 'W/"5818d749-1ce1e"',
+323 silly get     'content-encoding': 'gzip',
+323 silly get     'cache-control': 'max-age=300',
+323 silly get     'content-length': '14063',
+323 silly get     'accept-ranges': 'bytes',
+323 silly get     date: 'Mon, 21 Nov 2016 20:41:41 GMT',
+323 silly get     via: '1.1 varnish',
+323 silly get     age: '116',
+323 silly get     connection: 'keep-alive',
+323 silly get     'x-served-by': 'cache-atl6230-ATL',
+323 silly get     'x-cache': 'HIT',
+323 silly get     'x-cache-hits': '358',
+323 silly get     'x-timer': 'S1479760901.776145,VS0,VE0',
+323 silly get     vary: 'Accept-Encoding' } ]
+324 verbose get saving nan to C:\Users\mitch\AppData\Roaming\npm-cache\registry.npmjs.org\nan\.cache.json
+325 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+326 silly cache afterAdd debug@2.3.3
+327 verbose afterAdd C:\Users\mitch\AppData\Roaming\npm-cache\debug\2.3.3\package\package.json not in flight; writing
+328 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+329 verbose afterAdd C:\Users\mitch\AppData\Roaming\npm-cache\debug\2.3.3\package\package.json written
+330 silly addNameRange number 2 { name: 'nan', range: '>=2.0.0 <3.0.0', hasData: true }
+331 silly addNameRange versions [ 'nan',
+331 silly addNameRange   [ '0.3.0-wip',
+331 silly addNameRange     '0.3.0-wip2',
+331 silly addNameRange     '0.3.0',
+331 silly addNameRange     '0.3.1',
+331 silly addNameRange     '0.3.2',
+331 silly addNameRange     '0.4.0',
+331 silly addNameRange     '0.4.1',
+331 silly addNameRange     '0.4.2',
+331 silly addNameRange     '0.4.3',
+331 silly addNameRange     '0.4.4',
+331 silly addNameRange     '0.5.0',
+331 silly addNameRange     '0.5.1',
+331 silly addNameRange     '0.5.2',
+331 silly addNameRange     '0.6.0',
+331 silly addNameRange     '0.7.0',
+331 silly addNameRange     '0.7.1',
+331 silly addNameRange     '0.8.0',
+331 silly addNameRange     '1.0.0',
+331 silly addNameRange     '1.1.0',
+331 silly addNameRange     '1.1.1',
+331 silly addNameRange     '1.1.2',
+331 silly addNameRange     '1.2.0',
+331 silly addNameRange     '1.3.0',
+331 silly addNameRange     '1.4.0',
+331 silly addNameRange     '1.4.1',
+331 silly addNameRange     '1.5.0',
+331 silly addNameRange     '1.4.2',
+331 silly addNameRange     '1.4.3',
+331 silly addNameRange     '1.5.1',
+331 silly addNameRange     '1.5.2',
+331 silly addNameRange     '1.6.0',
+331 silly addNameRange     '1.5.3',
+331 silly addNameRange     '1.6.1',
+331 silly addNameRange     '1.6.2',
+331 silly addNameRange     '1.7.0',
+331 silly addNameRange     '1.8.0',
+331 silly addNameRange     '1.8.1',
+331 silly addNameRange     '1.8.2',
+331 silly addNameRange     '1.8.3',
+331 silly addNameRange     '1.8.4',
+331 silly addNameRange     '1.9.0',
+331 silly addNameRange     '2.0.0',
+331 silly addNameRange     '2.0.1',
+331 silly addNameRange     '2.0.2',
+331 silly addNameRange     '2.0.3',
+331 silly addNameRange     '2.0.4',
+331 silly addNameRange     '2.0.5',
+331 silly addNameRange     '2.0.6',
+331 silly addNameRange     '2.0.7',
+331 silly addNameRange     '2.0.8',
+331 silly addNameRange     '2.0.9',
+331 silly addNameRange     '2.1.0',
+331 silly addNameRange     '2.2.0',
+331 silly addNameRange     '2.2.1',
+331 silly addNameRange     '2.3.0',
+331 silly addNameRange     '2.3.1',
+331 silly addNameRange     '2.3.2',
+331 silly addNameRange     '2.3.3',
+331 silly addNameRange     '2.3.4',
+331 silly addNameRange     '2.3.5',
+331 silly addNameRange     '2.4.0' ] ]
+332 silly addNamed nan@2.4.0
+333 verbose addNamed "2.4.0" is a plain semver version for nan
+334 silly cache afterAdd nan@2.4.0
+335 verbose afterAdd C:\Users\mitch\AppData\Roaming\npm-cache\nan\2.4.0\package\package.json not in flight; writing
+336 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+337 verbose afterAdd C:\Users\mitch\AppData\Roaming\npm-cache\nan\2.4.0\package\package.json written
+338 silly install resolved [ { name: 'bindings',
+338 silly install resolved     description: 'Helper module for loading your native module\'s .node file',
+338 silly install resolved     keywords: [ 'native', 'addon', 'bindings', 'gyp', 'waf', 'c', 'c++' ],
+338 silly install resolved     version: '1.2.1',
+338 silly install resolved     author:
+338 silly install resolved      { name: 'Nathan Rajlich',
+338 silly install resolved        email: 'nathan@tootallnate.net',
+338 silly install resolved        url: 'http://tootallnate.net' },
+338 silly install resolved     repository:
+338 silly install resolved      { type: 'git',
+338 silly install resolved        url: 'git://github.com/TooTallNate/node-bindings.git' },
+338 silly install resolved     main: './bindings.js',
+338 silly install resolved     bugs: { url: 'https://github.com/TooTallNate/node-bindings/issues' },
+338 silly install resolved     homepage: 'https://github.com/TooTallNate/node-bindings',
+338 silly install resolved     license: 'MIT',
+338 silly install resolved     gitHead: 'e404152ee27f8478ccbc7122ee051246e8e5ec02',
+338 silly install resolved     _id: 'bindings@1.2.1',
+338 silly install resolved     scripts: {},
+338 silly install resolved     _shasum: '14ad6113812d2d37d72e67b4cacb4bb726505f11',
+338 silly install resolved     _from: 'bindings@>=1.2.0 <1.3.0',
+338 silly install resolved     _npmVersion: '1.4.14',
+338 silly install resolved     _npmUser: { name: 'tootallnate', email: 'nathan@tootallnate.net' },
+338 silly install resolved     maintainers: [ [Object], [Object] ],
+338 silly install resolved     dist:
+338 silly install resolved      { shasum: '14ad6113812d2d37d72e67b4cacb4bb726505f11',
+338 silly install resolved        tarball: 'https://registry.npmjs.org/bindings/-/bindings-1.2.1.tgz' },
+338 silly install resolved     directories: {},
+338 silly install resolved     _resolved: 'https://registry.npmjs.org/bindings/-/bindings-1.2.1.tgz',
+338 silly install resolved     readme: 'ERROR: No README data found!' },
+338 silly install resolved   { name: 'debug',
+338 silly install resolved     version: '2.3.3',
+338 silly install resolved     repository: { type: 'git', url: 'git://github.com/visionmedia/debug.git' },
+338 silly install resolved     description: 'small debugging utility',
+338 silly install resolved     keywords: [ 'debug', 'log', 'debugger' ],
+338 silly install resolved     author: { name: 'TJ Holowaychuk', email: 'tj@vision-media.ca' },
+338 silly install resolved     contributors: [ [Object], [Object] ],
+338 silly install resolved     license: 'MIT',
+338 silly install resolved     dependencies: { ms: '0.7.2' },
+338 silly install resolved     devDependencies: { browserify: '9.0.3', mocha: '*' },
+338 silly install resolved     main: './index.js',
+338 silly install resolved     browser: './browser.js',
+338 silly install resolved     component: { scripts: [Object] },
+338 silly install resolved     gitHead: '3ad8df75614cd4306709ad73519fd579971fb8d9',
+338 silly install resolved     bugs: { url: 'https://github.com/visionmedia/debug/issues' },
+338 silly install resolved     homepage: 'https://github.com/visionmedia/debug#readme',
+338 silly install resolved     _id: 'debug@2.3.3',
+338 silly install resolved     scripts: {},
+338 silly install resolved     _shasum: '40c453e67e6e13c901ddec317af8986cda9eff8c',
+338 silly install resolved     _from: 'debug@>=2.0.0 <3.0.0',
+338 silly install resolved     _npmVersion: '3.10.8',
+338 silly install resolved     _nodeVersion: '7.0.0',
+338 silly install resolved     _npmUser: { name: 'tootallnate', email: 'nathan@tootallnate.net' },
+338 silly install resolved     maintainers: [ [Object], [Object], [Object], [Object] ],
+338 silly install resolved     dist:
+338 silly install resolved      { shasum: '40c453e67e6e13c901ddec317af8986cda9eff8c',
+338 silly install resolved        tarball: 'https://registry.npmjs.org/debug/-/debug-2.3.3.tgz' },
+338 silly install resolved     _npmOperationalInternal:
+338 silly install resolved      { host: 'packages-12-west.internal.npmjs.com',
+338 silly install resolved        tmp: 'tmp/debug-2.3.3.tgz_1479585558307_0.03629564819857478' },
+338 silly install resolved     directories: {},
+338 silly install resolved     _resolved: 'https://registry.npmjs.org/debug/-/debug-2.3.3.tgz' },
+338 silly install resolved   { name: 'nan',
+338 silly install resolved     version: '2.4.0',
+338 silly install resolved     description: 'Native Abstractions for Node.js: C++ header for Node 0.8 -> 6 compatibility',
+338 silly install resolved     main: 'include_dirs.js',
+338 silly install resolved     repository: { type: 'git', url: 'git://github.com/nodejs/nan.git' },
+338 silly install resolved     scripts:
+338 silly install resolved      { test: 'tap --gc --stderr test/js/*-test.js',
+338 silly install resolved        'rebuild-tests': 'node-gyp rebuild --msvs_version=2013 --directory test',
+338 silly install resolved        docs: 'doc/.build.sh' },
+338 silly install resolved     contributors:
+338 silly install resolved      [ [Object],
+338 silly install resolved        [Object],
+338 silly install resolved        [Object],
+338 silly install resolved        [Object],
+338 silly install resolved        [Object],
+338 silly install resolved        [Object],
+338 silly install resolved        [Object] ],
+338 silly install resolved     devDependencies:
+338 silly install resolved      { bindings: '~1.2.1',
+338 silly install resolved        commander: '^2.8.1',
+338 silly install resolved        glob: '^5.0.14',
+338 silly install resolved        'node-gyp': '~3.0.1',
+338 silly install resolved        'readable-stream': '^2.1.4',
+338 silly install resolved        tap: '~0.7.1',
+338 silly install resolved        xtend: '~4.0.0' },
+338 silly install resolved     license: 'MIT',
+338 silly install resolved     bugs: { url: 'https://github.com/nodejs/nan/issues' },
+338 silly install resolved     homepage: 'https://github.com/nodejs/nan#readme',
+338 silly install resolved     _id: 'nan@2.4.0',
+338 silly install resolved     _shasum: 'fb3c59d45fe4effe215f0b890f8adf6eb32d2232',
+338 silly install resolved     _resolved: 'https://registry.npmjs.org/nan/-/nan-2.4.0.tgz',
+338 silly install resolved     _from: 'nan@>=2.0.0 <3.0.0',
+338 silly install resolved     _npmVersion: '3.3.6',
+338 silly install resolved     _nodeVersion: '5.0.0',
+338 silly install resolved     _npmUser: { name: 'kkoopa', email: 'bbyholm@abo.fi' },
+338 silly install resolved     dist:
+338 silly install resolved      { shasum: 'fb3c59d45fe4effe215f0b890f8adf6eb32d2232',
+338 silly install resolved        tarball: 'https://registry.npmjs.org/nan/-/nan-2.4.0.tgz' },
+338 silly install resolved     maintainers: [ [Object], [Object] ],
+338 silly install resolved     _npmOperationalInternal:
+338 silly install resolved      { host: 'packages-16-east.internal.npmjs.com',
+338 silly install resolved        tmp: 'tmp/nan-2.4.0.tgz_1468158679820_0.6951719264034182' },
+338 silly install resolved     directories: {},
+338 silly install resolved     readme: 'ERROR: No README data found!' } ]
+339 info install bindings@1.2.1 into C:\Users\mitch\Documents\Development\attendo\node_modules\time
+340 info install debug@2.3.3 into C:\Users\mitch\Documents\Development\attendo\node_modules\time
+341 info install nan@2.4.0 into C:\Users\mitch\Documents\Development\attendo\node_modules\time
+342 info installOne bindings@1.2.1
+343 verbose installOne of bindings to C:\Users\mitch\Documents\Development\attendo\node_modules\time not in flight; installing
+344 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache\_locks correctMkdir not in flight; initializing
+345 info installOne debug@2.3.3
+346 verbose installOne of debug to C:\Users\mitch\Documents\Development\attendo\node_modules\time not in flight; installing
+347 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache\_locks correctMkdir not in flight; initializing
+348 info installOne nan@2.4.0
+349 verbose installOne of nan to C:\Users\mitch\Documents\Development\attendo\node_modules\time not in flight; installing
+350 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache\_locks correctMkdir not in flight; initializing
+351 verbose lock using C:\Users\mitch\AppData\Roaming\npm-cache\_locks\bindings-bfb721d75c2b1222.lock for C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\bindings
+352 verbose lock using C:\Users\mitch\AppData\Roaming\npm-cache\_locks\debug-d3e04f6d1299e79f.lock for C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug
+353 silly install write writing bindings 1.2.1 to C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\bindings
+354 verbose lock using C:\Users\mitch\AppData\Roaming\npm-cache\_locks\nan-fa6490ce46292c86.lock for C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\nan
+355 silly install write writing debug 2.3.3 to C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug
+356 silly install write writing nan 2.4.0 to C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\nan
+357 verbose unbuild node_modules\time\node_modules\bindings
+358 verbose unbuild node_modules\time\node_modules\debug
+359 verbose unbuild node_modules\time\node_modules\nan
+360 silly gentlyRm C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\bindings is being purged from base C:\Users\mitch\Documents\Development\attendo
+361 verbose gentlyRm don't care about contents; nuking C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\bindings
+362 silly gentlyRm C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug is being purged from base C:\Users\mitch\Documents\Development\attendo
+363 verbose gentlyRm don't care about contents; nuking C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug
+364 verbose tar unpack C:\Users\mitch\AppData\Roaming\npm-cache\bindings\1.2.1\package.tgz
+365 verbose tar unpacking to C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\bindings
+366 silly gentlyRm C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\bindings is being purged
+367 verbose gentlyRm don't care about contents; nuking C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\bindings
+368 silly gentlyRm C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\nan is being purged from base C:\Users\mitch\Documents\Development\attendo
+369 verbose gentlyRm don't care about contents; nuking C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\nan
+370 verbose tar unpack C:\Users\mitch\AppData\Roaming\npm-cache\debug\2.3.3\package.tgz
+371 verbose tar unpacking to C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug
+372 silly gentlyRm C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug is being purged
+373 verbose gentlyRm don't care about contents; nuking C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug
+374 silly gunzTarPerm modes [ '777', '666' ]
+375 verbose tar unpack C:\Users\mitch\AppData\Roaming\npm-cache\nan\2.4.0\package.tgz
+376 verbose tar unpacking to C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\nan
+377 silly gentlyRm C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\nan is being purged
+378 verbose gentlyRm don't care about contents; nuking C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\nan
+379 silly gunzTarPerm modes [ '777', '666' ]
+380 silly gunzTarPerm modes [ '777', '666' ]
+381 silly gunzTarPerm extractEntry package.json
+382 silly gunzTarPerm modified mode [ 'package.json', 420, 438 ]
+383 silly gunzTarPerm extractEntry .npmignore
+384 silly gunzTarPerm modified mode [ '.npmignore', 420, 438 ]
+385 silly gunzTarPerm extractEntry LICENSE
+386 silly gunzTarPerm modified mode [ 'LICENSE', 420, 438 ]
+387 silly gunzTarPerm extractEntry package.json
+388 silly gunzTarPerm modified mode [ 'package.json', 420, 438 ]
+389 silly gunzTarPerm extractEntry package.json
+390 silly gunzTarPerm modified mode [ 'package.json', 436, 438 ]
+391 silly gunzTarPerm extractEntry README.md
+392 silly gunzTarPerm modified mode [ 'README.md', 436, 438 ]
+393 silly gunzTarPerm extractEntry README.md
+394 silly gunzTarPerm modified mode [ 'README.md', 420, 438 ]
+395 silly gunzTarPerm extractEntry bindings.js
+396 silly gunzTarPerm modified mode [ 'bindings.js', 420, 438 ]
+397 silly gunzTarPerm extractEntry include_dirs.js
+398 silly gunzTarPerm modified mode [ 'include_dirs.js', 436, 438 ]
+399 silly gunzTarPerm extractEntry node.js
+400 silly gunzTarPerm modified mode [ 'node.js', 420, 438 ]
+401 silly gunzTarPerm extractEntry index.js
+402 silly gunzTarPerm modified mode [ 'index.js', 420, 438 ]
+403 silly gunzTarPerm extractEntry nan_callbacks_pre_12_inl.h
+404 silly gunzTarPerm modified mode [ 'nan_callbacks_pre_12_inl.h', 436, 438 ]
+405 silly gunzTarPerm extractEntry CHANGELOG.md
+406 silly gunzTarPerm modified mode [ 'CHANGELOG.md', 436, 438 ]
+407 silly gunzTarPerm extractEntry LICENSE.md
+408 silly gunzTarPerm modified mode [ 'LICENSE.md', 436, 438 ]
+409 silly gunzTarPerm extractEntry doc/node_misc.md
+410 silly gunzTarPerm modified mode [ 'doc/node_misc.md', 436, 438 ]
+411 silly gunzTarPerm extractEntry debug.js
+412 silly gunzTarPerm modified mode [ 'debug.js', 420, 438 ]
+413 silly gunzTarPerm extractEntry browser.js
+414 silly gunzTarPerm modified mode [ 'browser.js', 420, 438 ]
+415 silly gunzTarPerm extractEntry bower.json
+416 silly gunzTarPerm modified mode [ 'bower.json', 420, 438 ]
+417 silly gunzTarPerm extractEntry .jshintrc
+418 silly gunzTarPerm modified mode [ '.jshintrc', 420, 438 ]
+419 silly gunzTarPerm extractEntry component.json
+420 silly gunzTarPerm modified mode [ 'component.json', 420, 438 ]
+421 silly gunzTarPerm extractEntry Readme.md
+422 silly gunzTarPerm modified mode [ 'Readme.md', 420, 438 ]
+423 silly gunzTarPerm extractEntry Makefile
+424 silly gunzTarPerm modified mode [ 'Makefile', 420, 438 ]
+425 silly gunzTarPerm extractEntry CHANGELOG.md
+426 silly gunzTarPerm modified mode [ 'CHANGELOG.md', 420, 438 ]
+427 silly gunzTarPerm extractEntry doc/asyncworker.md
+428 silly gunzTarPerm modified mode [ 'doc/asyncworker.md', 436, 438 ]
+429 silly gunzTarPerm extractEntry doc/callback.md
+430 silly gunzTarPerm modified mode [ 'doc/callback.md', 436, 438 ]
+431 silly gunzTarPerm extractEntry doc/converters.md
+432 silly gunzTarPerm modified mode [ 'doc/converters.md', 436, 438 ]
+433 silly gunzTarPerm extractEntry doc/errors.md
+434 silly gunzTarPerm modified mode [ 'doc/errors.md', 436, 438 ]
+435 silly gunzTarPerm extractEntry doc/maybe_types.md
+436 silly gunzTarPerm modified mode [ 'doc/maybe_types.md', 436, 438 ]
+437 silly gunzTarPerm extractEntry doc/methods.md
+438 silly gunzTarPerm modified mode [ 'doc/methods.md', 436, 438 ]
+439 verbose write writing to C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\bindings\package.json
+440 silly gunzTarPerm extractEntry doc/new.md
+441 silly gunzTarPerm modified mode [ 'doc/new.md', 436, 438 ]
+442 silly gunzTarPerm extractEntry doc/buffers.md
+443 silly gunzTarPerm modified mode [ 'doc/buffers.md', 436, 438 ]
+444 info preinstall bindings@1.2.1
+445 verbose readDependencies loading dependencies from C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\bindings\package.json
+446 silly gunzTarPerm extractEntry doc/object_wrappers.md
+447 silly gunzTarPerm modified mode [ 'doc/object_wrappers.md', 436, 438 ]
+448 silly gunzTarPerm extractEntry doc/persistent.md
+449 silly gunzTarPerm modified mode [ 'doc/persistent.md', 436, 438 ]
+450 verbose readDependencies loading dependencies from C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\bindings\package.json
+451 silly install resolved []
+452 verbose about to build C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\bindings
+453 info build C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\bindings
+454 info linkStuff bindings@1.2.1
+455 silly linkStuff bindings@1.2.1 has C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules as its parent node_modules
+456 silly gunzTarPerm extractEntry doc/scopes.md
+457 silly gunzTarPerm modified mode [ 'doc/scopes.md', 436, 438 ]
+458 verbose linkBins bindings@1.2.1
+459 verbose linkMans bindings@1.2.1
+460 verbose rebuildBundles bindings@1.2.1
+461 info install bindings@1.2.1
+462 info postinstall bindings@1.2.1
+463 verbose unlock done using C:\Users\mitch\AppData\Roaming\npm-cache\_locks\bindings-bfb721d75c2b1222.lock for C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\bindings
+464 verbose write writing to C:\Users\mitch\Documents\Development\attendo\node_modules\promise\package.json
+465 silly gunzTarPerm extractEntry doc/script.md
+466 silly gunzTarPerm modified mode [ 'doc/script.md', 436, 438 ]
+467 silly gunzTarPerm extractEntry doc/string_bytes.md
+468 silly gunzTarPerm modified mode [ 'doc/string_bytes.md', 436, 438 ]
+469 info preinstall promise@7.1.1
+470 verbose readDependencies loading dependencies from C:\Users\mitch\Documents\Development\attendo\node_modules\promise\package.json
+471 silly gunzTarPerm extractEntry doc/v8_internals.md
+472 silly gunzTarPerm modified mode [ 'doc/v8_internals.md', 436, 438 ]
+473 silly gunzTarPerm extractEntry doc/v8_misc.md
+474 silly gunzTarPerm modified mode [ 'doc/v8_misc.md', 436, 438 ]
+475 silly prepareForInstallMany adding asap@~2.0.3 from promise dependencies
+476 verbose readDependencies loading dependencies from C:\Users\mitch\Documents\Development\attendo\node_modules\promise\package.json
+477 silly cache add args [ 'asap@~2.0.3', null ]
+478 verbose cache add spec asap@~2.0.3
+479 silly cache add parsed spec Result {
+479 silly cache add   raw: 'asap@~2.0.3',
+479 silly cache add   scope: null,
+479 silly cache add   name: 'asap',
+479 silly cache add   rawSpec: '~2.0.3',
+479 silly cache add   spec: '>=2.0.3 <2.1.0',
+479 silly cache add   type: 'range' }
+480 silly addNamed asap@>=2.0.3 <2.1.0
+481 verbose addNamed ">=2.0.3 <2.1.0" is a valid semver range for asap
+482 silly addNameRange { name: 'asap', range: '>=2.0.3 <2.1.0', hasData: false }
+483 silly mapToRegistry name asap
+484 silly mapToRegistry using default registry
+485 silly mapToRegistry registry https://registry.npmjs.org/
+486 silly mapToRegistry data Result {
+486 silly mapToRegistry   raw: 'asap',
+486 silly mapToRegistry   scope: null,
+486 silly mapToRegistry   name: 'asap',
+486 silly mapToRegistry   rawSpec: '',
+486 silly mapToRegistry   spec: 'latest',
+486 silly mapToRegistry   type: 'tag' }
+487 silly mapToRegistry uri https://registry.npmjs.org/asap
+488 verbose addNameRange registry:https://registry.npmjs.org/asap not in flight; fetching
+489 verbose request uri https://registry.npmjs.org/asap
+490 verbose request no auth needed
+491 info attempt registry request try #1 at 3:41:40 PM
+492 verbose etag "9WGDFDIB7GDUCWBKMZCQKNTQL"
+493 http request GET https://registry.npmjs.org/asap
+494 silly gunzTarPerm extractEntry nan.h
+495 silly gunzTarPerm modified mode [ 'nan.h', 436, 438 ]
+496 silly gunzTarPerm extractEntry nan_callbacks.h
+497 silly gunzTarPerm modified mode [ 'nan_callbacks.h', 436, 438 ]
+498 silly gunzTarPerm extractEntry nan_callbacks_12_inl.h
+499 silly gunzTarPerm modified mode [ 'nan_callbacks_12_inl.h', 436, 438 ]
+500 silly gunzTarPerm extractEntry nan_converters.h
+501 silly gunzTarPerm modified mode [ 'nan_converters.h', 436, 438 ]
+502 silly gunzTarPerm extractEntry nan_converters_43_inl.h
+503 silly gunzTarPerm modified mode [ 'nan_converters_43_inl.h', 436, 438 ]
+504 silly gunzTarPerm extractEntry nan_converters_pre_43_inl.h
+505 silly gunzTarPerm modified mode [ 'nan_converters_pre_43_inl.h', 436, 438 ]
+506 http 200 https://registry.npmjs.org/asap
+507 verbose headers { server: 'nginx/1.10.1',
+507 verbose headers   'content-type': 'application/json',
+507 verbose headers   'last-modified': 'Sun, 25 Sep 2016 23:35:50 GMT',
+507 verbose headers   etag: 'W/"57e85f56-64ba"',
+507 verbose headers   'content-encoding': 'gzip',
+507 verbose headers   'cache-control': 'max-age=300',
+507 verbose headers   'content-length': '6468',
+507 verbose headers   'accept-ranges': 'bytes',
+507 verbose headers   date: 'Mon, 21 Nov 2016 20:41:42 GMT',
+507 verbose headers   via: '1.1 varnish',
+507 verbose headers   age: '92',
+507 verbose headers   connection: 'keep-alive',
+507 verbose headers   'x-served-by': 'cache-atl6227-ATL',
+507 verbose headers   'x-cache': 'HIT',
+507 verbose headers   'x-cache-hits': '2',
+507 verbose headers   'x-timer': 'S1479760902.006162,VS0,VE0',
+507 verbose headers   vary: 'Accept-Encoding' }
+508 silly get cb [ 200,
+508 silly get   { server: 'nginx/1.10.1',
+508 silly get     'content-type': 'application/json',
+508 silly get     'last-modified': 'Sun, 25 Sep 2016 23:35:50 GMT',
+508 silly get     etag: 'W/"57e85f56-64ba"',
+508 silly get     'content-encoding': 'gzip',
+508 silly get     'cache-control': 'max-age=300',
+508 silly get     'content-length': '6468',
+508 silly get     'accept-ranges': 'bytes',
+508 silly get     date: 'Mon, 21 Nov 2016 20:41:42 GMT',
+508 silly get     via: '1.1 varnish',
+508 silly get     age: '92',
+508 silly get     connection: 'keep-alive',
+508 silly get     'x-served-by': 'cache-atl6227-ATL',
+508 silly get     'x-cache': 'HIT',
+508 silly get     'x-cache-hits': '2',
+508 silly get     'x-timer': 'S1479760902.006162,VS0,VE0',
+508 silly get     vary: 'Accept-Encoding' } ]
+509 verbose get saving asap to C:\Users\mitch\AppData\Roaming\npm-cache\registry.npmjs.org\asap\.cache.json
+510 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+511 silly gunzTarPerm extractEntry nan_implementation_12_inl.h
+512 silly gunzTarPerm modified mode [ 'nan_implementation_12_inl.h', 436, 438 ]
+513 silly gunzTarPerm extractEntry nan_implementation_pre_12_inl.h
+514 silly gunzTarPerm modified mode [ 'nan_implementation_pre_12_inl.h', 436, 438 ]
+515 silly gunzTarPerm extractEntry nan_maybe_43_inl.h
+516 silly gunzTarPerm modified mode [ 'nan_maybe_43_inl.h', 436, 438 ]
+517 silly gunzTarPerm extractEntry nan_maybe_pre_43_inl.h
+518 silly gunzTarPerm modified mode [ 'nan_maybe_pre_43_inl.h', 436, 438 ]
+519 silly addNameRange number 2 { name: 'asap', range: '>=2.0.3 <2.1.0', hasData: true }
+520 silly addNameRange versions [ 'asap',
+520 silly addNameRange   [ '0.0.0',
+520 silly addNameRange     '1.0.0',
+520 silly addNameRange     '2.0.0',
+520 silly addNameRange     '2.0.1',
+520 silly addNameRange     '2.0.2',
+520 silly addNameRange     '2.0.3',
+520 silly addNameRange     '2.0.4',
+520 silly addNameRange     '2.0.5' ] ]
+521 silly addNamed asap@2.0.5
+522 verbose addNamed "2.0.5" is a plain semver version for asap
+523 verbose write writing to C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug\package.json
+524 silly gunzTarPerm extractEntry nan_new.h
+525 silly gunzTarPerm modified mode [ 'nan_new.h', 436, 438 ]
+526 silly gunzTarPerm extractEntry nan_object_wrap.h
+527 silly gunzTarPerm modified mode [ 'nan_object_wrap.h', 436, 438 ]
+528 silly cache afterAdd asap@2.0.5
+529 verbose afterAdd C:\Users\mitch\AppData\Roaming\npm-cache\asap\2.0.5\package\package.json not in flight; writing
+530 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+531 verbose afterAdd C:\Users\mitch\AppData\Roaming\npm-cache\asap\2.0.5\package\package.json written
+532 silly install resolved [ { name: 'asap',
+532 silly install resolved     version: '2.0.5',
+532 silly install resolved     description: 'High-priority task queue for Node.js and browsers',
+532 silly install resolved     keywords: [ 'event', 'task', 'queue' ],
+532 silly install resolved     license: 'MIT',
+532 silly install resolved     repository:
+532 silly install resolved      { type: 'git',
+532 silly install resolved        url: 'git+https://github.com/kriskowal/asap.git' },
+532 silly install resolved     main: './asap.js',
+532 silly install resolved     browser:
+532 silly install resolved      { './asap': './browser-asap.js',
+532 silly install resolved        './asap.js': './browser-asap.js',
+532 silly install resolved        './raw': './browser-raw.js',
+532 silly install resolved        './raw.js': './browser-raw.js',
+532 silly install resolved        './test/domain.js': './test/browser-domain.js' },
+532 silly install resolved     files: [ 'raw.js', 'asap.js', 'browser-raw.js', 'browser-asap.js' ],
+532 silly install resolved     scripts:
+532 silly install resolved      { test: 'npm run lint && npm run test-node',
+532 silly install resolved        'test-travis': 'npm run lint && npm run test-node && npm run test-saucelabs && npm run test-saucelabs-worker',
+532 silly install resolved        'test-node': 'node test/asap-test.js',
+532 silly install resolved        'test-publish': 'node scripts/publish-bundle.js test/asap-test.js | pbcopy',
+532 silly install resolved        'test-browser': 'node scripts/publish-bundle.js test/asap-test.js | xargs opener',
+532 silly install resolved        'test-saucelabs': 'node scripts/saucelabs.js test/asap-test.js scripts/saucelabs-spot-configurations.json',
+532 silly install resolved        'test-saucelabs-all': 'node scripts/saucelabs.js test/asap-test.js scripts/saucelabs-all-configurations.json',
+532 silly install resolved        'test-saucelabs-worker': 'node scripts/saucelabs-worker-test.js scripts/saucelabs-spot-configurations.json',
+532 silly install resolved        'test-saucelabs-worker-all': 'node scripts/saucelabs-worker-test.js scripts/saucelabs-all-configurations.json',
+532 silly install resolved        lint: 'jshint raw.js asap.js browser-raw.js browser-asap.js $(find scripts -name \'*.js\' | grep -v gauntlet)',
+532 silly install resolved        benchmarks: 'node benchmarks' },
+532 silly install resolved     devDependencies:
+532 silly install resolved      { events: '^1.0.1',
+532 silly install resolved        jshint: '^2.5.1',
+532 silly install resolved        knox: '^0.8.10',
+532 silly install resolved        mr: '^2.0.5',
+532 silly install resolved        opener: '^1.3.0',
+532 silly install resolved        q: '^2.0.3',
+532 silly install resolved        'q-io': '^2.0.3',
+532 silly install resolved        saucelabs: '^0.1.1',
+532 silly install resolved        wd: '^0.2.21',
+532 silly install resolved        'weak-map': '^1.0.5',
+532 silly install resolved        benchmark: '^1.0.0' },
+532 silly install resolved     gitHead: 'e7f3d29eed4967ecfcaddbfc9542e2ee12b76227',
+532 silly install resolved     bugs: { url: 'https://github.com/kriskowal/asap/issues' },
+532 silly install resolved     homepage: 'https://github.com/kriskowal/asap#readme',
+532 silly install resolved     _id: 'asap@2.0.5',
+532 silly install resolved     _shasum: '522765b50c3510490e52d7dcfe085ef9ba96958f',
+532 silly install resolved     _from: 'asap@>=2.0.3 <2.1.0',
+532 silly install resolved     _npmVersion: '2.14.7',
+532 silly install resolved     _nodeVersion: '0.10.32',
+532 silly install resolved     _npmUser: { name: 'kriskowal', email: 'kris.kowal@cixar.com' },
+532 silly install resolved     dist:
+532 silly install resolved      { shasum: '522765b50c3510490e52d7dcfe085ef9ba96958f',
+532 silly install resolved        tarball: 'https://registry.npmjs.org/asap/-/asap-2.0.5.tgz' },
+532 silly install resolved     maintainers: [ [Object], [Object] ],
+532 silly install resolved     _npmOperationalInternal:
+532 silly install resolved      { host: 'packages-12-west.internal.npmjs.com',
+532 silly install resolved        tmp: 'tmp/asap-2.0.5.tgz_1474846549990_0.794441896257922' },
+532 silly install resolved     directories: {},
+532 silly install resolved     _resolved: 'https://registry.npmjs.org/asap/-/asap-2.0.5.tgz',
+532 silly install resolved     readme: 'ERROR: No README data found!' } ]
+533 info install asap@2.0.5 into C:\Users\mitch\Documents\Development\attendo\node_modules\promise
+534 info installOne asap@2.0.5
+535 verbose installOne of asap to C:\Users\mitch\Documents\Development\attendo\node_modules\promise not in flight; installing
+536 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache\_locks correctMkdir not in flight; initializing
+537 verbose lock using C:\Users\mitch\AppData\Roaming\npm-cache\_locks\asap-4c2eafabcd6ec5bc.lock for C:\Users\mitch\Documents\Development\attendo\node_modules\promise\node_modules\asap
+538 info preinstall debug@2.3.3
+539 silly install write writing asap 2.0.5 to C:\Users\mitch\Documents\Development\attendo\node_modules\promise\node_modules\asap
+540 verbose readDependencies loading dependencies from C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug\package.json
+541 verbose unbuild node_modules\promise\node_modules\asap
+542 silly gentlyRm C:\Users\mitch\Documents\Development\attendo\node_modules\promise\node_modules\asap is being purged from base C:\Users\mitch\Documents\Development\attendo
+543 verbose gentlyRm don't care about contents; nuking C:\Users\mitch\Documents\Development\attendo\node_modules\promise\node_modules\asap
+544 silly gunzTarPerm extractEntry nan_persistent_12_inl.h
+545 silly gunzTarPerm modified mode [ 'nan_persistent_12_inl.h', 436, 438 ]
+546 silly gunzTarPerm extractEntry nan_persistent_pre_12_inl.h
+547 silly gunzTarPerm modified mode [ 'nan_persistent_pre_12_inl.h', 436, 438 ]
+548 verbose tar unpack C:\Users\mitch\AppData\Roaming\npm-cache\asap\2.0.5\package.tgz
+549 verbose tar unpacking to C:\Users\mitch\Documents\Development\attendo\node_modules\promise\node_modules\asap
+550 silly gentlyRm C:\Users\mitch\Documents\Development\attendo\node_modules\promise\node_modules\asap is being purged
+551 verbose gentlyRm don't care about contents; nuking C:\Users\mitch\Documents\Development\attendo\node_modules\promise\node_modules\asap
+552 silly gunzTarPerm modes [ '777', '666' ]
+553 silly prepareForInstallMany adding ms@0.7.2 from debug dependencies
+554 verbose readDependencies loading dependencies from C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug\package.json
+555 silly cache add args [ 'ms@0.7.2', null ]
+556 verbose cache add spec ms@0.7.2
+557 silly cache add parsed spec Result {
+557 silly cache add   raw: 'ms@0.7.2',
+557 silly cache add   scope: null,
+557 silly cache add   name: 'ms',
+557 silly cache add   rawSpec: '0.7.2',
+557 silly cache add   spec: '0.7.2',
+557 silly cache add   type: 'version' }
+558 silly addNamed ms@0.7.2
+559 verbose addNamed "0.7.2" is a plain semver version for ms
+560 silly mapToRegistry name ms
+561 silly mapToRegistry using default registry
+562 silly mapToRegistry registry https://registry.npmjs.org/
+563 silly mapToRegistry data Result {
+563 silly mapToRegistry   raw: 'ms',
+563 silly mapToRegistry   scope: null,
+563 silly mapToRegistry   name: 'ms',
+563 silly mapToRegistry   rawSpec: '',
+563 silly mapToRegistry   spec: 'latest',
+563 silly mapToRegistry   type: 'tag' }
+564 silly mapToRegistry uri https://registry.npmjs.org/ms
+565 verbose addNameVersion registry:https://registry.npmjs.org/ms not in flight; fetching
+566 silly gunzTarPerm extractEntry package.json
+567 silly gunzTarPerm modified mode [ 'package.json', 420, 438 ]
+568 silly gunzTarPerm extractEntry nan_string_bytes.h
+569 silly gunzTarPerm modified mode [ 'nan_string_bytes.h', 436, 438 ]
+570 silly gunzTarPerm extractEntry nan_typedarray_contents.h
+571 silly gunzTarPerm modified mode [ 'nan_typedarray_contents.h', 436, 438 ]
+572 silly gunzTarPerm extractEntry README.md
+573 silly gunzTarPerm modified mode [ 'README.md', 420, 438 ]
+574 silly gunzTarPerm extractEntry asap.js
+575 silly gunzTarPerm modified mode [ 'asap.js', 420, 438 ]
+576 verbose request uri https://registry.npmjs.org/ms
+577 verbose request no auth needed
+578 info attempt registry request try #1 at 3:41:40 PM
+579 verbose etag "A6K052MSXC3M5EU8SLIU16DHF"
+580 http request GET https://registry.npmjs.org/ms
+581 silly gunzTarPerm extractEntry browser-asap.js
+582 silly gunzTarPerm modified mode [ 'browser-asap.js', 420, 438 ]
+583 silly gunzTarPerm extractEntry browser-raw.js
+584 silly gunzTarPerm modified mode [ 'browser-raw.js', 420, 438 ]
+585 silly gunzTarPerm extractEntry raw.js
+586 silly gunzTarPerm modified mode [ 'raw.js', 420, 438 ]
+587 silly gunzTarPerm extractEntry CHANGES.md
+588 silly gunzTarPerm modified mode [ 'CHANGES.md', 420, 438 ]
+589 silly gunzTarPerm extractEntry LICENSE.md
+590 silly gunzTarPerm modified mode [ 'LICENSE.md', 420, 438 ]
+591 silly gunzTarPerm extractEntry nan_weak.h
+592 silly gunzTarPerm modified mode [ 'nan_weak.h', 436, 438 ]
+593 silly gunzTarPerm extractEntry tools/package.json
+594 silly gunzTarPerm modified mode [ 'tools/package.json', 436, 438 ]
+595 silly gunzTarPerm extractEntry tools/README.md
+596 silly gunzTarPerm modified mode [ 'tools/README.md', 436, 438 ]
+597 silly gunzTarPerm extractEntry tools/1to2.js
+598 silly gunzTarPerm modified mode [ 'tools/1to2.js', 509, 511 ]
+599 http 200 https://registry.npmjs.org/ms
+600 verbose headers { server: 'nginx/1.10.1',
+600 verbose headers   'content-type': 'application/json',
+600 verbose headers   'last-modified': 'Mon, 07 Nov 2016 19:12:24 GMT',
+600 verbose headers   etag: 'W/"5820d218-2c0d"',
+600 verbose headers   'content-encoding': 'gzip',
+600 verbose headers   'cache-control': 'max-age=300',
+600 verbose headers   'content-length': '3047',
+600 verbose headers   'accept-ranges': 'bytes',
+600 verbose headers   date: 'Mon, 21 Nov 2016 20:41:42 GMT',
+600 verbose headers   via: '1.1 varnish',
+600 verbose headers   age: '285',
+600 verbose headers   connection: 'keep-alive',
+600 verbose headers   'x-served-by': 'cache-atl6220-ATL',
+600 verbose headers   'x-cache': 'HIT',
+600 verbose headers   'x-cache-hits': '4',
+600 verbose headers   'x-timer': 'S1479760902.083412,VS0,VE0',
+600 verbose headers   vary: 'Accept-Encoding' }
+601 silly get cb [ 200,
+601 silly get   { server: 'nginx/1.10.1',
+601 silly get     'content-type': 'application/json',
+601 silly get     'last-modified': 'Mon, 07 Nov 2016 19:12:24 GMT',
+601 silly get     etag: 'W/"5820d218-2c0d"',
+601 silly get     'content-encoding': 'gzip',
+601 silly get     'cache-control': 'max-age=300',
+601 silly get     'content-length': '3047',
+601 silly get     'accept-ranges': 'bytes',
+601 silly get     date: 'Mon, 21 Nov 2016 20:41:42 GMT',
+601 silly get     via: '1.1 varnish',
+601 silly get     age: '285',
+601 silly get     connection: 'keep-alive',
+601 silly get     'x-served-by': 'cache-atl6220-ATL',
+601 silly get     'x-cache': 'HIT',
+601 silly get     'x-cache-hits': '4',
+601 silly get     'x-timer': 'S1479760902.083412,VS0,VE0',
+601 silly get     vary: 'Accept-Encoding' } ]
+602 verbose get saving ms to C:\Users\mitch\AppData\Roaming\npm-cache\registry.npmjs.org\ms\.cache.json
+603 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+604 silly mapToRegistry name ms
+605 silly mapToRegistry using default registry
+606 silly mapToRegistry registry https://registry.npmjs.org/
+607 silly mapToRegistry data Result {
+607 silly mapToRegistry   raw: 'ms',
+607 silly mapToRegistry   scope: null,
+607 silly mapToRegistry   name: 'ms',
+607 silly mapToRegistry   rawSpec: '',
+607 silly mapToRegistry   spec: 'latest',
+607 silly mapToRegistry   type: 'tag' }
+608 silly mapToRegistry uri https://registry.npmjs.org/ms
+609 verbose addRemoteTarball https://registry.npmjs.org/ms/-/ms-0.7.2.tgz not in flight; adding
+610 verbose addRemoteTarball [ 'https://registry.npmjs.org/ms/-/ms-0.7.2.tgz',
+610 verbose addRemoteTarball   'ae25cf2512b3885a1d95d7f037868d8431124765' ]
+611 info retry fetch attempt 1 at 3:41:40 PM
+612 info attempt registry request try #1 at 3:41:40 PM
+613 http fetch GET https://registry.npmjs.org/ms/-/ms-0.7.2.tgz
+614 http fetch 200 https://registry.npmjs.org/ms/-/ms-0.7.2.tgz
+615 silly fetchAndShaCheck shasum ae25cf2512b3885a1d95d7f037868d8431124765
+616 verbose addTmpTarball C:\Users\mitch\AppData\Local\Temp\npm-10444-410e5d9e\registry.npmjs.org\ms\-\ms-0.7.2.tgz not in flight; adding
+617 verbose addTmpTarball already have metadata; skipping unpack for ms@0.7.2
+618 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+619 silly cache afterAdd ms@0.7.2
+620 verbose afterAdd C:\Users\mitch\AppData\Roaming\npm-cache\ms\0.7.2\package\package.json not in flight; writing
+621 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+622 verbose afterAdd C:\Users\mitch\AppData\Roaming\npm-cache\ms\0.7.2\package\package.json written
+623 silly install resolved [ { name: 'ms',
+623 silly install resolved     version: '0.7.2',
+623 silly install resolved     description: 'Tiny milisecond conversion utility',
+623 silly install resolved     repository: { type: 'git', url: 'git+https://github.com/zeit/ms.git' },
+623 silly install resolved     main: './index',
+623 silly install resolved     files: [ 'index.js' ],
+623 silly install resolved     scripts:
+623 silly install resolved      { test: 'xo && mocha test/index.js',
+623 silly install resolved        'test-browser': 'serve ./test' },
+623 silly install resolved     license: 'MIT',
+623 silly install resolved     devDependencies:
+623 silly install resolved      { 'expect.js': '^0.3.1',
+623 silly install resolved        mocha: '^3.0.2',
+623 silly install resolved        serve: '^1.4.0',
+623 silly install resolved        xo: '^0.17.0' },
+623 silly install resolved     component: { scripts: [Object] },
+623 silly install resolved     xo: { space: true, semicolon: false, envs: [Object], rules: [Object] },
+623 silly install resolved     gitHead: 'ac92a7e0790ba2622a74d9d60690ca0d2c070a45',
+623 silly install resolved     bugs: { url: 'https://github.com/zeit/ms/issues' },
+623 silly install resolved     homepage: 'https://github.com/zeit/ms#readme',
+623 silly install resolved     _id: 'ms@0.7.2',
+623 silly install resolved     _shasum: 'ae25cf2512b3885a1d95d7f037868d8431124765',
+623 silly install resolved     _from: 'ms@0.7.2',
+623 silly install resolved     _npmVersion: '3.10.8',
+623 silly install resolved     _nodeVersion: '6.8.0',
+623 silly install resolved     _npmUser: { name: 'leo', email: 'leo@zeit.co' },
+623 silly install resolved     dist:
+623 silly install resolved      { shasum: 'ae25cf2512b3885a1d95d7f037868d8431124765',
+623 silly install resolved        tarball: 'https://registry.npmjs.org/ms/-/ms-0.7.2.tgz' },
+623 silly install resolved     maintainers: [ [Object], [Object] ],
+623 silly install resolved     _npmOperationalInternal:
+623 silly install resolved      { host: 'packages-18-east.internal.npmjs.com',
+623 silly install resolved        tmp: 'tmp/ms-0.7.2.tgz_1477383407940_0.4743474116548896' },
+623 silly install resolved     directories: {},
+623 silly install resolved     _resolved: 'https://registry.npmjs.org/ms/-/ms-0.7.2.tgz' } ]
+624 info install ms@0.7.2 into C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug
+625 info installOne ms@0.7.2
+626 verbose installOne of ms to C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug not in flight; installing
+627 verbose correctMkdir C:\Users\mitch\AppData\Roaming\npm-cache\_locks correctMkdir not in flight; initializing
+628 verbose lock using C:\Users\mitch\AppData\Roaming\npm-cache\_locks\ms-8af51cd8d194142b.lock for C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug\node_modules\ms
+629 silly install write writing ms 0.7.2 to C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug\node_modules\ms
+630 verbose unbuild node_modules\time\node_modules\debug\node_modules\ms
+631 silly gentlyRm C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug\node_modules\ms is being purged from base C:\Users\mitch\Documents\Development\attendo
+632 verbose gentlyRm don't care about contents; nuking C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug\node_modules\ms
+633 verbose tar unpack C:\Users\mitch\AppData\Roaming\npm-cache\ms\0.7.2\package.tgz
+634 verbose tar unpacking to C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug\node_modules\ms
+635 silly gentlyRm C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug\node_modules\ms is being purged
+636 verbose gentlyRm don't care about contents; nuking C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug\node_modules\ms
+637 silly gunzTarPerm modes [ '777', '666' ]
+638 silly gunzTarPerm extractEntry package.json
+639 silly gunzTarPerm modified mode [ 'package.json', 420, 438 ]
+640 silly gunzTarPerm extractEntry README.md
+641 silly gunzTarPerm modified mode [ 'README.md', 420, 438 ]
+642 silly gunzTarPerm extractEntry index.js
+643 silly gunzTarPerm modified mode [ 'index.js', 420, 438 ]
+644 silly gunzTarPerm extractEntry LICENSE.md
+645 silly gunzTarPerm modified mode [ 'LICENSE.md', 420, 438 ]
+646 verbose write writing to C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug\node_modules\ms\package.json
+647 info preinstall ms@0.7.2
+648 verbose readDependencies loading dependencies from C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug\node_modules\ms\package.json
+649 verbose readDependencies loading dependencies from C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug\node_modules\ms\package.json
+650 silly install resolved []
+651 verbose about to build C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug\node_modules\ms
+652 info build C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug\node_modules\ms
+653 info linkStuff ms@0.7.2
+654 silly linkStuff ms@0.7.2 has C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug\node_modules as its parent node_modules
+655 verbose linkBins ms@0.7.2
+656 verbose linkMans ms@0.7.2
+657 verbose rebuildBundles ms@0.7.2
+658 info install ms@0.7.2
+659 info postinstall ms@0.7.2
+660 verbose unlock done using C:\Users\mitch\AppData\Roaming\npm-cache\_locks\ms-8af51cd8d194142b.lock for C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug\node_modules\ms
+661 verbose about to build C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug
+662 info build C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug
+663 verbose write writing to C:\Users\mitch\Documents\Development\attendo\node_modules\promise\node_modules\asap\package.json
+664 info linkStuff debug@2.3.3
+665 silly linkStuff debug@2.3.3 has C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules as its parent node_modules
+666 verbose linkBins debug@2.3.3
+667 verbose linkMans debug@2.3.3
+668 verbose rebuildBundles debug@2.3.3
+669 verbose rebuildBundles [ 'ms' ]
+670 info install debug@2.3.3
+671 info postinstall debug@2.3.3
+672 verbose unlock done using C:\Users\mitch\AppData\Roaming\npm-cache\_locks\debug-d3e04f6d1299e79f.lock for C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\debug
+673 info preinstall asap@2.0.5
+674 verbose readDependencies loading dependencies from C:\Users\mitch\Documents\Development\attendo\node_modules\promise\node_modules\asap\package.json
+675 verbose readDependencies loading dependencies from C:\Users\mitch\Documents\Development\attendo\node_modules\promise\node_modules\asap\package.json
+676 silly install resolved []
+677 verbose about to build C:\Users\mitch\Documents\Development\attendo\node_modules\promise\node_modules\asap
+678 info build C:\Users\mitch\Documents\Development\attendo\node_modules\promise\node_modules\asap
+679 info linkStuff asap@2.0.5
+680 silly linkStuff asap@2.0.5 has C:\Users\mitch\Documents\Development\attendo\node_modules\promise\node_modules as its parent node_modules
+681 verbose linkBins asap@2.0.5
+682 verbose linkMans asap@2.0.5
+683 verbose rebuildBundles asap@2.0.5
+684 info install asap@2.0.5
+685 info postinstall asap@2.0.5
+686 verbose unlock done using C:\Users\mitch\AppData\Roaming\npm-cache\_locks\asap-4c2eafabcd6ec5bc.lock for C:\Users\mitch\Documents\Development\attendo\node_modules\promise\node_modules\asap
+687 verbose about to build C:\Users\mitch\Documents\Development\attendo\node_modules\promise
+688 info build C:\Users\mitch\Documents\Development\attendo\node_modules\promise
+689 info linkStuff promise@7.1.1
+690 silly linkStuff promise@7.1.1 has C:\Users\mitch\Documents\Development\attendo\node_modules as its parent node_modules
+691 verbose linkBins promise@7.1.1
+692 verbose linkMans promise@7.1.1
+693 verbose rebuildBundles promise@7.1.1
+694 verbose rebuildBundles [ 'asap' ]
+695 info install promise@7.1.1
+696 info postinstall promise@7.1.1
+697 verbose unlock done using C:\Users\mitch\AppData\Roaming\npm-cache\_locks\promise-d0f47b7e5538c300.lock for C:\Users\mitch\Documents\Development\attendo\node_modules\promise
+698 verbose write writing to C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\nan\package.json
+699 info preinstall nan@2.4.0
+700 verbose readDependencies loading dependencies from C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\nan\package.json
+701 verbose readDependencies loading dependencies from C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\nan\package.json
+702 silly install resolved []
+703 verbose about to build C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\nan
+704 info build C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\nan
+705 info linkStuff nan@2.4.0
+706 silly linkStuff nan@2.4.0 has C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules as its parent node_modules
+707 verbose linkBins nan@2.4.0
+708 verbose linkMans nan@2.4.0
+709 verbose rebuildBundles nan@2.4.0
+710 info install nan@2.4.0
+711 info postinstall nan@2.4.0
+712 verbose unlock done using C:\Users\mitch\AppData\Roaming\npm-cache\_locks\nan-fa6490ce46292c86.lock for C:\Users\mitch\Documents\Development\attendo\node_modules\time\node_modules\nan
+713 verbose about to build C:\Users\mitch\Documents\Development\attendo\node_modules\time
+714 info build C:\Users\mitch\Documents\Development\attendo\node_modules\time
+715 info linkStuff time@0.11.4
+716 silly linkStuff time@0.11.4 has C:\Users\mitch\Documents\Development\attendo\node_modules as its parent node_modules
+717 verbose linkBins time@0.11.4
+718 verbose linkMans time@0.11.4
+719 verbose rebuildBundles time@0.11.4
+720 verbose rebuildBundles [ 'bindings', 'debug', 'nan' ]
+721 info install time@0.11.4
+722 verbose unsafe-perm in lifecycle true
+723 info time@0.11.4 Failed to exec install script
+724 verbose unlock done using C:\Users\mitch\AppData\Roaming\npm-cache\_locks\time-20a2debf949211e5.lock for C:\Users\mitch\Documents\Development\attendo\node_modules\time
+725 verbose stack Error: time@0.11.4 install: `node-gyp rebuild`
+725 verbose stack Exit status 1
+725 verbose stack     at EventEmitter.<anonymous> (C:\Program Files\nodejs\node_modules\npm\lib\utils\lifecycle.js:217:16)
+725 verbose stack     at emitTwo (events.js:87:13)
+725 verbose stack     at EventEmitter.emit (events.js:172:7)
+725 verbose stack     at ChildProcess.<anonymous> (C:\Program Files\nodejs\node_modules\npm\lib\utils\spawn.js:24:14)
+725 verbose stack     at emitTwo (events.js:87:13)
+725 verbose stack     at ChildProcess.emit (events.js:172:7)
+725 verbose stack     at maybeClose (internal/child_process.js:827:16)
+725 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:211:5)
+726 verbose pkgid time@0.11.4
+727 verbose cwd C:\Users\mitch\Documents\Development\attendo
+728 error Windows_NT 10.0.14393
+729 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install"
+730 error node v4.4.7
+731 error npm  v2.15.8
+732 error code ELIFECYCLE
+733 error time@0.11.4 install: `node-gyp rebuild`
+733 error Exit status 1
+734 error Failed at the time@0.11.4 install script 'node-gyp rebuild'.
+734 error This is most likely a problem with the time package,
+734 error not with npm itself.
+734 error Tell the author that this fails on your system:
+734 error     node-gyp rebuild
+734 error You can get information on how to open an issue for this project with:
+734 error     npm bugs time
+734 error Or if that isn't available, you can get their info via:
+734 error
+734 error     npm owner ls time
+734 error There is likely additional logging output above.
+735 verbose exit [ 1, true ]
+736 verbose unbuild node_modules\time
+737 info preuninstall time@0.11.4
+738 info uninstall time@0.11.4
+739 verbose unbuild rmStuff time@0.11.4 from C:\Users\mitch\Documents\Development\attendo\node_modules
+740 info postuninstall time@0.11.4
+741 silly gentlyRm C:\Users\mitch\Documents\Development\attendo\node_modules\time is being purged from base C:\Users\mitch\Documents\Development\attendo
+742 verbose gentlyRm don't care about contents; nuking C:\Users\mitch\Documents\Development\attendo\node_modules\time
+743 silly vacuum-fs purging C:\Users\mitch\Documents\Development\attendo\node_modules\time
+744 silly vacuum-fs quitting because other entries in C:\Users\mitch\Documents\Development\attendo\node_modules

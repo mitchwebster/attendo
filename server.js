@@ -5,6 +5,7 @@ var async = require('async');
 var time = require('time');
 var http = require('http');
 var path = require('path');
+var Promise = require('promise');
 var MongoClient = require('mongodb').MongoClient;
 var dbConfig = require('./dbConfig');
 var util = require('./util');
@@ -34,9 +35,79 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 		app.post('/api/test', function(req, res) {
 			// console.log(req);
 			console.log("Someone hit the test api");
-			res.send({err : false, msg: "API is online"});
+			// res.send({err : false, msg: "API is online"});
+			findUser(req.username).done(function (result) {
+                console.log(result);
+                res.send(result);
+            }, function (failure) {
+                console.log(failure);
+                res.send(failure);
+            });
 		});
 
+		app.post('/api/test2', function(req, res) {
+			// console.log(req);
+			console.log("Someone hit the test api");
+			// res.send({err : false, msg: "API is online"});
+			findCourseObjectsCrns(req.crns).done(function (result) {
+                console.log(result);
+                res.send(result);
+            }, function (failure) {
+                console.log(failure);
+                res.send(failure);
+            });
+		});
+
+		//function to return course objects, or go find the course objects and cache them
+		function findCourseObjectsCrns(crns) {
+			var promise = new Promise(function(resolve, reject) {
+				if (crns && crns.length > 0) {
+					//TODO: validate crns
+					db.collection('Courses').find({crn : {$in : crns}}, {"_id": false, "crn" : true, "courseNumber": true, "school": true, "instructor": true, "location": true}).toArray(function(err, data) {
+						var i = 0;
+						while (i < data.length) {
+							data[i].course = data[i].school + " " + data[i].courseNumber;
+							delete data[i]["school"]
+							delete data[i]["courseNumber"]
+							i++;
+						}
+						resolve(data);
+					});
+				} else {
+					reject("No course objects found");
+				}
+			});
+			return promise;
+		}
+
+		function findCourseObjectsCourseTitle(courseTitles) {
+			//{school : "CS", courseNumber: "82304"}
+			var promise = new Promise(function(resolve, reject) {
+				if (courseTitles && courseTitles.length > 0) {
+					
+				} else {
+					
+				}
+			});
+			return promise;
+		}
+
+		function findUser(username) {
+			var promise = new Promise(function(resolve, reject) {
+				db.collection('Users').findOne({"username": username, "term": util.findTerm()}, {crns : 1, instructor : true, "_id": false}, function(err, result) {
+					if (err) {
+						reject(err);
+					} else {
+						if (result == null) {
+							reject("No user found");
+						} else {
+							resolve(result);
+						}
+					}
+				});
+			});
+			return promise;
+		}
 
 		//Post request to find their courses
 		app.post('/api/myCourses', function(req, res) {
