@@ -109,7 +109,8 @@ function createCourse(incomingObject) {
 				"location" : location,
 				"startTime" : time.start,
 				"endTime" : time.end,
-				"days" : days
+				"days" : days,
+				"createTime" : new Date()
 			}
 			return courseObject;
 		} else {

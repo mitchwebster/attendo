@@ -58,6 +58,34 @@ MongoClient.connect(dbConfig.url, function(err, db) {
             });
 		});
 
+		//untested
+		//must be in the case: SCHOOL-NUMBER-SECTION or SCHOOL-NUMBER => SCHOOL-NUMBER-SECTION- or SCHOOL-NUMBER-
+		//returns an object like {school: "CS", courseNumber: "3510"}
+		function parseCourseTitle(courseTitle) {
+			var output = null;
+			var school = "";
+			var courseNumber = "";
+			if (courseTitle && courseTitle.length && courseTitle.length > 0) {
+				courseTitle += "-"; //add a dash to the end in case we don't get the section
+				var initialDash = courseTitle.indexOf("-");
+				if (initialDash >= 0) {
+					school = courseTitle.substring(0, initialDash);
+					var remaining = courseTitle.substring(initialDash + 1, courseTitle.length);
+					if (remaining && remaining.length && remaining.length > 0) {
+						initialDash = remaining.indexOf("-");
+						if (initialDash >= 0) {
+							courseNumber = remaining.substring(0, initialDash);
+							if (school && school.length > 0 && courseNumber && courseNumber.length > 0) {
+								output = {school: school.toUpperCase(), courseNumber: courseNumber};
+							}
+						}
+					}
+				}
+			}
+			return output;
+		}
+
+		//untested
 		//function to return course objects, or go find the course objects and cache them
 		function findCourseObjectsCrns(crns) {
 			var promise = new Promise(function(resolve, reject) {
@@ -70,6 +98,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 							delete data[i]["school"]
 							delete data[i]["courseNumber"]
 							i++;
+							//TODO: check if the course object is invalid, if it is get the course title and perform an update operation
 						}
 						resolve(data);
 					});
@@ -80,18 +109,63 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			return promise;
 		}
 
-		function findCourseObjectsCourseTitle(courseTitles) {
-			//{school : "CS", courseNumber: "82304"}
-			var promise = new Promise(function(resolve, reject) {
-				if (courseTitles && courseTitles.length > 0) {
-					
+		//untested
+		function updateCourseObject(school, courseNumber, crn) {
+			db.collection('Courses').remove({crn : {$in : crn}, "term": util.findTerm()}, {justOne: true}, function(err, result) {
+				if (err) {
+					console.log(err);
 				} else {
-					
+					parseCoursesat(school, courseNumber);
 				}
+			});
+		}
+
+		//untested
+		function parseCoursesat(school, courseNumber) {
+			var term = util.findTerm();
+			var promise = new Promise(function(resolve, reject) {
+				var searchString = 'http://coursesat.tech/' + term + '/' + school + '/' + courseNumber;
+				http.get(searchString, (res) => {
+						var body = [];
+						res.on('data', function (data) {
+							body.push(data);
+						}).on('end', function () {
+							response = JSON.parse(Buffer.concat(body).toString());
+							var potentialCourses = [];
+							var potentialCourseSections = [];
+							response.sections.forEach(function (section, index, sections) {
+								var incomingObject = {
+									"courseNumber" : response.number,
+									"school" : response.school,
+									"crn" : section.crn,
+									"instructor" : section.meetings[0].instructor[0], //TODO: may need to serialize this info
+									"location" : section.meetings[0].location, //TODO: may need to consider case where there are multiple meetings
+									"time" : section.meetings[0].time,
+									"days" : section.meetings[0].days
+								}
+								potentialCourseSections.push({
+									"courseName" : response.identifier,
+									"section" : section.section_id,
+									"crn" : section.crn
+								})
+								var course = util.createCourse(incomingObject);
+								potentialCourses.push(course);
+							});
+							db.collection('Courses').insert(potentialCourses, {ordered: false}, function(err, result) {
+								if (err) {
+									reject(err);
+								}
+								resolve(potentialCourseSections);
+							});
+						})
+					}).on('error', (e) => {
+					 	reject("Failed HTTP Request");
+				});
 			});
 			return promise;
 		}
 
+		//untested
 		function findUser(username) {
 			var promise = new Promise(function(resolve, reject) {
 				db.collection('Users').findOne({"username": username, "term": util.findTerm()}, {crns : 1, instructor : true, "_id": false}, function(err, result) {
