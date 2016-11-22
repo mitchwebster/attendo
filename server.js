@@ -10,7 +10,7 @@ var MongoClient = require('mongodb').MongoClient;
 var dbConfig = require('./dbConfig');
 var util = require('./util');
 
-var portNumber = 8080;
+var portNumber = 8000;
 var app = express();
 app.use(bodyParser.json())
 
@@ -45,7 +45,6 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 
 		app.post('/api/test2', function(req, res) {
 			// console.log(req);
-			console.log("Someone hit the test api");
 			// res.send({err : false, msg: "API is online"});
 			findCourseObjectsCrns(req.body.crns).done(function (result) {
                 console.log(result);
@@ -56,7 +55,27 @@ MongoClient.connect(dbConfig.url, function(err, db) {
             });
 		});
 
-		//untested
+		app.post('/api/test3', function(req, res) {
+			// console.log(req);
+			// res.send({err : false, msg: "API is online"});
+			var out_titles = [];
+			req.body.courseTitles.forEach(function (element, index, titles) {
+				var curTitle = parseCourseTitle(element);
+				if (curTitle !== null) {
+					out_titles.push(curTitle);
+				}
+			});
+			// out_titles.forEach(function (element, index, titles) {
+			// 	parseCoursesat(element.school, element.courseNumber).done(function (result) {
+	  //               console.log(result);
+	  //           }, function (failure) {
+	  //               console.log(failure);
+	  //           });
+			// });
+			updateCourseObject("ISYE", 3770);
+			res.send("Good test");
+		});
+
 		//must be in the case: SCHOOL-NUMBER-SECTION or SCHOOL-NUMBER => SCHOOL-NUMBER-SECTION- or SCHOOL-NUMBER-
 		//returns an object like {school: "CS", courseNumber: "3510"}
 		function parseCourseTitle(courseTitle) {
@@ -83,12 +102,12 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			return output;
 		}
 
-		//untested
 		//function to return course objects, or go find the course objects and cache them
 		function findCourseObjectsCrns(crns) {
 			var promise = new Promise(function(resolve, reject) {
 				if (crns && crns.length > 0) {
 					//TODO: validate crns
+					var crns_not_found = []; //TODO: figure out how to do this
 					db.collection('Courses').find({crn : {$in : crns}}, {"_id": false, "crn" : true, "courseNumber": true, "school": true, "instructor": true, "location": true}).toArray(function(err, data) {
 						if (err) {
 							console.log(err);
@@ -112,17 +131,19 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 		}
 
 		//untested
-		function updateCourseObject(school, courseNumber, crn) {
-			db.collection('Courses').remove({crn : {$in : crn}, "term": util.findTerm()}, {justOne: true}, function(err, result) {
-				if (err) {
-					console.log(err);
-				} else {
-					parseCoursesat(school, courseNumber);
-				}
-			});
+		function updateCourseObject(school, courseNumber) {
+			courseNumber = util.validate(courseNumber + "", "int");
+			if (school && courseNumber) {
+				db.collection('Courses').remove({"school" : school, "courseNumber" : courseNumber, "term": util.findTerm()}, function(err, result) {
+					if (err) {
+						console.log(err);
+					} else {
+						parseCoursesat(school, courseNumber);
+					}
+				});
+			}
 		}
 
-		//untested
 		function parseCoursesat(school, courseNumber) {
 			var term = util.findTerm();
 			var promise = new Promise(function(resolve, reject) {
@@ -145,17 +166,20 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 									"time" : section.meetings[0].time,
 									"days" : section.meetings[0].days
 								}
+								var course = util.createCourse(incomingObject);
+								if (course) {
+									potentialCourses.push(course);
+								}
 								potentialCourseSections.push({
 									"courseName" : response.identifier,
 									"section" : section.section_id,
-									"crn" : section.crn
-								})
-								var course = util.createCourse(incomingObject);
-								potentialCourses.push(course);
+									"crn" : section.crn,
+									"valid" : course !== null
+								});
 							});
 							db.collection('Courses').insert(potentialCourses, {ordered: false}, function(err, result) {
 								if (err) {
-									reject(err);
+									console.log(err);
 								}
 								resolve(potentialCourseSections);
 							});

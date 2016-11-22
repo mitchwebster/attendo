@@ -96,6 +96,9 @@ function createCourse(incomingObject) {
 		schl = validate(incomingObject.school);
 		crn = validate(incomingObject.crn, "int");
 		instr = validate(incomingObject.instructor);
+		if (instr == null) {
+			instr = "No instructor listed";
+		}
 		location = validate(incomingObject.location);
 		time = validate(incomingObject.time, "customTimeStartStop");
 		days = validate(incomingObject.days);
