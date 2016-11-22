@@ -33,10 +33,8 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 
 		//routes
 		app.post('/api/test', function(req, res) {
-			// console.log(req);
-			console.log("Someone hit the test api");
 			// res.send({err : false, msg: "API is online"});
-			findUser(req.username).done(function (result) {
+			findUser(req.body.username).done(function (result) {
                 console.log(result);
                 res.send(result);
             }, function (failure) {
@@ -49,7 +47,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			// console.log(req);
 			console.log("Someone hit the test api");
 			// res.send({err : false, msg: "API is online"});
-			findCourseObjectsCrns(req.crns).done(function (result) {
+			findCourseObjectsCrns(req.body.crns).done(function (result) {
                 console.log(result);
                 res.send(result);
             }, function (failure) {
@@ -92,6 +90,10 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 				if (crns && crns.length > 0) {
 					//TODO: validate crns
 					db.collection('Courses').find({crn : {$in : crns}}, {"_id": false, "crn" : true, "courseNumber": true, "school": true, "instructor": true, "location": true}).toArray(function(err, data) {
+						if (err) {
+							console.log(err);
+							reject("Courses not found");
+						}
 						var i = 0;
 						while (i < data.length) {
 							data[i].course = data[i].school + " " + data[i].courseNumber;
@@ -165,7 +167,6 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			return promise;
 		}
 
-		//untested
 		function findUser(username) {
 			var promise = new Promise(function(resolve, reject) {
 				db.collection('Users').findOne({"username": username, "term": util.findTerm()}, {crns : 1, instructor : true, "_id": false}, function(err, result) {
@@ -195,7 +196,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 						if (result == null) {
 							res.send({err : false, userExists: false, courses: []});
 						} else {
-							crns = result.crns
+							crns = result.crns;
 							db.collection('Courses').find({crn : {$in : crns}}, {"_id": false, "crn" : true, "courseNumber": true, "school": true, "instructor": true, "location": true}).toArray(function(err, data) {
 								var i = 0;
 								while (i < data.length) {
