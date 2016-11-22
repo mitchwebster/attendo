@@ -46,7 +46,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 		app.post('/api/test2', function(req, res) {
 			// console.log(req);
 			// res.send({err : false, msg: "API is online"});
-			findCourseObjectsCrns(req.body.crns).done(function (result) {
+			util.findCourseObjects(req.body.crns, db).done(function (result) {
                 console.log(result);
                 res.send(result);
             }, function (failure) {
@@ -72,172 +72,29 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 	  //               console.log(failure);
 	  //           });
 			// });
-			updateCourseObject("ISYE", 3770);
+			// updateCourseObject("ISYE", 3770);
 			res.send("Good test");
 		});
-
-		//must be in the case: SCHOOL-NUMBER-SECTION or SCHOOL-NUMBER => SCHOOL-NUMBER-SECTION- or SCHOOL-NUMBER-
-		//returns an object like {school: "CS", courseNumber: "3510"}
-		function parseCourseTitle(courseTitle) {
-			var output = null;
-			var school = "";
-			var courseNumber = "";
-			if (courseTitle && courseTitle.length && courseTitle.length > 0) {
-				courseTitle += "-"; //add a dash to the end in case we don't get the section
-				var initialDash = courseTitle.indexOf("-");
-				if (initialDash >= 0) {
-					school = courseTitle.substring(0, initialDash);
-					var remaining = courseTitle.substring(initialDash + 1, courseTitle.length);
-					if (remaining && remaining.length && remaining.length > 0) {
-						initialDash = remaining.indexOf("-");
-						if (initialDash >= 0) {
-							courseNumber = remaining.substring(0, initialDash);
-							if (school && school.length > 0 && courseNumber && courseNumber.length > 0) {
-								output = {school: school.toUpperCase(), courseNumber: courseNumber};
-							}
-						}
-					}
-				}
-			}
-			return output;
-		}
-
-		//function to return course objects, or go find the course objects and cache them
-		function findCourseObjectsCrns(crns) {
-			var promise = new Promise(function(resolve, reject) {
-				if (crns && crns.length > 0) {
-					//TODO: validate crns
-					var crns_not_found = []; //TODO: figure out how to do this
-					db.collection('Courses').find({crn : {$in : crns}}, {"_id": false, "crn" : true, "courseNumber": true, "school": true, "instructor": true, "location": true}).toArray(function(err, data) {
-						if (err) {
-							console.log(err);
-							reject("Courses not found");
-						}
-						var i = 0;
-						while (i < data.length) {
-							data[i].course = data[i].school + " " + data[i].courseNumber;
-							delete data[i]["school"]
-							delete data[i]["courseNumber"]
-							i++;
-							//TODO: check if the course object is invalid, if it is get the course title and perform an update operation
-						}
-						resolve(data);
-					});
-				} else {
-					reject("No course objects found");
-				}
-			});
-			return promise;
-		}
-
-		//untested
-		function updateCourseObject(school, courseNumber) {
-			courseNumber = util.validate(courseNumber + "", "int");
-			if (school && courseNumber) {
-				db.collection('Courses').remove({"school" : school, "courseNumber" : courseNumber, "term": util.findTerm()}, function(err, result) {
-					if (err) {
-						console.log(err);
-					} else {
-						parseCoursesat(school, courseNumber);
-					}
-				});
-			}
-		}
-
-		function parseCoursesat(school, courseNumber) {
-			var term = util.findTerm();
-			var promise = new Promise(function(resolve, reject) {
-				var searchString = 'http://coursesat.tech/' + term + '/' + school + '/' + courseNumber;
-				http.get(searchString, (res) => {
-						var body = [];
-						res.on('data', function (data) {
-							body.push(data);
-						}).on('end', function () {
-							response = JSON.parse(Buffer.concat(body).toString());
-							var potentialCourses = [];
-							var potentialCourseSections = [];
-							response.sections.forEach(function (section, index, sections) {
-								var incomingObject = {
-									"courseNumber" : response.number,
-									"school" : response.school,
-									"crn" : section.crn,
-									"instructor" : section.meetings[0].instructor[0], //TODO: may need to serialize this info
-									"location" : section.meetings[0].location, //TODO: may need to consider case where there are multiple meetings
-									"time" : section.meetings[0].time,
-									"days" : section.meetings[0].days
-								}
-								var course = util.createCourse(incomingObject);
-								if (course) {
-									potentialCourses.push(course);
-								}
-								potentialCourseSections.push({
-									"courseName" : response.identifier,
-									"section" : section.section_id,
-									"crn" : section.crn,
-									"valid" : course !== null
-								});
-							});
-							db.collection('Courses').insert(potentialCourses, {ordered: false}, function(err, result) {
-								if (err) {
-									console.log(err);
-								}
-								resolve(potentialCourseSections);
-							});
-						})
-					}).on('error', (e) => {
-					 	reject("Failed HTTP Request");
-				});
-			});
-			return promise;
-		}
-
-		function findUser(username) {
-			var promise = new Promise(function(resolve, reject) {
-				db.collection('Users').findOne({"username": username, "term": util.findTerm()}, {crns : 1, instructor : true, "_id": false}, function(err, result) {
-					if (err) {
-						reject(err);
-					} else {
-						if (result == null) {
-							reject("No user found");
-						} else {
-							resolve(result);
-						}
-					}
-				});
-			});
-			return promise;
-		}
 
 		//Post request to find their courses
 		app.post('/api/myCourses', function(req, res) {
 			if (!req.body || !util.validate(req.body.username)) {
 				res.send({err : true, msg: "Invalid username"})
 			} else {
-				db.collection('Users').findOne({"username": req.body.username, "term": util.findTerm()}, {crns : 1, "_id": false}, function(err, result) {
-					if (err) {
-						res.send({err : true, msg: "Invalid Request"});
-					} else {
-						if (result == null) {
-							res.send({err : false, userExists: false, courses: []});
-						} else {
-							crns = result.crns;
-							db.collection('Courses').find({crn : {$in : crns}}, {"_id": false, "crn" : true, "courseNumber": true, "school": true, "instructor": true, "location": true}).toArray(function(err, data) {
-								var i = 0;
-								while (i < data.length) {
-									data[i].course = data[i].school + " " + data[i].courseNumber;
-									delete data[i]["school"]
-									delete data[i]["courseNumber"]
-									i++;
-								}
-								if (err) {
-									res.send({err : true, msg: "Invalid Request"});
-								} else {
-									res.send({err : false,  userExists: true, courses: data});
-								}
-							});
-						}
-					}
-				});
+				util.findUser(req.body.username, db).done(function (userObject) {
+	                util.findCourseObjects(userObject.crns, db).done(function (courseObjects) {
+	                	//successfully got the course objects
+	                	res.send({err : false,  userExists: true, courses: courseObjects, instructor: userObject.instructor});
+	                }, function (failure) {
+	                	//some issue with course objects
+	                	console.log(failure);
+	                	res.send({err : true, msg: "Invalid Request"});
+	                });
+	            }, function (failure) {
+	            	//no user found
+	                console.log(failure);
+	                res.send({err : false, userExists: false, courses: []});
+	            });
 			}
 		});
 
@@ -245,76 +102,32 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			if (!req.body || !req.body.courses || !req.body.courses.length || req.body.courses.length <= 0) {
 				res.send({err : true, msg: "Invalid request"})
 			}
-			var courseTitles = req.body.courses;
 			var asyncCalls = [];
-			var term = util.findTerm();
-
-			courseTitles.forEach(function (element, index, titles) {
+			var out_titles = [];
+			req.body.courses.forEach(function (element, index, titles) {
+				var curTitle = util.parseCourseTitle(element);
+				if (curTitle !== null) {
+					out_titles.push(curTitle);
+				}
+			});
+			out_titles.forEach(function (element, index, titles) {
 				asyncCalls.push(function (callback) {
-					var school = "";
-					var courseNumber = "";
-
-					//TODO: this parsing is not good: need a better way to do this
-					if (element.indexOf("-") >= 0) {
-						var fdash = element.indexOf("-");
-						school = element.substring(0, fdash);
-						var remaining = element.substring(fdash + 1, element.length);
-						if (remaining.indexOf("-") >= 0) {
-							var ndash = remaining.indexOf("-");
-							courseNumber = remaining.substring(0, ndash);
-						} else {
-							console.log("Not sure how to parse this, second dash");
-							callback(null, "Failed Parsing");
-						}
-						var searchString = 'http://coursesat.tech/' + term + '/' + school + '/' + courseNumber;
-						http.get(searchString, (res) => {
-								var body = [];
-								res.on('data', function (data) {
-									body.push(data);
-								}).on('end', function () {
-									response = JSON.parse(Buffer.concat(body).toString());
-									var potentialCourses = [];
-									var potentialCourseSections = [];
-									response.sections.forEach(function (section, index, sections) {
-										var incomingObject = {
-											"courseNumber" : response.number,
-											"school" : response.school,
-											"crn" : section.crn,
-											"instructor" : section.meetings[0].instructor[0], //TODO: may need to serialize this info
-											"location" : section.meetings[0].location, //TODO: may need to consider case where there are multiple meetings
-											"time" : section.meetings[0].time,
-											"days" : section.meetings[0].days
-										}
-										potentialCourseSections.push({
-											"courseName" : response.identifier,
-											"section" : section.section_id,
-											"crn" : section.crn
-										})
-										var course = util.createCourse(incomingObject);
-										potentialCourses.push(course);
-									});
-									db.collection('Courses').insert(potentialCourses, {ordered: false}, function(err, result) {
-										callback(null, potentialCourseSections);
-									});
-								})
-							}).on('error', (e) => {
-							 	callback(null, "Failed HTTP Request");
-						});
-					} else {
-						console.log("Not sure how to parse this:", element);
-						callback(null, "Failed Parsing");
-					}
+					util.lookupCourse(element.school, element.courseNumber, db).done(function (result) {
+		                callback(null, result);
+		            }, function (failure) {
+		                callback(null, failure);
+		            });
 				});
 			});
 			async.parallel(asyncCalls, function(err, results) {
 				var output = {};
 				for (var i = 0; i < results.length; i++) {
-					if (results[i] !== "Failed HTTP Request" && results[i] !== "Failed Parsing") {
+					if (results[i] !== "Failed HTTP Request" && results[i] !== "Failed Parsing" && results[i] !== "Not JSON") {
 						for (var j = 0; j < results[i].length; j++) {
 							if (results[i][j].courseName in output) {
-								output[results[i][j].courseName].push({section: results[i][j].section, crn: results[i][j].crn});
+								output[results[i][j].courseName].push({section: results[i][j].section, crn: results[i][j].crn, valid: results[i][j].valid});
 							} else {
-								output[results[i][j].courseName] = [{section: results[i][j].section, crn: results[i][j].crn}];
+								output[results[i][j].courseName] = [{section: results[i][j].section, crn: results[i][j].crn, valid: results[i][j].valid}];
 							}
 						}
 					}
