@@ -1,0 +1,29 @@
+<md-card>
+  	<md-card-title>
+  		<md-card-title-text>
+	      <span class="md-headline">Attendance Data for {{student.username}} in {{course.course}}</span>
+	    </md-card-title-text>
+	</md-card-title>
+    <md-card-content>
+	      <!-- <div ui-calendar="uiConfig.calendar" ng-model="eventSources"></div> -->
+	 	<div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div> 
+    </md-card-content>
+</md-card>
+
+<md-card>
+  	<md-card-title>
+  		<md-card-title-text>
+	      <span class="md-headline">Edit Attendance for {{student.username}}</span>
+	    </md-card-title-text>
+	</md-card-title>
+    <md-card-content>
+	      <!-- <div ui-calendar="uiConfig.calendar" ng-model="eventSources"></div> -->
+	      <div flex-gt-xs>
+			<h4>Select a date:</h4>
+			<md-datepicker ng-model="myDate" md-placeholder="Enter date"></md-datepicker>
+			</div>
+    </md-card-content>
+</md-card>
+
+
+<md-button ng-click="checkin()" class="md-raised md-primary">Check In</md-button>

@@ -1,5 +1,4 @@
 var Promise = require('promise');
-var time = require('time');
 var http = require('http');
 
 function findTerm() {
@@ -95,6 +94,13 @@ function validate(someValue, potentialCondtion) {
 		}
 	} else if (potentialCondtion === "someFutureFormat") {
 		console.log("Have this here so we can check other formats down the line");
+	} else if (potentialCondtion === "date") {
+		try {
+		    date = Date.parse(someValue);
+		    return date;
+		} catch (e) {
+		    return null;
+		}
 	} else {
 		return someValue;//just return the string
 	}
@@ -164,7 +170,7 @@ function parseCourseTitle(courseTitle) {
 }
 
 //function to return course objects, or go find the course objects and cache them
-function findCourseObjects(crns, db) {
+function findCourseObjects(crns, db, time) {
 	var promise = new Promise(function(resolve, reject) {
 		if (crns && crns.length > 0) {
 			//TODO: validate crns
@@ -314,6 +320,81 @@ function findUser(username, db) {
 	return promise;
 }
 
+function findStudents(crn, db) {
+	var promise = new Promise(function(resolve, reject) {
+		db.collection('Users').find({"term" : findTerm(), "crns": {"$in" : crn}, "instructor": false}, {"username": true, "_id": false}).toArray(function(err, data) {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(data);
+			}
+		});
+	});
+	return promise;
+}
+
+function createAttendanceRecord(username, crn, routerLocation, curTime, db, time) {
+	var term = findTerm();
+	var promise = new Promise(function(resolve, reject) {
+		findUser(username, db).done(function (userObject) {
+			if (userObject.crns.indexOf(crn) >= 0) {
+				db.collection('Courses').findOne({crn : crn, term: term}, {"_id": false, "crn" : true, "location": true, "startTime": true, "days": true}, function(err, result) {
+					if (err || result === null) {
+						res.send({err : true, msg: "Invalid Request"});
+					} else {
+						var addRecord = false;
+						var attendanceRecord = {};
+						if (curTime) {
+							//the instructor has sent in this request
+							addRecord = true;
+							attendanceObject = {
+								"username": username,
+								"term" : term,
+								"crn" : crn,
+								"time" : new Date(curTime)
+							}
+						} else {
+							var now = new time.Date();
+							now.setTimezone("America/New_York");
+							var startDate = startTimeNow(result.startTime);
+							if (util.dateDiffMinutes(startDate, now) < 5 && util.dayMapper(result.days, now)) {
+								//TODO: continue with location testing
+								//
+								//need to create a module to perform this check
+								addRecord = true;
+								attendanceObject = {
+									"username": username,
+									"term" : term,
+									"crn" : crn,
+									"time" : new Date()
+								}
+							}
+						}
+						if (addRecord) {
+							db.collection('Attendance').insert(attendanceObject, {w:1}, function(err, result) {
+								if (err) {
+									reject("Unable to store the attendance record");
+								} else {
+									resolve("Success");
+								}
+							});
+						} else {
+							reject("Invalid parameters");
+						}
+					}
+				});
+			} else {
+            	reject("User does not belong to this course");
+			}
+        }, function (failure) {
+        	//no user found
+            reject("User does not exist");
+        });
+	});
+
+	return promise;
+}
+
 
 utilPkg = {}
 utilPkg.findTerm = findTerm;
@@ -329,5 +410,7 @@ utilPkg.findCourseObjects = findCourseObjects;
 utilPkg.updateCourseObject = updateCourseObject;
 utilPkg.parseCoursesat = parseCoursesat;
 utilPkg.findUser = findUser;
+utilPkg.findStudents = findStudents;
 utilPkg.lookupCourse = lookupCourse;
+utilPkg.createAttendanceRecord = createAttendanceRecord;
 module.exports = utilPkg;

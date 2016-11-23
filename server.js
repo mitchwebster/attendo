@@ -10,7 +10,7 @@ var MongoClient = require('mongodb').MongoClient;
 var dbConfig = require('./dbConfig');
 var util = require('./util');
 
-var portNumber = 8000;
+var portNumber = 8080;
 var app = express();
 app.use(bodyParser.json())
 
@@ -32,49 +32,16 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 		});
 
 		//routes
-		app.post('/api/test', function(req, res) {
-			// res.send({err : false, msg: "API is online"});
-			findUser(req.body.username).done(function (result) {
-                console.log(result);
-                res.send(result);
-            }, function (failure) {
-                console.log(failure);
-                res.send(failure);
-            });
-		});
-
-		app.post('/api/test2', function(req, res) {
-			// console.log(req);
-			// res.send({err : false, msg: "API is online"});
-			util.findCourseObjects(req.body.crns, db).done(function (result) {
-                console.log(result);
-                res.send(result);
-            }, function (failure) {
-                console.log(failure);
-                res.send(failure);
-            });
-		});
-
-		app.post('/api/test3', function(req, res) {
-			// console.log(req);
-			// res.send({err : false, msg: "API is online"});
-			var out_titles = [];
-			req.body.courseTitles.forEach(function (element, index, titles) {
-				var curTitle = parseCourseTitle(element);
-				if (curTitle !== null) {
-					out_titles.push(curTitle);
-				}
-			});
-			// out_titles.forEach(function (element, index, titles) {
-			// 	parseCoursesat(element.school, element.courseNumber).done(function (result) {
-	  //               console.log(result);
-	  //           }, function (failure) {
-	  //               console.log(failure);
-	  //           });
-			// });
-			// updateCourseObject("ISYE", 3770);
-			res.send("Good test");
-		});
+		// app.post('/api/test', function(req, res) {
+		// 	// res.send({err : false, msg: "API is online"});
+		// 	findUser(req.body.username).done(function (result) {
+  //               console.log(result);
+  //               res.send(result);
+  //           }, function (failure) {
+  //               console.log(failure);
+  //               res.send(failure);
+  //           });
+		// });
 
 		//Post request to find their courses
 		app.post('/api/myCourses', function(req, res) {
@@ -82,7 +49,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 				res.send({err : true, msg: "Invalid username"})
 			} else {
 				util.findUser(req.body.username, db).done(function (userObject) {
-	                util.findCourseObjects(userObject.crns, db).done(function (courseObjects) {
+	                util.findCourseObjects(userObject.crns, db, time).done(function (courseObjects) {
 	                	//successfully got the course objects
 	                	res.send({err : false,  userExists: true, courses: courseObjects, instructor: userObject.instructor});
 	                }, function (failure) {
@@ -196,7 +163,6 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			}
 		});
 
-
 		app.post('/api/course/roster', function(req, res) {
 				if (!req.body) {
 					res.send({err : true, msg: "Invalid request"});
@@ -206,21 +172,22 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 					if (!username || !crn) {
 						res.send({err : true, msg: "Invalid request"});
 					} else {
-						//TODO: need to check if this user is a teacher, and if so then go get all of the students that are in this course
-						var curTerm = util.findTerm();
-						db.collection('Users').findOne({"username": username, "term": curTerm, "instructor": true}, {crns : 1, "_id": false}, function(err, result) {
-							if (err) {
-								res.send({err : true, msg: "Invalid request"});
+						util.findUser(req.body.username, db).done(function (userObject) {
+							if (userObject.instructor && userObject.crns.indexOf(crn) >= 0) {
+								util.findStudents(userObject.crns, db, time).done(function (rosterData) {
+				                	res.send({err : false,  roster: rosterData});
+				                }, function (failure) {
+				                	console.log(failure);
+				                	res.send({err : true, msg: "Invalid Request"});
+				                });
 							} else {
-								db.collection('Users').find({"term" : curTerm, "crns": crn, "instructor": false}, {"username": true, "_id": false}).toArray(function(err, data) {
-									if (err) {
-										res.send({err : true, msg: "Database issue"});
-									} else {
-										res.send({err : false, roster: data});
-									}
-								});
+			                	res.send({err : true, msg: "Invalid Permissions"});
 							}
-						});
+			            }, function (failure) {
+			            	//no user found
+			                console.log(failure);
+			                res.send({err : true, msg: "Invalid Permissions"});
+			            });
 					}
 				}
 		});
@@ -234,45 +201,32 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 				var crn = util.validate(req.body.crn, "int");
 				var rLoc = util.validate(req.body.routerLocation);
 				var term = util.findTerm();
-				if (!username || !crn || !rLoc) {
+				var pastDate = util.validate(req.body.pastDate, "date");
+				if (!username || !crn) {
 					res.send({err : true, msg: "Invalid request"});
 				} else {
-					db.collection('Courses').findOne({crn : crn, term: term}, {"_id": false, "crn" : true, "location": true, "startTime": true, "days": true}, function(err, result) {
-						if (err || result === null) {
-							res.send({err : true, msg: "Invalid Request"});
-						} else {
-							//Time validation
-							var now = new time.Date();
-							now.setTimezone("America/New_York");
-							var startDate = util.startTimeNow(result.startTime);
-							if (util.dateDiffMinutes(startDate, now) < 5 && util.dayMapper(result.days, now)) {
-								//TODO: continue with location testing
-								var attendanceObject = {
-									"username": username,
-									"term" : term,
-									"crn" : crn,
-									"time" : new Date()
-								}
-
-								db.collection('Attendance').insert(attendanceObject, {w:1}, function(err, result) {
-									if (err) {
-										res.send({err : true, msg: "Invalid Request"});
-									} else {
-										res.send({err : false, msg: "Checked In"});
-									}
-								});
-							} else {
-								//failed time validation
-								res.send({err : true, msg: "Invalid request"});
-							}
-						}
-					});
+					if (pastDate) {
+						util.createAttendanceRecord(username, crn, rLoc, pastDate, db, time).done(function (rosterData) {
+		                	res.send({err : false});
+		                }, function (failure) {
+		                	console.log(failure);
+		                	res.send({err : true, msg: "Invalid Request"});
+		                });
+					} else if (rLoc) {
+						util.createAttendanceRecord(username, crn, rLoc, null, db, time).done(function (rosterData) {
+		                	res.send({err : false});
+		                }, function (failure) {
+		                	console.log(failure);
+		                	res.send({err : true, msg: "Invalid Request"});
+		                });
+					} else {
+						res.send({err : true, msg: "Invalid request"});
+					}
 				}
 			}
 		});
 
-		//TODO: should probably be paged 
-		//TODO: may need some sort of authentication here
+		//TODO: should probably be paged
 		app.post('/api/attendanceData', function(req, res) {
 			if (!req.body || !util.validate(req.body.username)) {
 				res.send({err : true, msg: "Invalid username"})

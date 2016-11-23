@@ -2,11 +2,11 @@
 <h1> Welcome {{user.username}}</h1>
 <h3> You need to register the courses you are in </h3>
 	<form name="courseForm" ng-submit="submitUser()">
-		<div ng-repeat="(key, value) in coursePromptCourses">
+		<div ng-repeat="courseObject in coursePromptCourses">
 			<div layout="row" layout-align="space-between center">
-		        <span>{{key}}</span>
-		        <md-select ng-model="selected[key]" placeholder="Section" required="" class="md-no-underline">
-		          <md-option ng-repeat="course in value" value="{{course.crn}}">{{course.section}}</md-option>
+		        <span>{{courseObject.courseName}}</span>
+		        <md-select ng-model="selected[courseObject.courseName]" placeholder="Section" required="" class="md-no-underline">
+		          <md-option ng-disabled="{{!sectionObject.valid}}" ng-repeat="sectionObject in courseObject.sections" value="{{sectionObject.crn}}">{{sectionObject.section}}</md-option>
 		        </md-select>
 		      </div>
 		</div>

@@ -1,0 +1,19 @@
+<md-card>
+  	<md-card-title>
+  		<md-card-title-text>
+	      <span class="md-headline">Students in {{course.course}}</span>
+	    </md-card-title-text>
+	</md-card-title>
+    <md-card-content>
+    </md-card-content>
+</md-card>
+
+<md-card ng-repeat="student in students" ng-click="selectStudent(student)">
+  	<md-card-title>
+  		<md-card-title-text>
+	      <span class="md-headline">{{student.username}}</span>
+	    </md-card-title-text>
+	</md-card-title>
+    <md-card-content>
+    </md-card-content>
+</md-card>

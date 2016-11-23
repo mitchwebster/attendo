@@ -1,6 +1,6 @@
 (function(angular, undefined) {
     "use strict";
-    angular.module('attendoApp', ['ngMaterial', "ui.router", 'ngclipboard', 'mwl.calendar'])
+    angular.module('attendoApp', ['ngMaterial', "ui.router", 'ngclipboard', 'ui.calendar'])
     .config(function($stateProvider, $urlRouterProvider) {
 
         $urlRouterProvider.otherwise('/login');
@@ -27,7 +27,25 @@
                 user: null
             }
         })
-        ;
+        .state('roster', {
+            url: "/roster",
+            controller: 'rosterCtrl',
+            templateUrl: "views/rosterview.html",
+            params: {
+                course: null,
+                user: null
+            }
+        })
+        .state('attendance', {
+            url: "/attendance",
+            controller: 'attendanceCtrl',
+            templateUrl: "views/attendance.html",
+            params: {
+                course: null,
+                user: null,
+                student: null
+            }
+        });
     })
     .factory('userService', function () {
 
@@ -36,7 +54,8 @@
                 model: {
                     username: '',
                     courses: [],
-                    currentCourse: ''
+                    currentCourse: '',
+                    currentStudent: ''
                 },
 
                 saveUsername: function (username) {
@@ -59,6 +78,13 @@
                 getCurrentCourse: function () {
                     service.model.currentCourse = angular.fromJson(sessionStorage.currentCourse);
                     return service.model.currentCourse;
+                },
+                saveStudent: function (curStudent) {
+                    sessionStorage.currentStudent = angular.toJson(curStudent);
+                },
+                getStudent: function () {
+                    service.model.currentStudent = angular.fromJson(sessionStorage.currentStudent);
+                    return service.model.currentStudent;
                 }
             }
             return service;
@@ -87,19 +113,21 @@
                         console.log(response);
                         if (response.userExists) {
                             $scope.courses = response.courses;
+                            $scope.isInstructor = response.instructor;
                         } else {
                             $scope.userExists = false;
                             //TODO pull the tabs from tsquare
-                            var tempLabels = {courses : ["CS-3312-JIA,JID,LMC-", "CS-3510-A", "CS-4261-A", "CS-4641-A", "ECON-3300-EJ"]};
+                            var tempLabels = {courses : ["CS-3312-JIA,JID,LMC-", "CS-3510-A", "CS-4261-A", "CS-4641-A", "ECON-3300-EJ", "ISYE-3770"]};
                             $http.post('/api/coursePrompt', tempLabels).then(function successCallback(response) {
                                 response = response.data;
                                 if (response.err) {
                                     console.log(response);
                                 } else {
-                                    $scope.coursePromptCourses = createCourseObjects(response.courses);
+                                    // $scope.coursePromptCourses = createCourseObjects(response.courses);
+                                    console.log(response.courses);
+                                    $scope.coursePromptCourses = response.courses;
                                     console.log($scope.coursePromptCourses);
                                 }
-                                console.log(response);
                             }, function failedCallback(response) {
                                 console.log(response);
                             });
@@ -109,21 +137,14 @@
                     console.log(response);
                 };
 
-                function createCourseObjects(arr) {
-                    var output = {}
-                    for (var i = 0; i < arr.length; i++) {
-                        if (arr[i].courseName in output) {
-                            output[arr[i].courseName].push({section: arr[i].section, crn: arr[i].crn});
-                        } else {
-                            output[arr[i].courseName] = [{section: arr[i].section, crn: arr[i].crn}];
-                        }
-                    }
-                    return output;
-                }
-
                 $scope.selectClass = function(course) {
                     userService.saveCurrentCourse(course);
-                    $state.go('course', {course: course, user: $scope.user.username});
+                    userService.saveUsername($scope.user.username);
+                    if ($scope.isInstructor) {
+                        $state.go('roster', {course: course, user: $scope.user.username});
+                    } else {
+                        $state.go('course', {course: course, user: $scope.user.username});
+                    }
                 }
 
                 $scope.submitUser = function() {
@@ -164,7 +185,7 @@
             }
             // };
         })
-    .controller('singleCourseCtrl', function($scope, $http, $mdDialog, $state, $stateParams, userService) {
+    .controller('singleCourseCtrl', function($scope, $http, $mdDialog, $state, $stateParams, userService, $compile) {
                 // $scope.submitLogin = function() {
                     //need to submit the user to CAS
                     // alert(JSON.stringify($scope.user));
@@ -173,15 +194,13 @@
                     $scope.course = $stateParams.course ? $stateParams.course : userService.getCurrentCourse();
                     $scope.user = $stateParams.user ? $stateParams.user : userService.getUsername();
 
-                    //calendar attributes
-                    $scope.calendarView = "month";
-                    $scope.viewDate = new Date();
-
                     var greenOuter = '#405738';
                     var greenInner = '#A0DB8E';
 
-                    $scope.events = [];
-
+                    $scope.alertOnEventClick = function( date, jsEvent, view){
+                        $scope.alertMessage = (date.title + ' was clicked ');
+                        alert($scope.alertMessage);
+                    };
 
                     var postParams = {username: $scope.user};
                     if ($scope.course.crn) {
@@ -195,31 +214,41 @@
                         } else {
                             for (var i = 0; i < response.attendance.length; i++) {
                                 var curDate = new Date(response.attendance[i].time);
-                                $scope.events.push({
-                                    title: 'No Title', // The title of the event
-                                    startsAt: curDate, // A javascript date object for when the event starts
-                                    endsAt: curDate, // Optional - a javascript date object for when the event ends
-                                    color: { // can also be calendarConfig.colorTypes.warning for shortcuts to the deprecated event types
-                                      primary: '#e3bc08', // the primary event color (should be darker than secondary)
-                                      secondary: '#fdf1ba' // the secondary event color (should be lighter than primary)
-                                    },
-                                    actions: [{ // an array of actions that will be displayed next to the event title
-                                      label: '<i class=\'glyphicon glyphicon-pencil\'></i>', // the label of the action
-                                      cssClass: 'edit-action', // a CSS class that will be added to the action element so you can implement custom styling
-                                      onClick: function(args) { // the action that occurs when it is clicked. The first argument will be an object containing the parent event
-                                        console.log('Edit event', args.calendarEvent);
-                                      }
-                                    }],
-                                    draggable: false, //Allow an event to be dragged and dropped
-                                    resizable: false, //Allow an event to be resizable
-                                    incrementsBadgeTotal: false, //If set to false then will not count towards the badge total amount on the month and year view
-                                    recursOn: 'year', // If set the event will recur on the given period. Valid values are year or month
-                                    cssClass: 'a-css-class-name', //A CSS class (or more, just separate with spaces) that will be added to the event when it is displayed on each view. Useful for marking an event as selected / active etc
-                                    allDay: false // set to true to display the event as an all day event on the day view
-                                });
                             }
                         }
                     });
+
+                    var date = new Date();
+                    var d = date.getDate();
+                    var m = date.getMonth();
+                    var y = date.getFullYear();
+                    /* event source that contains custom events on the scope */
+                    $scope.events = [
+                      {title: 'Birthday Party',start: new Date(y, m, d + 1, 19, 0),end: new Date(y, m, d + 1, 22, 30),allDay: false}
+                    ];
+                    /* alert on eventClick */
+                    $scope.alertOnEventClick = function( date, jsEvent, view){
+                        $scope.alertMessage = (date.title + ' was clicked ');
+                        alert($scope.alertMessage);
+                    };
+                    
+                    /* config object */
+                    $scope.uiConfig = {
+                      calendar:{
+                        height: 450,
+                        editable: true,
+                        header:{
+                          left: 'title',
+                          center: '',
+                          right: 'today prev,next'
+                        },
+                        eventClick: $scope.alertOnEventClick
+                      }
+                    };
+
+                    /* event sources array*/
+                    $scope.eventSources = [$scope.events];
+
 
                     $scope.checkin = function(){
                         // console.log("Trying to check in");
@@ -233,39 +262,56 @@
                             }
                         });
                     }
+            })
 
-                    // $scope.events = [
-                    //   {
-                    //     title: 'My event title', // The title of the event
-                    //     startsAt: new Date(), // A javascript date object for when the event starts
-                    //     endsAt: new Date(), // Optional - a javascript date object for when the event ends
-                    //     color: { // can also be calendarConfig.colorTypes.warning for shortcuts to the deprecated event types
-                    //       primary: '#e3bc08', // the primary event color (should be darker than secondary)
-                    //       secondary: '#fdf1ba' // the secondary event color (should be lighter than primary)
-                    //     },
-                    //     actions: [{ // an array of actions that will be displayed next to the event title
-                    //       label: '<i class=\'glyphicon glyphicon-pencil\'></i>', // the label of the action
-                    //       cssClass: 'edit-action', // a CSS class that will be added to the action element so you can implement custom styling
-                    //       onClick: function(args) { // the action that occurs when it is clicked. The first argument will be an object containing the parent event
-                    //         console.log('Edit event', args.calendarEvent);
-                    //       }
-                    //     }],
-                    //     draggable: false, //Allow an event to be dragged and dropped
-                    //     resizable: false, //Allow an event to be resizable
-                    //     incrementsBadgeTotal: false, //If set to false then will not count towards the badge total amount on the month and year view
-                    //     recursOn: 'year', // If set the event will recur on the given period. Valid values are year or month
-                    //     cssClass: 'a-css-class-name', //A CSS class (or more, just separate with spaces) that will be added to the event when it is displayed on each view. Useful for marking an event as selected / active etc
-                    //     allDay: false // set to true to display the event as an all day event on the day view
-                    //   }
-                    // ];
+    .controller('rosterCtrl', function($scope, $http, $mdDialog, $state, $stateParams, userService, $compile) {
 
+                    $scope.course = $stateParams.course ? $stateParams.course : userService.getCurrentCourse();
+                    $scope.user = $stateParams.user ? $stateParams.user : userService.getUsername();
+                    
+                    var postParams = {username: $scope.user};
+                    if ($scope.course.crn) {
+                        postParams["crn"] = $scope.course.crn + "";
+                    }
 
+                    $scope.selectStudent = function(student) {
+                        userService.saveCurrentCourse($scope.course);
+                        userService.saveUsername($scope.user);
+                        userService.saveStudent(student);
+                        $state.go('attendance', {course: $scope.course, user: $scope.user.username, student: student});
+                    }
 
+                    $http.post('/api/course/roster', postParams).then(function successCallback(response) {
+                        response = response.data;
+                        if (response.err) {
+                            console.log(response);
+                        } else {
+                            $scope.students = response.roster;
+                        }
+                    });
+            })
+    .controller('attendanceCtrl', function($scope, $http, $mdDialog, $state, $stateParams, userService, $compile) {
 
+                    $scope.course = $stateParams.course ? $stateParams.course : userService.getCurrentCourse();
+                    $scope.user = $stateParams.user ? $stateParams.user : userService.getUsername();
+                    $scope.student = $stateParams.student ? $stateParams.student : userService.getStudent();
+                    
+                    var postParams = {username: $scope.student.username};
+                    if ($scope.course.crn) {
+                        postParams["crn"] = $scope.course.crn + "";
+                    }
 
-
-
-                // };
+                    $http.post('/api/attendanceData', postParams).then(function successCallback(response) {
+                        response = response.data;
+                        if (response.err) {
+                            console.log(response);
+                        } else {
+                            for (var i = 0; i < response.attendance.length; i++) {
+                                var curDate = new Date(response.attendance[i].time);
+                            }
+                        }
+                    });
             });
+
 
 })(angular);
