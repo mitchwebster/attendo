@@ -24,3 +24,14 @@
 			<md-button ng-click="addAttendance(addDate)" class="md-raised md-primary">Add Attendance</md-button>
     </md-card-content>
 </md-card>
+<md-card ng-if="currentRecord != null">
+  	<md-card-title>
+  		<md-card-title-text>
+	      <span class="md-headline">Edit Attendance Record</span>
+	    </md-card-title-text>
+	</md-card-title>
+    <md-card-content>
+	      <h4>Checked in at: {{currentRecord.start | date}}</h4>
+	      <h4>Info: {{currentRecord.additionalInfo | json}}</h4>
+    </md-card-content>
+</md-card>

@@ -298,6 +298,7 @@
                     }
 
                     $scope.events = [];
+                    $scope.currentRecord = null;
 
                     $scope.eventRender = function( event, element, view ) { 
                         element.attr({'tooltip': event.title,
@@ -319,7 +320,7 @@
                                     var curDate = new Date(response.attendance[i].time);
                                     var endDate = new Date(curDate);
                                     endDate.setMinutes(endDate.getMinutes() + 60);
-                                    $scope.events.push({title: 'Attendance',start: curDate, end: endDate,allDay: false});
+                                    $scope.events.push({title: 'Attendance',start: curDate, end: endDate,allDay: false, additionalInfo: {msg: "hello world"}});
                                 }
                             }
                             $scope.renderCalender();
@@ -327,8 +328,7 @@
                     }
                     /* alert on eventClick */
                     $scope.alertOnEventClick = function( date, jsEvent, view){
-                        $scope.alertMessage = (date.title + ' was clicked ');
-                        alert($scope.alertMessage);
+                        $scope.currentRecord = date;
                     };
 
                     $scope.renderCalender = function() {
@@ -366,7 +366,6 @@
                             if (response.err) {
                                 console.log(response);
                             }
-                            //TODO:need to re-render
                             $scope.refreshEvents();
                         });
                     }
