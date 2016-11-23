@@ -186,26 +186,21 @@
             // };
         })
     .controller('singleCourseCtrl', function($scope, $http, $mdDialog, $state, $stateParams, userService, $compile) {
-                // $scope.submitLogin = function() {
-                    //need to submit the user to CAS
-                    // alert(JSON.stringify($scope.user));
-                    //need to switch views too
-                    // $state.go('courses');
                     $scope.course = $stateParams.course ? $stateParams.course : userService.getCurrentCourse();
                     $scope.user = $stateParams.user ? $stateParams.user : userService.getUsername();
-
-                    var greenOuter = '#405738';
-                    var greenInner = '#A0DB8E';
-
-                    $scope.alertOnEventClick = function( date, jsEvent, view){
-                        $scope.alertMessage = (date.title + ' was clicked ');
-                        alert($scope.alertMessage);
-                    };
 
                     var postParams = {username: $scope.user};
                     if ($scope.course.crn) {
                         postParams["crn"] = $scope.course.crn + "";
                     }
+
+                    $scope.events = [];
+
+                    $scope.eventRender = function( event, element, view ) { 
+                        element.attr({'tooltip': event.title,
+                                     'tooltip-append-to-body': true});
+                        $compile(element)($scope);
+                    };
 
                     $http.post('/api/attendanceData', postParams).then(function successCallback(response) {
                         response = response.data;
@@ -214,22 +209,22 @@
                         } else {
                             for (var i = 0; i < response.attendance.length; i++) {
                                 var curDate = new Date(response.attendance[i].time);
+                                var endDate = new Date(curDate);
+                                endDate.setMinutes(endDate.getMinutes() + 60);
+                                $scope.events.push({title: 'Attendance',start: curDate, end: endDate,allDay: false});
                             }
                         }
+                        console.log($scope.events);
+                        $scope.renderCalender();
                     });
-
-                    var date = new Date();
-                    var d = date.getDate();
-                    var m = date.getMonth();
-                    var y = date.getFullYear();
-                    /* event source that contains custom events on the scope */
-                    $scope.events = [
-                      {title: 'Birthday Party',start: new Date(y, m, d + 1, 19, 0),end: new Date(y, m, d + 1, 22, 30),allDay: false}
-                    ];
                     /* alert on eventClick */
                     $scope.alertOnEventClick = function( date, jsEvent, view){
                         $scope.alertMessage = (date.title + ' was clicked ');
                         alert($scope.alertMessage);
+                    };
+
+                    $scope.renderCalender = function() {
+                      $("#attendanceCalendar").fullCalendar('render');
                     };
                     
                     /* config object */
@@ -242,7 +237,8 @@
                           center: '',
                           right: 'today prev,next'
                         },
-                        eventClick: $scope.alertOnEventClick
+                        eventClick: $scope.alertOnEventClick,
+                        eventRender: $scope.eventRender
                       }
                     };
 
@@ -301,16 +297,79 @@
                         postParams["crn"] = $scope.course.crn + "";
                     }
 
-                    $http.post('/api/attendanceData', postParams).then(function successCallback(response) {
-                        response = response.data;
-                        if (response.err) {
-                            console.log(response);
-                        } else {
-                            for (var i = 0; i < response.attendance.length; i++) {
-                                var curDate = new Date(response.attendance[i].time);
+                    $scope.events = [];
+
+                    $scope.eventRender = function( event, element, view ) { 
+                        element.attr({'tooltip': event.title,
+                                     'tooltip-append-to-body': true});
+                        $compile(element)($scope);
+                    };
+
+                    $scope.refreshEvents = function () {
+                        $http.post('/api/attendanceData', postParams).then(function successCallback(response) {
+                            response = response.data;
+                            if (response.err) {
+                                console.log(response);
+                            } else {
+                                var tempLength = $scope.events.length;
+                                for (var i = 0; i < tempLength; i++) {
+                                    $scope.events.pop();   
+                                }
+                                for (var i = 0; i < response.attendance.length; i++) {
+                                    var curDate = new Date(response.attendance[i].time);
+                                    var endDate = new Date(curDate);
+                                    endDate.setMinutes(endDate.getMinutes() + 60);
+                                    $scope.events.push({title: 'Attendance',start: curDate, end: endDate,allDay: false});
+                                }
                             }
-                        }
-                    });
+                            $scope.renderCalender();
+                        });
+                    }
+                    /* alert on eventClick */
+                    $scope.alertOnEventClick = function( date, jsEvent, view){
+                        $scope.alertMessage = (date.title + ' was clicked ');
+                        alert($scope.alertMessage);
+                    };
+
+                    $scope.renderCalender = function() {
+                      $("#attendanceCalendar").fullCalendar('render');
+                    };
+                    
+                    /* config object */
+                    $scope.uiConfig = {
+                      calendar:{
+                        height: 450,
+                        editable: true,
+                        header:{
+                          left: 'title',
+                          center: '',
+                          right: 'today prev,next'
+                        },
+                        eventClick: $scope.alertOnEventClick,
+                        eventRender: $scope.eventRender
+                      }
+                    };
+
+                    /* event sources array*/
+                    $scope.eventSources = [$scope.events];
+                    $scope.refreshEvents();
+
+                    $scope.addAttendance = function(addDate){
+                        var params = {
+                            username : $scope.student.username,
+                            pastDate : addDate + "",
+                            instructor : $scope.user,
+                            crn : $scope.course.crn + ""
+                        };
+                        $http.post('/api/checkin', params).then(function successCallback(response) {
+                            response = response.data;
+                            if (response.err) {
+                                console.log(response);
+                            }
+                            //TODO:need to re-render
+                            $scope.refreshEvents();
+                        });
+                    }
             });
 
 

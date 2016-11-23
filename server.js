@@ -202,16 +202,27 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 				var rLoc = util.validate(req.body.routerLocation);
 				var term = util.findTerm();
 				var pastDate = util.validate(req.body.pastDate, "date");
+				var instructor = util.validate(req.body.instructor);
 				if (!username || !crn) {
 					res.send({err : true, msg: "Invalid request"});
 				} else {
-					if (pastDate) {
-						util.createAttendanceRecord(username, crn, rLoc, pastDate, db, time).done(function (rosterData) {
-		                	res.send({err : false});
-		                }, function (failure) {
-		                	console.log(failure);
-		                	res.send({err : true, msg: "Invalid Request"});
-		                });
+					if (pastDate && instructor) {
+						util.findUser(instructor, db).done(function (userObject) {
+							if (userObject.instructor && userObject.crns.indexOf(crn) >= 0) {
+								util.createAttendanceRecord(username, crn, rLoc, pastDate, db, time).done(function (rosterData) {
+				                	res.send({err : false});
+				                }, function (failure) {
+				                	console.log(failure);
+				                	res.send({err : true, msg: "Invalid Request"});
+				                });
+							} else {
+			                	res.send({err : true, msg: "Invalid Permissions"});
+							}
+			            }, function (failure) {
+			            	//no user found
+			                console.log(failure);
+			                res.send({err : true, msg: "Invalid Permissions"});
+			            });
 					} else if (rLoc) {
 						util.createAttendanceRecord(username, crn, rLoc, null, db, time).done(function (rosterData) {
 		                	res.send({err : false});

@@ -357,7 +357,7 @@ function createAttendanceRecord(username, crn, routerLocation, curTime, db, time
 							var now = new time.Date();
 							now.setTimezone("America/New_York");
 							var startDate = startTimeNow(result.startTime);
-							if (util.dateDiffMinutes(startDate, now) < 5 && util.dayMapper(result.days, now)) {
+							if (dateDiffMinutes(startDate, now) < 5 && dayMapper(result.days, now)) {
 								//TODO: continue with location testing
 								//
 								//need to create a module to perform this check
