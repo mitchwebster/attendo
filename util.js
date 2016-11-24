@@ -67,7 +67,7 @@ function startTimeNow(someTime){
 }
 
 function validate(someValue, potentialCondtion) {
-	if (someValue === null || (typeof someValue !== "string") || someValue.length <= 0) {
+	if (someValue == undefined || someValue === null || (typeof someValue !== "string") || someValue.length <= 0) {
 		console.log("Invalid string input")
 		return null;
 	}

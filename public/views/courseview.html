@@ -46,3 +46,18 @@
 	 	<div id="attendanceCalendar" ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div> 
     </md-card-content>
 </md-card>
+<md-card>
+  	<md-card-title>
+  		<md-card-title-text>
+	      <span class="md-headline">Submit an Attendance Request</span>
+	    </md-card-title-text>
+	</md-card-title>
+    <md-card-content>
+      	<div flex-gt-xs>
+			<h4>Select a date:</h4>
+			<md-datepicker ng-model="addDate" md-placeholder="Enter date"></md-datepicker>
+		</div>
+			<md-button ng-click="attendanceRequest(addDate)" class="md-raised md-primary">Submit Request</md-button>
+    </md-card-content>
+    </md-card-content>
+</md-card>

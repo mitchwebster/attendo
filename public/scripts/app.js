@@ -274,6 +274,24 @@
                             }
                         });
                     }
+
+                    $scope.attendanceRequest = function(addDate){
+                        var params = {
+                            username : $scope.user,
+                            mistakeDate : addDate + "",
+                            crn : $scope.course.crn + ""
+                        };
+                        console.log(params);
+                        $http.post('/api/request/create', params).then(function successCallback(response) {
+                            response = response.data;
+                            if (response.err) {
+                                console.log(response);
+                            }
+                            $scope.refreshEvents();
+                        });
+                    }
+
+
             })
 
     .controller('rosterCtrl', function($scope, $http, $mdDialog, $state, $stateParams, userService, $compile) {
