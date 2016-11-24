@@ -16,20 +16,21 @@ app.use(bodyParser.json())
 
 console.log('Listening on port ', portNumber);
 
+app.use("/", express.static("public"));
+
+app.get("/", function (req, res) {
+	res.sendFile(path.resolve('./public/views/index.html'));
+});
+
 MongoClient.connect(dbConfig.url, function(err, db) {
 	if (err) {
 		console.log("Could not connect to the database");
 		console.log(err);
+		app.listen(portNumber);
 	} else {
 		//setup indicies for DB
 		db.collection('Courses').createIndex({"crn": 1, "term": -1}, {unique: true, unique: true});
 		db.collection('Users').createIndex({"username": 1, "term": -1}, {unique: true, unique: true});
-
-		app.use("/", express.static("public"));
-
-		app.get("/", function (req, res) {
-			res.sendFile(path.resolve('./public/views/index.html'));
-		});
 
 		//routes
 		// app.post('/api/test', function(req, res) {
@@ -245,7 +246,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 				var usrname = req.body.username;
 				var course = util.validate(req.body.crn, "int");
 				if (course === null) {
-					db.collection('Attendance').find({"username" : usrname}, {"time": true, "_id": false}).toArray(function(err, data) {
+					db.collection('Attendance').find({"username" : usrname, "term": util.findTerm()}, {"time": true, "_id": false}).toArray(function(err, data) {
 						if (err) {
 							res.send({err : true, msg: "Database issue"});
 						} else {
@@ -253,7 +254,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 						}
 					});
 				} else {
-					db.collection('Attendance').find({"username" : usrname, "crn": course}, {"time": true, "_id": false}).toArray(function(err, data) {
+					db.collection('Attendance').find({"username" : usrname, "crn": course, "term": util.findTerm()}, {"time": true, "_id": false}).toArray(function(err, data) {
 						if (err) {
 							res.send({err : true, msg: "Database issue"});
 						} else {
@@ -263,7 +264,227 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 				}
 			}
 		});
-		
+
+		app.get('/api/mock/locationData', function(req, res) {
+			var locations = [
+				"Klaus 1443",
+				"Klaus 2456",
+				"Howey L2",
+				"U A Whitaker 1103",
+				"Instruction Center 219"
+			];
+			res.send({location: locations[Math.floor(Math.random() * locations.length)]});
+		});
+
+		//untested, finds the course stats
+		app.post('/api/course/summary', function(req, res) {
+				if (!req.body) {
+					res.send({err : true, msg: "Invalid request"});
+				} else {
+					var username = util.validate(req.body.username);
+					var crn = util.validate(req.body.crn, "int");
+					if (!username || !crn) {
+						res.send({err : true, msg: "Invalid request"});
+					} else {
+						util.findUser(req.body.username, db).done(function (userObject) {
+							if (userObject.instructor && userObject.crns.indexOf(crn) >= 0) {
+								db.collection('Attendance').find({"crn": crn, "term": util.findTerm()}, {"username": true, "time": true, "_id": false}).toArray(function(err, data) {
+									if (err) {
+										res.send({err : true, msg: "Database issue"});
+									} else {
+										var students = {};
+										var accumulatedAttendance = {}; //total attendance by date
+
+										for (var i = 0; i < data.length; i++) {
+											if (data[i].username in students) {
+												students[data[i].username] += 1;
+											} else {
+												students[data[i].username] = 1;
+											}
+											var d = new Date(data[i].time);
+											var year = d.getUTCFullYear();
+											var month = d.getUTCMonth();
+											var day = d.getUTCDate();
+											d = new Date(year, month, day);
+											var dateString = d.toString();
+											if (dateString in accumulatedAttendance) {
+												accumulatedAttendance[dateString] += 1;
+											} else {
+												accumulatedAttendance[dateString] = 1;
+											}
+										}
+										res.send({err : false, studentData: students, attendanceData: accumulatedAttendance});
+									}
+								});
+							} else {
+			                	res.send({err : true, msg: "Invalid Permissions"});
+							}
+			            }, function (failure) {
+			            	//no user found
+			                console.log(failure);
+			                res.send({err : true, msg: "Invalid Permissions"});
+			            });
+					}
+				}
+		});
+
+		//need to create support for three things
+		//need to create an attendance request, need to accept a given attendance request (which also deletes it), need to reject an attendance request, need to view pending attendance requeusts
+		//attendance request should be username, crn, term, date (where this is the date we care about)
+
+		app.post('/api/request/create', function(req, res) {
+			if (!req.body) {
+				res.send({err : true, msg: "Invalid request"});
+			} else {
+				var username = util.validate(req.body.username);
+				var crn = util.validate(req.body.crn, "int");
+				var term = util.findTerm();
+				var mistakeDate = util.validate(req.body.mistakeDate, "date");
+				if (!username || !crn || !mistakeDate) {
+					res.send({err : true, msg: "Invalid request"});
+				} else {
+					util.findUser(username, db).done(function (userObject) {
+						if (userObject.crns.indexOf(crn) >= 0) {
+							var requestObject = {
+								"username" : username,
+								"crn" : crn,
+								"term": term,
+								"mistakeDate" : mistakeDate
+							};
+							db.collection('Requests').insert(requestObject, {w:1}, function(err, result) {
+								if (err) {
+									res.send({err : true, msg: "Unable to complete the request"});
+								} else {
+									res.send({err : false, msg: "Success"});
+								}
+							});
+						} else {
+		                	res.send({err : true, msg: "Invalid Permissions"});
+						}
+		            }, function (failure) {
+		            	//no user found
+		                console.log(failure);
+		                res.send({err : true, msg: "Invalid Permissions"});
+		            });
+				}
+			}
+		});
+
+		app.post('/api/request/view', function(req, res) {
+			if (!req.body) {
+				res.send({err : true, msg: "Invalid request"});
+			} else {
+				var username = util.validate(req.body.username);
+				var crn = util.validate(req.body.crn, "int");
+				var term = util.findTerm();
+				if (!username || !crn) {
+					res.send({err : true, msg: "Invalid request"});
+				} else {
+					util.findUser(username, db).done(function (userObject) {
+						if (userObject.crns.indexOf(crn) >= 0) {
+							if (userObject.instructor) {
+								db.collection('Requests').find({"crn": crn, "term": util.findTerm()}, {"username": true, "crn": true, "term" : true, "mistakeDate": true, "_id": false}).toArray(function(err, data) {
+									if (err) {
+										res.send({err : true, msg: "Database issue"});
+									} else {
+										res.send({err : false, requests: data});
+									}
+								});
+							} else {
+								db.collection('Requests').find({"username" : username, "crn": crn, "term": util.findTerm()}, {"username": true, "crn": true, "term" : true, "mistakeDate": true, "_id": false}).toArray(function(err, data) {
+									if (err) {
+										res.send({err : true, msg: "Database issue"});
+									} else {
+										res.send({err : false, requests: data});
+									}
+								});
+							}
+						} else {
+		                	res.send({err : true, msg: "Invalid Permissions"});
+						}
+		            }, function (failure) {
+		            	//no user found
+		                console.log(failure);
+		                res.send({err : true, msg: "Invalid Permissions"});
+		            });
+				}
+			}
+		});
+
+		app.post('/api/request/remove', function(req, res) {
+			if (!req.body) {
+				res.send({err : true, msg: "Invalid request"});
+			} else {
+				var username = util.validate(req.body.username);
+				var instructor = util.validate(req.body.instructor);
+				var crn = util.validate(req.body.crn, "int");
+				var mistakeDate = util.validate(req.body.mistakeDate, "date");
+				//TODO: need to fix query to allow for more flexibility between the date objects
+				if (!username || !crn || !mistakeDate) {
+					res.send({err : true, msg: "Invalid request"});
+				} else {
+					util.findUser(username, db).done(function (userObject) {
+						if (userObject.crns.indexOf(crn) >= 0) {
+							util.removeRequest(username, crn, mistakeDate, db).done(function (userObject) {
+								res.send({err : false, msg: "Successfully removed request"});
+				            }, function (failure) {
+				            	//no user found
+				                console.log(failure);
+				                res.send({err : true, msg: failure});
+				            });
+						} else {
+		                	res.send({err : true, msg: "Invalid Permissions"});
+						}
+		            }, function (failure) {
+		            	//no user found
+		                console.log(failure);
+		                res.send({err : true, msg: "Invalid Permissions"});
+		            });
+				}
+			}
+		});
+
+		app.post('/api/request/accept', function(req, res) {
+			if (!req.body) {
+				res.send({err : true, msg: "Invalid request"});
+			} else {
+				var username = util.validate(req.body.username);
+				var instructor = util.validate(req.body.instructor);
+				var crn = util.validate(req.body.crn, "int");
+				var term = util.findTerm();
+				var mistakeDate = util.validate(req.body.mistakeDate, "date");
+				if (!username || !crn || !mistakeDate) {
+					res.send({err : true, msg: "Invalid request"});
+				} else {
+					util.findUser(instructor, db).done(function (userObject) {
+						if (userObject.crns.indexOf(crn) >= 0) {
+							if (userObject.instructor) {
+								util.createAttendanceRecord(username, crn, "", mistakeDate, db, time).done(function (rosterData) {
+				                	util.removeRequest(username, crn, mistakeDate, db).done(function (userObject) {
+										res.send({err : false, msg: "Successfully accepted request"});
+						            }, function (failure) {
+						                console.log(failure);
+						                res.send({err : true, msg: "Invalid Request Acceptance"});
+						            });
+				                }, function (failure) {
+				                	console.log(failure);
+				                	res.send({err : true, msg: "Invalid Request"});
+				                });
+							} else {
+								res.send({err : true, msg: "Invalid Permissions"});
+							}
+						} else {
+		                	res.send({err : true, msg: "Invalid Permissions"});
+						}
+		            }, function (failure) {
+		            	//no user found
+		                console.log(failure);
+		                res.send({err : true, msg: "Invalid Permissions"});
+		            });
+				}
+			}
+		});
+
 		app.listen(portNumber);
 	}
 });

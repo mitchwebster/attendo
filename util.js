@@ -97,7 +97,7 @@ function validate(someValue, potentialCondtion) {
 	} else if (potentialCondtion === "date") {
 		try {
 		    date = Date.parse(someValue);
-		    return date;
+		    return new Date(date);
 		} catch (e) {
 		    return null;
 		}
@@ -396,6 +396,30 @@ function createAttendanceRecord(username, crn, routerLocation, curTime, db, time
 }
 
 
+function removeRequest(username, crn, mistakeDate, db) {
+	var term = findTerm();
+	var promise = new Promise(function(resolve, reject) {
+		if (username && crn && mistakeDate) {
+			db.collection('Requests').remove({"username" : username, "crn" : crn, "term": term, "mistakeDate": mistakeDate}, function(err, result) {
+				if (err) {
+					reject(err);
+				} else {
+					if (result.result.n > 0) {
+						resolve("Successfully removed request");
+					} else {
+						reject("Could not find requeust");
+					}
+				}
+			});
+		} else {
+			reject("Invalid parameters");
+		}
+	});
+	return promise;
+}
+
+
+
 utilPkg = {}
 utilPkg.findTerm = findTerm;
 utilPkg.validate = validate;
@@ -413,4 +437,5 @@ utilPkg.findUser = findUser;
 utilPkg.findStudents = findStudents;
 utilPkg.lookupCourse = lookupCourse;
 utilPkg.createAttendanceRecord = createAttendanceRecord;
+utilPkg.removeRequest = removeRequest;
 module.exports = utilPkg;

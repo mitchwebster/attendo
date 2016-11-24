@@ -1,0 +1,28 @@
+html, body {
+    background: #3498db; /* fallback for old browsers */
+    background: -webkit-linear-gradient(right, #3498db, #3498db);
+    background: -moz-linear-gradient(right, #3498db, #3498db);
+    background: -o-linear-gradient(right, #3498db, #3498db);
+    background: linear-gradient(to left, #3498db, #3498db);
+    font-family: "Roboto", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: "Roboto",sans-serif !important;
+    margin: 0;
+    padding: 0;
+}
+
+.login {
+    width: 50%;
+    margin-top: 15%;
+    margin-left: 25%;
+}
+
+.title {
+    text-align: center;
+    font-size: 3em;
+    margin-bottom: .5em;
+}
+.center {
+    text-align: center;
+}

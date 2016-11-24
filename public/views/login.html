@@ -1,10 +1,12 @@
-<md-card>
+<md-card class="login">
   	<md-card-title>
   		<md-card-title-text>
-	      <span class="md-headline">Login</span>
+	      <span class="md-headline center title">Attendo</span>
+	      <span class="center">An attendance solution for modern classrooms<span>
 	    </md-card-title-text>
 	</md-card-title>
     <md-card-content>
+    	  <h5>Login below:</h4>
 	      <form name="loginForm" ng-submit="submitLogin()">
 	      <md-input-container class="md-block">
 	        <label>Username</label>
@@ -16,7 +18,7 @@
 	        <input required="" name="url" ng-model="user.password">
 	      </md-input-container>
 	      <div>
-	        <md-button class="md-raised md-primary" type="submit">Submit</md-button>
+	        <md-button class="md-raised md-primary" type="submit">Login</md-button>
 	      </div>
 	    </form>
     </md-card-content>
