@@ -36,7 +36,7 @@ function validate(someValue){
 function dateDiffMinutes(date1, date2) {
 	var diff = date2 - date1;
 	diff = diff / (1000 * 60);
-	return Math.abs(diff);
+	return diff;
 }
 
 function dateDiffDays(date1, date2) {
@@ -344,29 +344,29 @@ function createAttendanceRecord(username, crn, routerLocation, curTime, db, time
 					} else {
 						var addRecord = false;
 						var attendanceRecord = {};
-						if (curTime) {
+						var startEnd = oneDayRange(curTime);
+						if (startEnd) {
 							//the instructor has sent in this request
 							addRecord = true;
 							attendanceObject = {
 								"username": username,
 								"term" : term,
 								"crn" : crn,
-								"time" : new Date(curTime)
+								"time" : startEnd.start
 							}
 						} else {
 							var now = new time.Date();
 							now.setTimezone("America/New_York");
 							var startDate = startTimeNow(result.startTime);
-							if (dateDiffMinutes(startDate, now) < 5 && dayMapper(result.days, now)) {
-								//TODO: continue with location testing
-								//
-								//need to create a module to perform this check
+							var minDiff = dateDiffMinutes(startDate, now);
+							if (minDiff < 55 && minDiff >= 0 && dayMapper(result.days, now) && result.location == routerLocation) {
 								addRecord = true;
+								var startEnd = oneDayRange(new Date());
 								attendanceObject = {
 									"username": username,
 									"term" : term,
 									"crn" : crn,
-									"time" : new Date()
+									"time" : startEnd.start
 								}
 							}
 						}
@@ -400,17 +400,22 @@ function removeRequest(username, crn, mistakeDate, db) {
 	var term = findTerm();
 	var promise = new Promise(function(resolve, reject) {
 		if (username && crn && mistakeDate) {
-			db.collection('Requests').remove({"username" : username, "crn" : crn, "term": term, "mistakeDate": mistakeDate}, function(err, result) {
-				if (err) {
-					reject(err);
-				} else {
-					if (result.result.n > 0) {
-						resolve("Successfully removed request");
+			var startEnd = oneDayRange(mistakeDate);
+			if (startEnd) {
+				db.collection('Requests').remove({"username" : username, "crn" : crn, "term": term, "mistakeDate": {$gte: startEnd.start, $lt: startEnd.end}}, function(err, result) {
+					if (err) {
+						reject(err);
 					} else {
-						reject("Could not find requeust");
+						if (result.result.n > 0) {
+							resolve("Successfully removed request");
+						} else {
+							reject("Could not find request");
+						}
 					}
-				}
-			});
+				});
+			} else {
+				reject("Unable to find date range");
+			}
 		} else {
 			reject("Invalid parameters");
 		}
@@ -418,7 +423,32 @@ function removeRequest(username, crn, mistakeDate, db) {
 	return promise;
 }
 
+function dateToMonthDayYear(date) {
+	var d = new Date(date);
+	var year = d.getUTCFullYear();
+	var month = d.getUTCMonth();
+	var day = d.getUTCDate();
+	return new Date(year, month, day);
+}
 
+function oneDayRange(date) {
+	if (date) {
+		try {
+			var d = new Date(date);
+			var year = d.getUTCFullYear();
+			var month = d.getUTCMonth();
+			var day = d.getUTCDate();
+			d = new Date(year, month, day);
+			var d2 = new Date(d);
+			d2.setDate(d2.getDate() + 1);
+			return {start: d, end: d2};
+		} catch (e) {
+			return null;
+		}
+	} else {
+		return null;
+	}
+}
 
 utilPkg = {}
 utilPkg.findTerm = findTerm;
@@ -427,6 +457,8 @@ utilPkg.startTimeNow = startTimeNow;
 utilPkg.dateDiffMinutes = dateDiffMinutes;
 utilPkg.dateDiffDays = dateDiffDays;
 utilPkg.dayMapper = dayMapper;
+utilPkg.dateToMonthDayYear = dateToMonthDayYear;
+utilPkg.oneDayRange = oneDayRange;
 //course and user functions
 utilPkg.createCourse = createCourse;
 utilPkg.parseCourseTitle = parseCourseTitle;

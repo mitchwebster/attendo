@@ -226,6 +226,22 @@
                     $scope.renderCalender = function() {
                       $("#attendanceCalendar").fullCalendar('render');
                     };
+
+                    $scope.currentLocation = "None";
+
+                    $scope.changeLoc = function(){
+                        // console.log("Trying to check in");
+                        $http.get('/api/mock/locationData').then(function successCallback(response) {
+                            response = response.data;
+                            if (response.err) {
+                                $scope.currentLocation = "Error";
+                            } else {
+                                $scope.currentLocation = response.location;
+                            }
+                        });
+                    }
+
+
                     
                     /* config object */
                     $scope.uiConfig = {
@@ -248,7 +264,7 @@
 
                     $scope.checkin = function(){
                         // console.log("Trying to check in");
-                        var params = {"username" : $scope.user, "crn" : ($scope.course.crn + ""), "routerLocation" : $scope.course.location};
+                        var params = {"username" : $scope.user, "crn" : ($scope.course.crn + ""), "routerLocation" : $scope.currentLocation};
                         $http.post('/api/checkin', params).then(function successCallback(response) {
                             response = response.data;
                             if (response.err) {
@@ -283,6 +299,15 @@
                             console.log(response);
                         } else {
                             $scope.students = response.roster;
+                        }
+                    });
+
+                    $http.post('/api/course/summary', postParams).then(function successCallback(response) {
+                        response = response.data;
+                        if (response.err) {
+                            console.log(response);
+                        } else {
+                            $scope.courseStats = response;
                         }
                     });
             })

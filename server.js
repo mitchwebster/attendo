@@ -31,6 +31,8 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 		//setup indicies for DB
 		db.collection('Courses').createIndex({"crn": 1, "term": -1}, {unique: true, unique: true});
 		db.collection('Users').createIndex({"username": 1, "term": -1}, {unique: true, unique: true});
+		db.collection('Attendance').createIndex({"username": 1, "crn": 1, "time": 1, "term": -1}, {unique: true, unique: true, unique: true, unique: true});
+		db.collection('Requests').createIndex({"username": 1, "crn": 1, "mistakeDate": 1, "term": -1}, {unique: true, unique: true, unique: true, unique: true});
 
 		//routes
 		// app.post('/api/test', function(req, res) {
@@ -267,10 +269,10 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 
 		app.get('/api/mock/locationData', function(req, res) {
 			var locations = [
-				"Klaus 1443",
+				"Klaus 1456",
 				"Klaus 2456",
 				"Howey L2",
-				"U A Whitaker 1103",
+				"U A Whitaker Biomedical Engr 1103",
 				"Instruction Center 219"
 			];
 			res.send({location: locations[Math.floor(Math.random() * locations.length)]});
@@ -302,10 +304,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 												students[data[i].username] = 1;
 											}
 											var d = new Date(data[i].time);
-											var year = d.getUTCFullYear();
-											var month = d.getUTCMonth();
-											var day = d.getUTCDate();
-											d = new Date(year, month, day);
+											d = util.dateToMonthDayYear(d);
 											var dateString = d.toString();
 											if (dateString in accumulatedAttendance) {
 												accumulatedAttendance[dateString] += 1;
@@ -328,10 +327,6 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 				}
 		});
 
-		//need to create support for three things
-		//need to create an attendance request, need to accept a given attendance request (which also deletes it), need to reject an attendance request, need to view pending attendance requeusts
-		//attendance request should be username, crn, term, date (where this is the date we care about)
-
 		app.post('/api/request/create', function(req, res) {
 			if (!req.body) {
 				res.send({err : true, msg: "Invalid request"});
@@ -345,19 +340,24 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 				} else {
 					util.findUser(username, db).done(function (userObject) {
 						if (userObject.crns.indexOf(crn) >= 0) {
-							var requestObject = {
-								"username" : username,
-								"crn" : crn,
-								"term": term,
-								"mistakeDate" : mistakeDate
-							};
-							db.collection('Requests').insert(requestObject, {w:1}, function(err, result) {
-								if (err) {
-									res.send({err : true, msg: "Unable to complete the request"});
-								} else {
-									res.send({err : false, msg: "Success"});
-								}
-							});
+							var startEnd = util.oneDayRange(mistakeDate);
+							if (startEnd) {
+								var requestObject = {
+									"username" : username,
+									"crn" : crn,
+									"term": term,
+									"mistakeDate" : startEnd.start
+								};
+								db.collection('Requests').insert(requestObject, {w:1}, function(err, result) {
+									if (err) {
+										res.send({err : true, msg: "Unable to complete the request"});
+									} else {
+										res.send({err : false, msg: "Success"});
+									}
+								});
+							} else {
+								res.send({err: true, msg: "Unable to submit request at given time"});
+							}
 						} else {
 		                	res.send({err : true, msg: "Invalid Permissions"});
 						}

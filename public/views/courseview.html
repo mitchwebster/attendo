@@ -25,6 +25,19 @@
 <md-card>
   	<md-card-title>
   		<md-card-title-text>
+	      <span class="md-headline">Check-In to {{course.course}}</span>
+	      <h5>Current Location: {{currentLocation}}</h5>
+	    </md-card-title-text>
+	</md-card-title>
+    <md-card-content>
+    	<md-button ng-click="changeLoc()" class="md-raised md-primary">Change Locations</md-button>
+	   	<md-button ng-click="checkin()" class="md-raised md-primary">Check In</md-button>
+    </md-card-content>
+</md-card>
+
+<md-card>
+  	<md-card-title>
+  		<md-card-title-text>
 	      <span class="md-headline">Attendance Data for {{course.course}}</span>
 	    </md-card-title-text>
 	</md-card-title>
@@ -33,5 +46,3 @@
 	 	<div id="attendanceCalendar" ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div> 
     </md-card-content>
 </md-card>
-
-<md-button ng-click="checkin()" class="md-raised md-primary">Check In</md-button>
