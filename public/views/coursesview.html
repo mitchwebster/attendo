@@ -1,18 +1,35 @@
-<div ng-if="userExists == false">
-<h1> Welcome {{user.username}}</h1>
-<h3> You need to register the courses you are in </h3>
-	<form name="courseForm" ng-submit="submitUser()">
-		<div ng-repeat="courseObject in coursePromptCourses">
-			<div layout="row" layout-align="space-between center">
-		        <span>{{courseObject.courseName}}</span>
-		        <md-select ng-model="selected[courseObject.courseName]" placeholder="Section" required="" class="md-no-underline">
-		          <md-option ng-disabled="{{!sectionObject.valid}}" ng-repeat="sectionObject in courseObject.sections" value="{{sectionObject.crn}}">{{sectionObject.section}}</md-option>
-		        </md-select>
-		      </div>
-		</div>
-		<md-button class="md-raised md-primary" type="submit">Submit</md-button>
-	</form>
-</div>
+<md-card ng-if="userExists == false">
+  	<md-card-title>
+  		<md-card-title-text>
+	      <h1> Welcome {{user.username}}</h1>
+	    </md-card-title-text>
+	</md-card-title>
+    <md-card-content>
+	      <h3> You need to register the courses you are in </h3>
+			<form name="courseForm" ng-submit="submitUser()">
+				<div ng-repeat="courseObject in coursePromptCourses">
+					<div layout="row" layout-align="space-between center">
+				        <span>{{courseObject.courseName}}</span>
+				        <md-select ng-model="selected[courseObject.courseName]" placeholder="Section" required="" class="md-no-underline">
+				          <md-option ng-disabled="{{!sectionObject.valid}}" ng-repeat="sectionObject in courseObject.sections" value="{{sectionObject.crn}}">{{sectionObject.section}}</md-option>
+				        </md-select>
+				      </div>
+				</div>
+				<md-button class="md-raised md-primary" type="submit">Submit</md-button>
+			</form>
+    </md-card-content>
+</md-card>
+
+<md-card ng-if="userExists == true">
+  	<md-card-title>
+  		<md-card-title-text>
+	      <span class="md-headline">Welcome {{user.username}}</span>
+	    </md-card-title-text>
+	</md-card-title>
+    <md-card-content>
+	      <h3> Please select a class below to get started: </h3>
+    </md-card-content>
+</md-card>
 
 
 <div ng-repeat="course in courses" ng-click="selectClass(course)">

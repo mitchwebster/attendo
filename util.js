@@ -96,8 +96,13 @@ function validate(someValue, potentialCondtion) {
 		console.log("Have this here so we can check other formats down the line");
 	} else if (potentialCondtion === "date") {
 		try {
-		    date = Date.parse(someValue);
-		    return new Date(date);
+		    var date = Date.parse(someValue);
+		    date = new Date(date);
+		    if (isNaN(date.getTime())) {
+		    	return null;
+		    } else {
+		    	return date;
+		    }
 		} catch (e) {
 		    return null;
 		}

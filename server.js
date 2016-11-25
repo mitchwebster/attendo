@@ -270,7 +270,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 		app.get('/api/mock/locationData', function(req, res) {
 			var locations = [
 				"Klaus 1456",
-				"Klaus 2456",
+				"Skiles 368",
 				"Howey L2",
 				"U A Whitaker Biomedical Engr 1103",
 				"Instruction Center 219"

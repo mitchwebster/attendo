@@ -105,6 +105,8 @@
                 // $state.go('courses');
                 $scope.user = $stateParams.user ? $stateParams.user : {username: userService.getUsername()};
                 $scope.selected = {};
+                $scope.userExists = $scope.user && $scope.user.username.length > 0;
+                console.log($scope.user, $scope.userExists);
                 $http.post('/api/myCourses', {username: $scope.user.username}).then(function successCallback(response) {
                     response = response.data;
                     if (response.err) {
@@ -195,6 +197,7 @@
                     }
 
                     $scope.events = [];
+                    $scope.requests = [];
 
                     $scope.eventRender = function( event, element, view ) { 
                         element.attr({'tooltip': event.title,
@@ -217,11 +220,44 @@
                         console.log($scope.events);
                         $scope.renderCalender();
                     });
+
+                    $scope.updateRequests = function () {
+                        $http.post('/api/request/view', postParams).then(function successCallback(response) {
+                            response = response.data;
+                            if (response.err) {
+                                console.log(response);
+                            } else {
+                                $scope.requests = response.requests;
+                            }
+                        });
+                    }
+
                     /* alert on eventClick */
                     $scope.alertOnEventClick = function( date, jsEvent, view){
                         $scope.alertMessage = (date.title + ' was clicked ');
                         alert($scope.alertMessage);
                     };
+
+                    $scope.refreshEvents = function () {
+                        $http.post('/api/attendanceData', postParams).then(function successCallback(response) {
+                            response = response.data;
+                            if (response.err) {
+                                console.log(response);
+                            } else {
+                                var tempLength = $scope.events.length;
+                                for (var i = 0; i < tempLength; i++) {
+                                    $scope.events.pop();   
+                                }
+                                for (var i = 0; i < response.attendance.length; i++) {
+                                    var curDate = new Date(response.attendance[i].time);
+                                    var endDate = new Date(curDate);
+                                    endDate.setMinutes(endDate.getMinutes() + 60);
+                                    $scope.events.push({title: 'Attendance',start: curDate, end: endDate,allDay: false, additionalInfo: {msg: "hello world"}});
+                                }
+                            }
+                            $scope.renderCalender();
+                        });
+                    }
 
                     $scope.renderCalender = function() {
                       $("#attendanceCalendar").fullCalendar('render');
@@ -240,8 +276,6 @@
                             }
                         });
                     }
-
-
                     
                     /* config object */
                     $scope.uiConfig = {
@@ -270,7 +304,7 @@
                             if (response.err) {
                                 console.log("Not checked in");
                             } else {
-                                console.log("Checked in");
+                                $scope.refreshEvents();
                             }
                         });
                     }
@@ -287,10 +321,27 @@
                             if (response.err) {
                                 console.log(response);
                             }
-                            $scope.refreshEvents();
+                            $scope.updateRequests();
                         });
                     }
 
+                    $scope.removeRequest = function(request){
+                        var params = {
+                            username : $scope.user,
+                            mistakeDate : request.mistakeDate + "",
+                            crn : request.crn + ""
+                        };
+                        $http.post('/api/request/remove', params).then(function successCallback(response) {
+                            response = response.data;
+                            if (response.err) {
+                                console.log(response);
+                            } else {
+                                $scope.updateRequests();
+                            }
+                        });
+                    }
+
+                    $scope.updateRequests();
 
             })
 
@@ -341,7 +392,55 @@
                     }
 
                     $scope.events = [];
+                    $scope.requests = [];
                     $scope.currentRecord = null;
+
+                    $scope.updateRequests = function () {
+                        $http.post('/api/request/view', postParams).then(function successCallback(response) {
+                            response = response.data;
+                            if (response.err) {
+                                console.log(response);
+                            } else {
+                                $scope.requests = response.requests;
+                            }
+                        });
+                    }
+
+                    $scope.acceptRequest = function(request){
+                        var params = {
+                            username : request.username,
+                            instructor : $scope.user,
+                            mistakeDate : request.mistakeDate + "",
+                            crn : request.crn + ""
+                        };
+                        $http.post('/api/request/accept', params).then(function successCallback(response) {
+                            response = response.data;
+                            if (response.err) {
+                                console.log(response);
+                            }
+                            $scope.updateRequests();
+                        });
+                    }
+
+                    $scope.removeRequest = function(request){
+                        var params = {
+                            username : request.username,
+                            mistakeDate : request.mistakeDate + "",
+                            crn : request.crn + ""
+                        };
+                        console.log(request);
+                        console.log(params);
+                        $http.post('/api/request/remove', params).then(function successCallback(response) {
+                            response = response.data;
+                            if (response.err) {
+                                console.log(response);
+                            } else {
+                                $scope.updateRequests();
+                            }
+                        });
+                    }
+
+                    $scope.updateRequests();
 
                     $scope.eventRender = function( event, element, view ) { 
                         element.attr({'tooltip': event.title,

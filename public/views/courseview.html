@@ -1,27 +1,3 @@
-<!-- <div ng-repeat="course in courses" ng-click="selectClass(course)">
-	<md-card>
-	  	<md-card-title>
-	  		<md-card-title-text>
-		      <span class="md-headline">{{course.course}}</span>
-		    </md-card-title-text>
-		</md-card-title>
-	    <md-card-content>
-		      {{course.location}} | {{course.instructor}}
-	    </md-card-content>
-	</md-card>
-</div> -->
-{{course}}
-<!-- 
-<mwl-calendar
-    view="calendarView"
-    view-date="viewDate"
-    events="events"
-    view-title="calendarTitle"
-    on-event-click="eventClicked(calendarEvent)"
-    on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
-    cell-is-open="true">
-</mwl-calendar> -->
-
 <md-card>
   	<md-card-title>
   		<md-card-title-text>
@@ -58,6 +34,21 @@
 			<md-datepicker ng-model="addDate" md-placeholder="Enter date"></md-datepicker>
 		</div>
 			<md-button ng-click="attendanceRequest(addDate)" class="md-raised md-primary">Submit Request</md-button>
+    </md-card-content>
+    </md-card-content>
+</md-card>
+<md-card>
+  	<md-card-title>
+  		<md-card-title-text>
+	      <span class="md-headline">Active Attendance Requests</span>
+	    </md-card-title-text>
+	</md-card-title>
+    <md-card-content>
+      	<div ng-repeat="request in requests">
+      		<div flex-gt-xs>
+				<span>Date: {{request.mistakeDate | date}}</span> <md-button ng-click="removeRequest(request)" class="md-raised md-primary">Remove Request</md-button>
+			</div>
+      	</div>
     </md-card-content>
     </md-card-content>
 </md-card>

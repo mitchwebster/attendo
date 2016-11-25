@@ -35,3 +35,18 @@
 	      <h4>Info: {{currentRecord.additionalInfo | json}}</h4>
     </md-card-content>
 </md-card>
+<md-card>
+  	<md-card-title>
+  		<md-card-title-text>
+	      <span class="md-headline">Active Attendance Requests</span>
+	    </md-card-title-text>
+	</md-card-title>
+    <md-card-content>
+      	<div ng-repeat="request in requests">
+      		<div flex-gt-xs>
+				<span>Date: {{request.mistakeDate | date}}</span> <md-button ng-click="removeRequest(request)" class="md-raised md-primary">Remove Request</md-button> <md-button ng-click="acceptRequest(request)" class="md-raised md-primary">Accept Request</md-button>
+			</div>
+      	</div>
+    </md-card-content>
+    </md-card-content>
+</md-card>
