@@ -1,6 +1,6 @@
 (function(angular, undefined) {
     "use strict";
-    angular.module('attendoApp', ['ngMaterial', "ui.router", 'ngclipboard', 'ui.calendar'])
+    angular.module('attendoApp', ['ngMaterial', "ui.router", 'ngclipboard', 'ui.calendar', 'chart.js'])
     .config(function($stateProvider, $urlRouterProvider) {
 
         $urlRouterProvider.otherwise('/login');
@@ -349,6 +349,17 @@
 
                     $scope.course = $stateParams.course ? $stateParams.course : userService.getCurrentCourse();
                     $scope.user = $stateParams.user ? $stateParams.user : userService.getUsername();
+
+                    $scope.data = [];
+                    $scope.labels = [];
+                    $scope.colors = [{ // default
+                          "fillColor": "rgba(224, 108, 112, 1)",
+                          "strokeColor": "rgba(207,100,103,1)",
+                          "pointColor": "rgba(220,220,220,1)",
+                          "pointStrokeColor": "#fff",
+                          "pointHighlightFill": "#fff",
+                          "pointHighlightStroke": "rgba(151,187,205,0.8)"
+                    }];
                     
                     var postParams = {username: $scope.user};
                     if ($scope.course.crn) {
@@ -377,6 +388,11 @@
                             console.log(response);
                         } else {
                             $scope.courseStats = response;
+                            var keys = Object.keys(response.attendanceData);
+                            for (var i = 0; i < keys.length; i++) {
+                                $scope.labels.push(keys[i]);
+                                $scope.data.push(response.attendanceData[keys[i]]);
+                            }
                         }
                     });
             })

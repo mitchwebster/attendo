@@ -5,16 +5,9 @@
 	    </md-card-title-text>
 	</md-card-title>
     <md-card-content>
-    </md-card-content>
-</md-card>
-
-<md-card ng-repeat="student in students" ng-click="selectStudent(student)">
-  	<md-card-title>
-  		<md-card-title-text>
-	      <span class="md-headline">{{student.username}}</span>
-	    </md-card-title-text>
-	</md-card-title>
-    <md-card-content>
+    <div ng-repeat="student in students">
+      <md-button class="md-raised md-primary" ng-click="selectStudent(student)" type="submit">{{student.username}}</md-button>
+    </div>
     </md-card-content>
 </md-card>
 
@@ -25,7 +18,10 @@
       </md-card-title-text>
   </md-card-title>
     <md-card-content>
-    {{courseStats}}
-    <h2>Graph will go here </h2>
+    <h3>Attendance Data for the course </h3>
+    <canvas id="line" class="chart chart-bar" chart-data="data"
+      chart-labels="labels" chart-series="series" chart-options="options"
+      chart-dataset-override="datasetOverride" chart-click="onClick" chart-colours="colors"
+      </canvas> 
     </md-card-content>
 </md-card>
