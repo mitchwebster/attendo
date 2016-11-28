@@ -460,6 +460,7 @@
                                 console.log(response);
                             }
                             $scope.updateRequests();
+                            $scope.refreshEvents();
                         });
                     }
 
