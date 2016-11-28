@@ -352,14 +352,8 @@
 
                     $scope.data = [];
                     $scope.labels = [];
-                    $scope.colors = [{ // default
-                          "fillColor": "rgba(224, 108, 112, 1)",
-                          "strokeColor": "rgba(207,100,103,1)",
-                          "pointColor": "rgba(220,220,220,1)",
-                          "pointStrokeColor": "#fff",
-                          "pointHighlightFill": "#fff",
-                          "pointHighlightStroke": "rgba(151,187,205,0.8)"
-                    }];
+
+                    $scope.dops = {};
                     
                     var postParams = {username: $scope.user};
                     if ($scope.course.crn) {
@@ -393,8 +387,39 @@
                                 $scope.labels.push(keys[i]);
                                 $scope.data.push(response.attendanceData[keys[i]]);
                             }
+                            
+                            var ctx = document.getElementById("myChart");
+                            ctx.width = 400;
+                            ctx.height = 400;
+                            var myChart = new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: $scope.labels,
+                                    datasets: [{
+                                        label: '# of Students',
+                                        data: $scope.data,
+                                        backgroundColor: [
+                                            'rgba(54, 162, 235, 0.2)'
+                                        ],
+                                        borderColor: [
+                                            'rgba(54, 162, 235, 1)'
+                                        ],
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        yAxes: [{
+                                            ticks: {
+                                                beginAtZero:true
+                                            }
+                                        }]
+                                    }
+                                }
+                            });
                         }
                     });
+
             })
     .controller('attendanceCtrl', function($scope, $http, $mdDialog, $state, $stateParams, userService, $compile) {
 
