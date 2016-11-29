@@ -1,8 +1,8 @@
 var Promise = require('promise');
 var http = require('http');
 
+//sends back a string of the current term
 function findTerm() {
-	//TODO: can probably cache this value
 	var curDate = new Date();
 	month = curDate.getUTCMonth() + 1;
 	year = curDate.getUTCFullYear();
@@ -17,6 +17,7 @@ function findTerm() {
 	return curTerm + year
 }
 
+//sends back a true or false value of whether the current day belongs in the set of days passed in
 function dayMapper(dayCharacters, curDate) {
 	var day = new Array(7);
 	day[0]=  "S";
@@ -29,22 +30,26 @@ function dayMapper(dayCharacters, curDate) {
 	return dayCharacters.indexOf(day[curDate.getDay()]) >= 0;
 }
 
+//validates a string using overloading
 function validate(someValue){
 	validate(someValue, undefined)
 }
 
+//finds the difference between two dates in minutes
 function dateDiffMinutes(date1, date2) {
 	var diff = date2 - date1;
 	diff = diff / (1000 * 60);
 	return diff;
 }
 
+//finds the difference between two dates in days
 function dateDiffDays(date1, date2) {
 	var diff = date2 - date1;
 	diff = diff / (1000 * 60 * 60 * 24);
 	return Math.abs(diff);
 }
 
+//creates a date object that is the current date, but the hour/minute value is the start time of the class
 function startTimeNow(someTime){
 	var str = validate(someTime);
 	if (str == null) {
@@ -66,6 +71,7 @@ function startTimeNow(someTime){
 	return date;
 }
 
+//performs validation on the string input to make sure we are getting the right type of data
 function validate(someValue, potentialCondtion) {
 	if (someValue == undefined || someValue === null || (typeof someValue !== "string") || someValue.length <= 0) {
 		console.log("Invalid string input")
@@ -111,6 +117,7 @@ function validate(someValue, potentialCondtion) {
 	}
 }
 
+//creates a course object that has its fields all validated
 function createCourse(incomingObject) {
 	if (incomingObject !== null) {
 		cNum = validate(incomingObject.courseNumber, "int");
@@ -149,7 +156,7 @@ function createCourse(incomingObject) {
 	}
 }
 
-
+//takes a Tsquare title and return a json containing the school and course number
 function parseCourseTitle(courseTitle) {
 	var output = null;
 	var school = "";
@@ -209,6 +216,7 @@ function findCourseObjects(crns, db, time) {
 	return promise;
 }
 
+//function that removes a given course object from the database and creates a new updated one from a coursesat scrape
 function updateCourseObject(school, courseNumber, db) {
 	courseNumber = validate(courseNumber + "", "int");
 	if (school && courseNumber) {
@@ -222,6 +230,7 @@ function updateCourseObject(school, courseNumber, db) {
 	}
 }
 
+//finds a course object by first loooking in the course cache and eventually looking at coursesat
 function lookupCourse(school, courseNumber, db) {
 	var term = findTerm();
 	var promise = new Promise(function(resolve, reject) {
@@ -253,6 +262,7 @@ function lookupCourse(school, courseNumber, db) {
 	return promise;
 }
 
+//visits the coursesat site and parses all of the sections for a given course and creates course objects for each of them
 function parseCoursesat(school, courseNumber, db) {
 	var term = findTerm();
 	var promise = new Promise(function(resolve, reject) {
@@ -308,6 +318,7 @@ function parseCoursesat(school, courseNumber, db) {
 	return promise;
 }
 
+//finds a user in the database
 function findUser(username, db) {
 	var promise = new Promise(function(resolve, reject) {
 		db.collection('Users').findOne({"username": username, "term": findTerm()}, {crns : 1, instructor : true, "_id": false}, function(err, result) {
@@ -325,6 +336,7 @@ function findUser(username, db) {
 	return promise;
 }
 
+//finds the students for a given course in the database
 function findStudents(crn, db) {
 	var promise = new Promise(function(resolve, reject) {
 		db.collection('Users').find({"term" : findTerm(), "crns": {"$in" : crn}, "instructor": false}, {"username": true, "_id": false}).toArray(function(err, data) {
@@ -338,6 +350,7 @@ function findStudents(crn, db) {
 	return promise;
 }
 
+//creates an attendance record for a given student at a given time
 function createAttendanceRecord(username, crn, routerLocation, curTime, db, time) {
 	var term = findTerm();
 	var promise = new Promise(function(resolve, reject) {
@@ -400,7 +413,7 @@ function createAttendanceRecord(username, crn, routerLocation, curTime, db, time
 	return promise;
 }
 
-
+//deletes a request for attendance from the database
 function removeRequest(username, crn, mistakeDate, db) {
 	var term = findTerm();
 	var promise = new Promise(function(resolve, reject) {
@@ -428,6 +441,7 @@ function removeRequest(username, crn, mistakeDate, db) {
 	return promise;
 }
 
+//takes a date object and removes the hour/minute/second etc, so it is easier to compare dates
 function dateToMonthDayYear(date) {
 	var d = new Date(date);
 	var year = d.getUTCFullYear();
@@ -436,6 +450,7 @@ function dateToMonthDayYear(date) {
 	return new Date(year, month, day);
 }
 
+//returns a one day range around a date object, again just for easy date comparisons
 function oneDayRange(date) {
 	if (date) {
 		try {

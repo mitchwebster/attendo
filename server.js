@@ -46,7 +46,8 @@ MongoClient.connect(dbConfig.url, function(err, db) {
   //           });
 		// });
 
-		//Post request to find their courses
+		//Post request to find courses for a given user
+		//requried params: username (string)
 		app.post('/api/myCourses', function(req, res) {
 			if (!req.body || !util.validate(req.body.username)) {
 				res.send({err : true, msg: "Invalid username"})
@@ -68,6 +69,8 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			}
 		});
 
+		//post request to find the course sections for a set of tsquare labels
+		//requried params: courses [String]
 		app.post('/api/coursePrompt', function(req, res) {
 			if (!req.body || !req.body.courses || !req.body.courses.length || req.body.courses.length <= 0) {
 				res.send({err : true, msg: "Invalid request"})
@@ -111,7 +114,8 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			});
 		});
 
-		//first time setup
+		//post request to create a user if they do not already exist
+		//requried params: username (string), courses [String] (these are crns)
 		app.post('/api/userSetup', function(req, res) {
 			if (!req.body || !util.validate(req.body.username) || !req.body.courses || !req.body.courses.length || req.body.courses.length <= 0) {
 				res.send({err : true, msg: "Invalid request"})
@@ -139,6 +143,8 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			}
 		});
 
+		//post request to create an instructor
+		//requried params: username (string), courses [String] (these are crns)
 		app.post('/api/instructorSetup', function(req, res) {
 			if (!req.body || !util.validate(req.body.username) || !req.body.courses || !req.body.courses.length || req.body.courses.length <= 0) {
 				res.send({err : true, msg: "Invalid request"})
@@ -166,6 +172,8 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			}
 		});
 
+		//post request to get the roster of students
+		//requried params: username (string), crn (string)
 		app.post('/api/course/roster', function(req, res) {
 				if (!req.body) {
 					res.send({err : true, msg: "Invalid request"});
@@ -195,7 +203,8 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 				}
 		});
 		
-		//Post to checkin
+		//Post to checkin: creating an attendance record for a given user
+		//requried params: username (string), crn (string), routerLocation (string), pastDate (String) (optional), instructor (string)
 		app.post('/api/checkin', function(req, res) {
 			if (!req.body) {
 				res.send({err : true, msg: "Invalid request"});
@@ -240,7 +249,8 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			}
 		});
 
-		//TODO: should probably be paged
+		//post request to get all of the attendance records for a given user during the current term
+		//requried params: username (string), crn (string) (optional)
 		app.post('/api/attendanceData', function(req, res) {
 			if (!req.body || !util.validate(req.body.username)) {
 				res.send({err : true, msg: "Invalid username"})
@@ -267,6 +277,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			}
 		});
 
+		//get request to retrieve a random location, used for demo purposes while RNOC api is not available
 		app.get('/api/mock/locationData', function(req, res) {
 			var locations = [
 				"Klaus 1456",
@@ -278,7 +289,8 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			res.send({location: locations[Math.floor(Math.random() * locations.length)]});
 		});
 
-		//untested, finds the course stats
+		//post request to get a summary of the attendance records for a given course
+		//requried params: username (string), crn (string)
 		app.post('/api/course/summary', function(req, res) {
 				if (!req.body) {
 					res.send({err : true, msg: "Invalid request"});
@@ -327,6 +339,8 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 				}
 		});
 
+		//post request to create a request for attendance record for a given date
+		//requried params: username (string), crn (string), mistakeDate(string)
 		app.post('/api/request/create', function(req, res) {
 			if (!req.body) {
 				res.send({err : true, msg: "Invalid request"});
@@ -370,6 +384,8 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			}
 		});
 
+		//post request to view all of the requests for attendance regarding a given student
+		//requried params: username (string), crn (string)
 		app.post('/api/request/view', function(req, res) {
 			if (!req.body) {
 				res.send({err : true, msg: "Invalid request"});
@@ -411,6 +427,8 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			}
 		});
 
+		//post request to remove request for attendance from the database and the user and instructor
+		//requried params: username (string), instructor (string), crn (string), mistakeDate (string)
 		app.post('/api/request/remove', function(req, res) {
 			if (!req.body) {
 				res.send({err : true, msg: "Invalid request"});
@@ -444,6 +462,8 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			}
 		});
 
+		//post request to accept a request for attendance, effectively adding an attendance record at a given date
+		//requried params: username (string), instructor (string), crn (string), mistakeDate (string)
 		app.post('/api/request/accept', function(req, res) {
 			if (!req.body) {
 				res.send({err : true, msg: "Invalid request"});
