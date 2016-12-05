@@ -60,6 +60,7 @@ function startTimeNow(someTime){
 	if (index < 0 || indexSpace < 0) {
 		return null;
 	}
+	//if it is in the correct format then convert the hour and minute to ints
 	var hour = validate(str.substring(0, index), "int");
 	var minute = validate(str.substring(index + 1, indexSpace), "int");
 	var indexPM = str.indexOf("pm");
@@ -73,13 +74,17 @@ function startTimeNow(someTime){
 
 //performs validation on the string input to make sure we are getting the right type of data
 function validate(someValue, potentialCondtion) {
+	//verify that it is a string input
 	if (someValue == undefined || someValue === null || (typeof someValue !== "string") || someValue.length <= 0) {
 		console.log("Invalid string input")
 		return null;
 	}
+	//if we want to parse to int
 	if (potentialCondtion === "int") {
+		//use the built in parse int if applicable
 		return isNaN(someValue) ? null : parseInt(someValue)
 	} else if (potentialCondtion === "customTimeStartStop") {
+		//this is the format of an hour-minute combo
 		var start = someValue.indexOf("-");
 		if (start < 0) {
 			return {
@@ -87,6 +92,7 @@ function validate(someValue, potentialCondtion) {
 				"end" : "Unknown"
 			}
 		} else {
+			//get the start and end time from the string and return an object
 			var startTime = someValue.substring(0, start);
 			var endTime = someValue.substring(start + 2, someValue.length);
 			return {
@@ -94,6 +100,7 @@ function validate(someValue, potentialCondtion) {
 				"end" : endTime.trim()
 			}
 		}
+		//should never get to this return statement
 		return {
 			"start" : "2:05 pm",
 			"end" : "2:55 pm"
@@ -102,8 +109,10 @@ function validate(someValue, potentialCondtion) {
 		console.log("Have this here so we can check other formats down the line");
 	} else if (potentialCondtion === "date") {
 		try {
+			//try to parse the string to a date
 		    var date = Date.parse(someValue);
 		    date = new Date(date);
+		    //verify that it is a valid date
 		    if (isNaN(date.getTime())) {
 		    	return null;
 		    } else {
@@ -120,6 +129,7 @@ function validate(someValue, potentialCondtion) {
 //creates a course object that has its fields all validated
 function createCourse(incomingObject) {
 	if (incomingObject !== null) {
+		//validate all of the fields in the course object
 		cNum = validate(incomingObject.courseNumber, "int");
 		schl = validate(incomingObject.school);
 		crn = validate(incomingObject.crn, "int");
@@ -131,6 +141,7 @@ function createCourse(incomingObject) {
 		time = validate(incomingObject.time, "customTimeStartStop");
 		days = validate(incomingObject.days);
 		section = validate(incomingObject.section);
+		//if it is all good, then create an object and return it
 		if (cNum && schl && crn && instr && location && time && days && section) {
 			courseObject = {
 				"courseNumber" : cNum,
@@ -161,14 +172,17 @@ function parseCourseTitle(courseTitle) {
 	var output = null;
 	var school = "";
 	var courseNumber = "";
+	//check that the title has length
 	if (courseTitle && courseTitle.length && courseTitle.length > 0) {
 		courseTitle += "-"; //add a dash to the end in case we don't get the section
 		var initialDash = courseTitle.indexOf("-");
 		if (initialDash >= 0) {
+			//if we find an initial dash then split 
 			school = courseTitle.substring(0, initialDash);
 			var remaining = courseTitle.substring(initialDash + 1, courseTitle.length);
 			if (remaining && remaining.length && remaining.length > 0) {
 				initialDash = remaining.indexOf("-");
+				//split again to find the course number
 				if (initialDash >= 0) {
 					courseNumber = remaining.substring(0, initialDash);
 					if (school && school.length > 0 && courseNumber && courseNumber.length > 0) {
@@ -185,13 +199,14 @@ function parseCourseTitle(courseTitle) {
 function findCourseObjects(crns, db, time) {
 	var promise = new Promise(function(resolve, reject) {
 		if (crns && crns.length > 0) {
-			//TODO: validate crns
+			//go find the course objects for the list of crns
 			db.collection('Courses').find({crn : {$in : crns}}, {"_id": false, "crn" : true, "courseNumber": true, "school": true, "instructor": true, "location": true, "createTime" : true}).toArray(function(err, data) {
 				if (err) {
 					console.log(err);
 					reject("Courses not found");
 				}
 				var i = 0;
+				//for each course object get it into display mode (gets a display: i.e. CS 3510 and gets rid of the createTime)
 				while (i < data.length) {
 					data[i].course = data[i].school + " " + data[i].courseNumber;
 					delete data[i]["school"];
@@ -207,6 +222,7 @@ function findCourseObjects(crns, db, time) {
 					delete data[i]["createTime"];
 					i++;
 				}
+				//return the data in display mode
 				resolve(data);
 			});
 		} else {
@@ -220,6 +236,7 @@ function findCourseObjects(crns, db, time) {
 function updateCourseObject(school, courseNumber, db) {
 	courseNumber = validate(courseNumber + "", "int");
 	if (school && courseNumber) {
+		//remove the old object and then go parse coursesat
 		db.collection('Courses').remove({"school" : school, "courseNumber" : courseNumber, "term": findTerm()}, function(err, result) {
 			if (err) {
 				console.log(err);
@@ -230,16 +247,18 @@ function updateCourseObject(school, courseNumber, db) {
 	}
 }
 
-//finds a course object by first loooking in the course cache and eventually looking at coursesat
+//finds an array of course objects by first loooking in the course cache and eventually looking at coursesat
 function lookupCourse(school, courseNumber, db) {
 	var term = findTerm();
 	var promise = new Promise(function(resolve, reject) {
 		courseNumber = validate(courseNumber + "", "int");
 		if (courseNumber) {
+			//query the course information based on the schoool and course number
 			db.collection('Courses').find({"school" : school, "courseNumber" : courseNumber, "term": findTerm()}, {"_id" : false, "courseNumber" : true, "section": true, "crn" : true}).toArray( function(err, result) {
 				if (err) {
 					reject(err);
 				} else {
+					//if we don't find it then reparse coursesat
 					if (result.length === 0) {
 						parseCoursesat(school, courseNumber, db).done(function (result) {
 			                resolve(result);
@@ -247,6 +266,7 @@ function lookupCourse(school, courseNumber, db) {
 			                reject(failure);
 			            });
 					} else {
+						//if we do find it then get all of the sections and add them to the response array
 						for (var i = 0; i < result.length; i++) {
 							result[i]["courseName"] = school + " " + courseNumber;
 							result[i]["valid"] = true;
@@ -263,24 +283,29 @@ function lookupCourse(school, courseNumber, db) {
 }
 
 //visits the coursesat site and parses all of the sections for a given course and creates course objects for each of them
+//also returns some section objects for a given school - courseNumber combination
 function parseCoursesat(school, courseNumber, db) {
 	var term = findTerm();
 	var promise = new Promise(function(resolve, reject) {
 		var searchString = 'http://coursesat.tech/' + term + '/' + school + '/' + courseNumber;
+		//begin a http get request to the course info site
 		http.get(searchString, (res) => {
 				var body = [];
 				res.on('data', function (data) {
 					body.push(data);
 				}).on('end', function () {
 					response = "";
+					//try to parse the json
 					try {
 					    response = JSON.parse(Buffer.concat(body).toString());
 					} catch (e) {
 					    reject("Not JSON");
 					}
+					//if the response has information then proceed
 					if (response !== "") {
 						var potentialCourses = [];
 						var potentialCourseSections = [];
+						//if we have information, then we can go through each section and create a new course object for it 
 						response.sections.forEach(function (section, index, sections) {
 							var incomingObject = {
 								"courseNumber" : response.number,
@@ -292,10 +317,12 @@ function parseCoursesat(school, courseNumber, db) {
 								"days" : section.meetings[0].days,
 								"section" : section.section_id
 							}
+							//validate the course object
 							var course = createCourse(incomingObject);
 							if (course) {
 								potentialCourses.push(course);
 							}
+							//add the section information to the response array
 							potentialCourseSections.push({
 								"courseName" : response.identifier,
 								"section" : section.section_id,
@@ -303,6 +330,7 @@ function parseCoursesat(school, courseNumber, db) {
 								"valid" : course !== null
 							});
 						});
+						//add the courses to the db
 						db.collection('Courses').insert(potentialCourses, {ordered: false}, function(err, result) {
 							if (err) {
 								console.log(err);
@@ -321,6 +349,7 @@ function parseCoursesat(school, courseNumber, db) {
 //finds a user in the database
 function findUser(username, db) {
 	var promise = new Promise(function(resolve, reject) {
+		//find a given user based on the username, return their courses and whether they are an instructor
 		db.collection('Users').findOne({"username": username, "term": findTerm()}, {crns : 1, instructor : true, "_id": false}, function(err, result) {
 			if (err) {
 				reject(err);
@@ -339,6 +368,8 @@ function findUser(username, db) {
 //finds the students for a given course in the database
 function findStudents(crn, db) {
 	var promise = new Promise(function(resolve, reject) {
+		//assume the crn has already been validated
+		//query based on the term and the crn passed in
 		db.collection('Users').find({"term" : findTerm(), "crns": {"$in" : crn}, "instructor": false}, {"username": true, "_id": false}).toArray(function(err, data) {
 			if (err) {
 				reject(err);
@@ -355,7 +386,9 @@ function createAttendanceRecord(username, crn, routerLocation, curTime, db, time
 	var term = findTerm();
 	var promise = new Promise(function(resolve, reject) {
 		findUser(username, db).done(function (userObject) {
+			//once we have the user, check if they are registered for this course
 			if (userObject.crns.indexOf(crn) >= 0) {
+				//if they are then get this courses information from the DB
 				db.collection('Courses').findOne({crn : crn, term: term}, {"_id": false, "crn" : true, "location": true, "startTime": true, "days": true}, function(err, result) {
 					if (err || result === null) {
 						res.send({err : true, msg: "Invalid Request"});
@@ -363,6 +396,7 @@ function createAttendanceRecord(username, crn, routerLocation, curTime, db, time
 						var addRecord = false;
 						var attendanceRecord = {};
 						var startEnd = oneDayRange(curTime);
+						//if we have a startEnd date then the instructor has sent this request (note this needs to be token authenticated later on)
 						if (startEnd) {
 							//the instructor has sent in this request
 							addRecord = true;
@@ -373,10 +407,12 @@ function createAttendanceRecord(username, crn, routerLocation, curTime, db, time
 								"time" : startEnd.start
 							}
 						} else {
+							//if an instructor has not sent the request, get the time in the eastern timezone
 							var now = new time.Date();
 							now.setTimezone("America/New_York");
 							var startDate = startTimeNow(result.startTime);
 							var minDiff = dateDiffMinutes(startDate, now);
+							//check that it is during the class period, on the correct day, and at the right location
 							if (minDiff < 55 && minDiff >= 0 && dayMapper(result.days, now) && result.location == routerLocation) {
 								addRecord = true;
 								var startEnd = oneDayRange(new Date());
@@ -388,6 +424,7 @@ function createAttendanceRecord(username, crn, routerLocation, curTime, db, time
 								}
 							}
 						}
+						//if we are supposed to add the record then insert it in the database
 						if (addRecord) {
 							db.collection('Attendance').insert(attendanceObject, {w:1}, function(err, result) {
 								if (err) {
@@ -417,9 +454,11 @@ function createAttendanceRecord(username, crn, routerLocation, curTime, db, time
 function removeRequest(username, crn, mistakeDate, db) {
 	var term = findTerm();
 	var promise = new Promise(function(resolve, reject) {
+		//validate the user, crn, and mistake date
 		if (username && crn && mistakeDate) {
 			var startEnd = oneDayRange(mistakeDate);
 			if (startEnd) {
+				//remove the request given the query parameters
 				db.collection('Requests').remove({"username" : username, "crn" : crn, "term": term, "mistakeDate": {$gte: startEnd.start, $lt: startEnd.end}}, function(err, result) {
 					if (err) {
 						reject(err);
@@ -452,13 +491,17 @@ function dateToMonthDayYear(date) {
 
 //returns a one day range around a date object, again just for easy date comparisons
 function oneDayRange(date) {
+	//try parse it into an object
 	if (date) {
 		try {
+			//get the month day year
 			var d = new Date(date);
 			var year = d.getUTCFullYear();
 			var month = d.getUTCMonth();
 			var day = d.getUTCDate();
+			//build a new date from this
 			d = new Date(year, month, day);
+			//create a new date that is one day later
 			var d2 = new Date(d);
 			d2.setDate(d2.getDate() + 1);
 			return {start: d, end: d2};
@@ -470,6 +513,7 @@ function oneDayRange(date) {
 	}
 }
 
+//module exports
 utilPkg = {}
 utilPkg.findTerm = findTerm;
 utilPkg.validate = validate;

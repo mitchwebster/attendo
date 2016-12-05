@@ -52,7 +52,9 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			if (!req.body || !util.validate(req.body.username)) {
 				res.send({err : true, msg: "Invalid username"})
 			} else {
+				//find the given user
 				util.findUser(req.body.username, db).done(function (userObject) {
+					//gind the courses for this user
 	                util.findCourseObjects(userObject.crns, db, time).done(function (courseObjects) {
 	                	//successfully got the course objects
 	                	res.send({err : false,  userExists: true, courses: courseObjects, instructor: userObject.instructor});
@@ -77,12 +79,14 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			}
 			var asyncCalls = [];
 			var out_titles = [];
+			//parse each of the course titles to check their validity
 			req.body.courses.forEach(function (element, index, titles) {
 				var curTitle = util.parseCourseTitle(element);
 				if (curTitle !== null) {
 					out_titles.push(curTitle);
 				}
 			});
+			//for each of the course titles, asynchronously hit the util lookup (which will either hit the db or go to coursesat)
 			out_titles.forEach(function (element, index, titles) {
 				asyncCalls.push(function (callback) {
 					util.lookupCourse(element.school, element.courseNumber, db).done(function (result) {
@@ -92,11 +96,14 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 		            });
 				});
 			});
+			//once we return from async calls check their validity
 			async.parallel(asyncCalls, function(err, results) {
 				var output = {};
 				for (var i = 0; i < results.length; i++) {
 					if (results[i] !== "Failed HTTP Request" && results[i] !== "Failed Parsing" && results[i] !== "Not JSON") {
 						for (var j = 0; j < results[i].length; j++) {
+							//if the response is valid add the course objects to an output array
+							//ensure that we combine sections for the same class
 							if (results[i][j].courseName in output) {
 								output[results[i][j].courseName].push({section: results[i][j].section, crn: results[i][j].crn, valid: results[i][j].valid});
 							} else {
@@ -105,6 +112,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 						}
 					}
 				}
+				//reformat the array and send it
 				courseObjects = [];
 				keys = Object.keys(output);
 				for (var i = 0; i < keys.length; i++) {
@@ -120,6 +128,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			if (!req.body || !util.validate(req.body.username) || !req.body.courses || !req.body.courses.length || req.body.courses.length <= 0) {
 				res.send({err : true, msg: "Invalid request"})
 			} else {
+				//make sure the crns are valid, in the future we may want to check that these are in the DB
 				var validatedCRNS = []
 				for (var i = 0; i < req.body.courses.length; i++) {
 					var x = util.validate(req.body.courses[i], "int");
@@ -133,6 +142,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 					"crns" : validatedCRNS,
 					"instructor" : false
 				};
+				//send the user to the db
 				db.collection('Users').insert(user, {w:1}, function(err, result) {
 					if (err) {
 						res.send({err : true, msg: "Invalid Request"});
@@ -145,10 +155,12 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 
 		//post request to create an instructor
 		//requried params: username (string), courses [String] (these are crns)
+		//TODO: may want to break this function into util and pass in whether they are an instructor or not
 		app.post('/api/instructorSetup', function(req, res) {
 			if (!req.body || !util.validate(req.body.username) || !req.body.courses || !req.body.courses.length || req.body.courses.length <= 0) {
 				res.send({err : true, msg: "Invalid request"})
 			} else {
+				//essentially the same procedure as user setup but now we set the instructor to true
 				var validatedCRNS = []
 				for (var i = 0; i < req.body.courses.length; i++) {
 					var x = util.validate(req.body.courses[i], "int");
@@ -183,8 +195,10 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 					if (!username || !crn) {
 						res.send({err : true, msg: "Invalid request"});
 					} else {
+						//find the user and verify they are an instructor for the given course
 						util.findUser(req.body.username, db).done(function (userObject) {
 							if (userObject.instructor && userObject.crns.indexOf(crn) >= 0) {
+								//find the students for the given course
 								util.findStudents(userObject.crns, db, time).done(function (rosterData) {
 				                	res.send({err : false,  roster: rosterData});
 				                }, function (failure) {
@@ -218,9 +232,12 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 				if (!username || !crn) {
 					res.send({err : true, msg: "Invalid request"});
 				} else {
+					//if past date is sent in the request, then this is an instructor editing the attendance data
 					if (pastDate && instructor) {
 						util.findUser(instructor, db).done(function (userObject) {
+							//verify that the isntructor is for a given course
 							if (userObject.instructor && userObject.crns.indexOf(crn) >= 0) {
+								//if it all checks out then add the attendance record
 								util.createAttendanceRecord(username, crn, rLoc, pastDate, db, time).done(function (rosterData) {
 				                	res.send({err : false});
 				                }, function (failure) {
@@ -236,6 +253,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			                res.send({err : true, msg: "Invalid Permissions"});
 			            });
 					} else if (rLoc) {
+						//this is the student requesting to checkin, so lets try to create an attendance record (this function will do the verifciations)
 						util.createAttendanceRecord(username, crn, rLoc, null, db, time).done(function (rosterData) {
 		                	res.send({err : false});
 		                }, function (failure) {
@@ -257,6 +275,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 			} else {
 				var usrname = req.body.username;
 				var course = util.validate(req.body.crn, "int");
+				//query based on username alone
 				if (course === null) {
 					db.collection('Attendance').find({"username" : usrname, "term": util.findTerm()}, {"time": true, "_id": false}).toArray(function(err, data) {
 						if (err) {
@@ -266,6 +285,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 						}
 					});
 				} else {
+					//query based on username and course number
 					db.collection('Attendance').find({"username" : usrname, "crn": course, "term": util.findTerm()}, {"time": true, "_id": false}).toArray(function(err, data) {
 						if (err) {
 							res.send({err : true, msg: "Database issue"});
@@ -302,19 +322,22 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 					} else {
 						util.findUser(req.body.username, db).done(function (userObject) {
 							if (userObject.instructor && userObject.crns.indexOf(crn) >= 0) {
+								//if the user is an instructor for the given course then go look for all of the attendance records for all students in this course
 								db.collection('Attendance').find({"crn": crn, "term": util.findTerm()}, {"username": true, "time": true, "_id": false}).toArray(function(err, data) {
 									if (err) {
 										res.send({err : true, msg: "Database issue"});
 									} else {
 										var students = {};
 										var accumulatedAttendance = {}; //total attendance by date
-
+										//go through the attendance records
 										for (var i = 0; i < data.length; i++) {
+											//keep track of the per student record
 											if (data[i].username in students) {
 												students[data[i].username] += 1;
 											} else {
 												students[data[i].username] = 1;
 											}
+											//group all the attendance records for a given date
 											var d = new Date(data[i].time);
 											d = util.dateToMonthDayYear(d);
 											var dateString = d.toString();
@@ -355,6 +378,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 					util.findUser(username, db).done(function (userObject) {
 						if (userObject.crns.indexOf(crn) >= 0) {
 							var startEnd = util.oneDayRange(mistakeDate);
+							//try to conver the date to a range of one day
 							if (startEnd) {
 								var requestObject = {
 									"username" : username,
@@ -362,6 +386,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 									"term": term,
 									"mistakeDate" : startEnd.start
 								};
+								//if it is valid then insert it in the db
 								db.collection('Requests').insert(requestObject, {w:1}, function(err, result) {
 									if (err) {
 										res.send({err : true, msg: "Unable to complete the request"});
@@ -398,6 +423,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 				} else {
 					util.findUser(username, db).done(function (userObject) {
 						if (userObject.crns.indexOf(crn) >= 0) {
+							//if the user is an instructor then get all of the requests for the course
 							if (userObject.instructor) {
 								db.collection('Requests').find({"crn": crn, "term": util.findTerm()}, {"username": true, "crn": true, "term" : true, "mistakeDate": true, "_id": false}).toArray(function(err, data) {
 									if (err) {
@@ -407,6 +433,7 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 									}
 								});
 							} else {
+								//if the user is not an instructor, only get their specific requests
 								db.collection('Requests').find({"username" : username, "crn": crn, "term": util.findTerm()}, {"username": true, "crn": true, "term" : true, "mistakeDate": true, "_id": false}).toArray(function(err, data) {
 									if (err) {
 										res.send({err : true, msg: "Database issue"});
@@ -437,12 +464,12 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 				var instructor = util.validate(req.body.instructor);
 				var crn = util.validate(req.body.crn, "int");
 				var mistakeDate = util.validate(req.body.mistakeDate, "date");
-				//TODO: need to fix query to allow for more flexibility between the date objects
 				if (!username || !crn || !mistakeDate) {
 					res.send({err : true, msg: "Invalid request"});
 				} else {
 					util.findUser(username, db).done(function (userObject) {
 						if (userObject.crns.indexOf(crn) >= 0) {
+							//go and find this specific request and delte it from the db
 							util.removeRequest(username, crn, mistakeDate, db).done(function (userObject) {
 								res.send({err : false, msg: "Successfully removed request"});
 				            }, function (failure) {
@@ -479,7 +506,9 @@ MongoClient.connect(dbConfig.url, function(err, db) {
 					util.findUser(instructor, db).done(function (userObject) {
 						if (userObject.crns.indexOf(crn) >= 0) {
 							if (userObject.instructor) {
+								//if the user is an instructor then create an attendance record for the student
 								util.createAttendanceRecord(username, crn, "", mistakeDate, db, time).done(function (rosterData) {
+									//then remove the request
 				                	util.removeRequest(username, crn, mistakeDate, db).done(function (userObject) {
 										res.send({err : false, msg: "Successfully accepted request"});
 						            }, function (failure) {
